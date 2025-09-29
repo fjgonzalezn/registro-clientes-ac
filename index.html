@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Clientes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">📋 Registro de Clientes</h1>
+            <p class="text-gray-600">Gestiona tu base de clientes de manera eficiente</p>
+        </div>
+
+        <!-- Pestañas de navegación -->
+        <div class="bg-white rounded-xl shadow-lg mb-8">
+            <div class="flex border-b">
+                <button id="clientsTab" class="flex-1 py-4 px-6 text-center font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50">
+                    👤 Clientes
+                </button>
+                <button id="maintenanceTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                    🔧 Mantenimientos
+                </button>
+                <button id="alertsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors relative">
+                    🔔 Recordatorios
+                    <span id="alertBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenido de Clientes -->
+        <div id="clientsContent" class="grid lg:grid-cols-2 gap-8">
+            <!-- Formulario de Registro -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="mr-2">👤</span>
+                    Nuevo Cliente
+                </h2>
+                
+                <form id="clientForm" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+                            <input type="text" id="nombre" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                            <input type="text" id="apellido" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                        <input type="tel" id="telefono" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Completa</label>
+                        <input type="text" id="direccion" required placeholder="Ej: Calle 123 #45-67, Barrio Centro" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ciudad</label>
+                        <input type="text" id="ciudad" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Empresa</label>
+                        <input type="text" id="empresa" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Último Mantenimiento</label>
+                        <input type="date" id="ultimoMantenimiento" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Equipo</label>
+                        <select id="tipoEquipo" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Seleccionar equipo</option>
+                            <option value="Aire Acondicionado Split">Aire Acondicionado Split</option>
+                            <option value="Aire Acondicionado Central">Aire Acondicionado Central</option>
+                            <option value="Aire Acondicionado Ventana">Aire Acondicionado Ventana</option>
+                            <option value="Sistema VRF">Sistema VRF</option>
+                            <option value="Chiller">Chiller</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Notas</label>
+                        <textarea id="notas" rows="3" 
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                        <span class="mr-2">✅</span>
+                        Registrar Cliente
+                    </button>
+                </form>
+            </div>
+
+            <!-- Lista de Clientes -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                        <span class="mr-2">📊</span>
+                        Clientes Registrados
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <span id="clientCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 clientes</span>
+                        <button id="exportBtn" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
+                            <span class="mr-1">📥</span>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Buscador -->
+                <div class="mb-4">
+                    <input type="text" id="searchInput" placeholder="Buscar clientes..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
+
+                <!-- Lista de clientes -->
+                <div id="clientList" class="space-y-3 max-h-96 overflow-y-auto">
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">👥</span>
+                        <p>No hay clientes registrados aún</p>
+                        <p class="text-sm">Agrega tu primer cliente usando el formulario</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de Mantenimientos -->
+        <div id="maintenanceContent" class="hidden">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Formulario de Mantenimiento -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">🔧</span>
+                        Registrar Mantenimiento
+                    </h2>
+                    
+                    <form id="maintenanceForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                            <select id="clientSelect" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Seleccionar cliente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Mantenimiento</label>
+                            <input type="date" id="fechaMantenimiento" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Mantenimiento</label>
+                            <select id="tipoMantenimiento" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="Preventivo">Mantenimiento Preventivo</option>
+                                <option value="Correctivo">Mantenimiento Correctivo</option>
+                                <option value="Limpieza">Limpieza General</option>
+                                <option value="Revisión">Revisión Técnica</option>
+                                <option value="Reparación">Reparación</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Trabajo</label>
+                            <textarea id="descripcionTrabajo" rows="4" required 
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" 
+                                      placeholder="Describe el trabajo realizado..."></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Costo ($)</label>
+                                <input type="number" id="costoMantenimiento" step="0.01" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Técnico</label>
+                                <input type="text" id="tecnico" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                            <span class="mr-2">✅</span>
+                            Registrar Mantenimiento
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Historial de Mantenimientos -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                            <span class="mr-2">📋</span>
+                            Historial de Mantenimientos
+                        </h2>
+                        <span id="maintenanceCount" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0 registros</span>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="mb-4 space-y-2">
+                        <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <select id="filterType" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Todos los tipos</option>
+                            <option value="Preventivo">Preventivo</option>
+                            <option value="Correctivo">Correctivo</option>
+                            <option value="Limpieza">Limpieza</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Reparación">Reparación</option>
+                        </select>
+                    </div>
+
+                    <!-- Lista de mantenimientos -->
+                    <div id="maintenanceList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center text-gray-500 py-8">
+                            <span class="text-4xl mb-2 block">🔧</span>
+                            <p>No hay mantenimientos registrados</p>
+                            <p class="text-sm">Registra el primer mantenimiento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de Recordatorios -->
+        <div id="alertsContent" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="mr-2">🔔</span>
+                    Recordatorios de Mantenimiento
+                </h2>
+                
+                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Información</h3>
+                    <p class="text-blue-700 text-sm">Los recordatorios se generan automáticamente cada 6 meses después del último mantenimiento registrado para cada cliente.</p>
+                </div>
+
+                <div id="alertsList" class="space-y-4">
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">✅</span>
+                        <p>No hay recordatorios pendientes</p>
+                        <p class="text-sm">Todos los mantenimientos están al día</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
+            <div class="text-center">
+                <div class="text-4xl mb-4">✅</div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">¡Cliente Registrado!</h3>
+                <p class="text-gray-600 mb-4">El cliente ha sido agregado exitosamente</p>
+                <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
+                    Continuar
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenido de Mantenimientos -->
+        <div id="maintenanceContent" class="hidden">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Formulario de Mantenimiento -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">🔧</span>
+                        Registrar Mantenimiento
+                    </h2>
+                    
+                    <form id="maintenanceForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                            <select id="clientSelect" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Seleccionar cliente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Mantenimiento</label>
+                            <input type="date" id="fechaMantenimiento" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Mantenimiento</label>
+                            <select id="tipoMantenimiento" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="Preventivo">Mantenimiento Preventivo</option>
+                                <option value="Correctivo">Mantenimiento Correctivo</option>
+                                <option value="Limpieza">Limpieza General</option>
+                                <option value="Revisión">Revisión Técnica</option>
+                                <option value="Reparación">Reparación</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Trabajo</label>
+                            <textarea id="descripcionTrabajo" rows="4" required 
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" 
+                                      placeholder="Describe el trabajo realizado..."></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Costo ($)</label>
+                                <input type="number" id="costoMantenimiento" step="0.01" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Técnico</label>
+                                <input type="text" id="tecnico" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                            <span class="mr-2">✅</span>
+                            Registrar Mantenimiento
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Historial de Mantenimientos -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                            <span class="mr-2">📋</span>
+                            Historial de Mantenimientos
+                        </h2>
+                        <span id="maintenanceCount" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0 registros</span>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="mb-4 space-y-2">
+                        <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <select id="filterType" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Todos los tipos</option>
+                            <option value="Preventivo">Preventivo</option>
+                            <option value="Correctivo">Correctivo</option>
+                            <option value="Limpieza">Limpieza</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Reparación">Reparación</option>
+                        </select>
+                    </div>
+
+                    <!-- Lista de mantenimientos -->
+                    <div id="maintenanceList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center text-gray-500 py-8">
+                            <span class="text-4xl mb-2 block">🔧</span>
+                            <p>No hay mantenimientos registrados</p>
+                            <p class="text-sm">Registra el primer mantenimiento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de Recordatorios -->
+        <div id="alertsContent" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="mr-2">🔔</span>
+                    Recordatorios de Mantenimiento
+                </h2>
+                
+                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Información</h3>
+                    <p class="text-blue-700 text-sm">Los recordatorios se generan automáticamente cada 6 meses después del último mantenimiento registrado para cada cliente.</p>
+                </div>
+
+                <div id="alertsList" class="space-y-4">
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">✅</span>
+                        <p>No hay recordatorios pendientes</p>
+                        <p class="text-sm">Todos los mantenimientos están al día</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clients = JSON.parse(localStorage.getItem('clients')) || [];
+        let clientIdCounter = parseInt(localStorage.getItem('clientIdCounter')) || 1;
+        let maintenances = JSON.parse(localStorage.getItem('maintenances')) || [];
+        let maintenanceIdCounter = parseInt(localStorage.getItem('maintenanceIdCounter')) || 1;
+
+        // Elementos del DOM
+        const clientForm = document.getElementById('clientForm');
+        const clientList = document.getElementById('clientList');
+        const clientCount = document.getElementById('clientCount');
+        const searchInput = document.getElementById('searchInput');
+        const successModal = document.getElementById('successModal');
+        const closeModal = document.getElementById('closeModal');
+        const exportBtn = document.getElementById('exportBtn');
+
+        // Elementos de pestañas
+        const clientsTab = document.getElementById('clientsTab');
+        const maintenanceTab = document.getElementById('maintenanceTab');
+        const alertsTab = document.getElementById('alertsTab');
+        const clientsContent = document.getElementById('clientsContent');
+        const maintenanceContent = document.getElementById('maintenanceContent');
+        const alertsContent = document.getElementById('alertsContent');
+
+        // Elementos de mantenimiento
+        const maintenanceForm = document.getElementById('maintenanceForm');
+        const clientSelect = document.getElementById('clientSelect');
+        const maintenanceList = document.getElementById('maintenanceList');
+        const maintenanceCount = document.getElementById('maintenanceCount');
+        const searchMaintenance = document.getElementById('searchMaintenance');
+        const filterType = document.getElementById('filterType');
+        const alertsList = document.getElementById('alertsList');
+        const alertBadge = document.getElementById('alertBadge');
+
+        // Inicializar la aplicación
+        function init() {
+            renderClients();
+            updateClientCount();
+            updateClientSelect();
+            renderMaintenances();
+            updateMaintenanceCount();
+            checkMaintenanceAlerts();
+            
+            // Configurar fecha por defecto para mantenimiento
+            document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
+        }
+
+        // Navegación entre pestañas
+        clientsTab.addEventListener('click', () => switchTab('clients'));
+        maintenanceTab.addEventListener('click', () => switchTab('maintenance'));
+        alertsTab.addEventListener('click', () => switchTab('alerts'));
+
+        function switchTab(tab) {
+            // Resetear todas las pestañas
+            [clientsTab, maintenanceTab, alertsTab].forEach(t => {
+                t.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+                t.classList.add('text-gray-600');
+            });
+            
+            [clientsContent, maintenanceContent, alertsContent].forEach(c => {
+                c.classList.add('hidden');
+            });
+
+            // Activar pestaña seleccionada
+            switch(tab) {
+                case 'clients':
+                    clientsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+                    clientsTab.classList.remove('text-gray-600');
+                    clientsContent.classList.remove('hidden');
+                    break;
+                case 'maintenance':
+                    maintenanceTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+                    maintenanceTab.classList.remove('text-gray-600');
+                    maintenanceContent.classList.remove('hidden');
+                    updateClientSelect();
+                    break;
+                case 'alerts':
+                    alertsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+                    alertsTab.classList.remove('text-gray-600');
+                    alertsContent.classList.remove('hidden');
+                    checkMaintenanceAlerts();
+                    break;
+            }
+        }
+
+        // Manejar envío del formulario
+        clientForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newClient = {
+                id: clientIdCounter++,
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                direccion: document.getElementById('direccion').value,
+                ciudad: document.getElementById('ciudad').value,
+                empresa: document.getElementById('empresa').value || 'No especificada',
+                ultimoMantenimiento: document.getElementById('ultimoMantenimiento').value || null,
+                tipoEquipo: document.getElementById('tipoEquipo').value || 'No especificado',
+                notas: document.getElementById('notas').value || 'Sin notas',
+                fechaRegistro: new Date().toLocaleDateString('es-ES')
+            };
+
+            clients.unshift(newClient);
+            saveToLocalStorage();
+            renderClients();
+            updateClientCount();
+            updateClientSelect();
+            clientForm.reset();
+            showSuccessModal();
+        });
+
+        // Mostrar modal de éxito
+        function showSuccessModal() {
+            successModal.classList.remove('hidden');
+            successModal.classList.add('flex');
+        }
+
+        // Cerrar modal
+        closeModal.addEventListener('click', function() {
+            successModal.classList.add('hidden');
+            successModal.classList.remove('flex');
+        });
+
+        // Manejar envío del formulario de mantenimiento
+        maintenanceForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const clientId = parseInt(document.getElementById('clientSelect').value);
+            const client = clients.find(c => c.id === clientId);
+            
+            const newMaintenance = {
+                id: maintenanceIdCounter++,
+                clientId: clientId,
+                clientName: `${client.nombre} ${client.apellido}`,
+                fecha: document.getElementById('fechaMantenimiento').value,
+                tipo: document.getElementById('tipoMantenimiento').value,
+                descripcion: document.getElementById('descripcionTrabajo').value,
+                costo: parseFloat(document.getElementById('costoMantenimiento').value) || 0,
+                tecnico: document.getElementById('tecnico').value || 'No especificado',
+                fechaRegistro: new Date().toISOString()
+            };
+
+            // Actualizar último mantenimiento del cliente
+            client.ultimoMantenimiento = newMaintenance.fecha;
+            
+            maintenances.unshift(newMaintenance);
+            saveToLocalStorage();
+            renderMaintenances();
+            updateMaintenanceCount();
+            checkMaintenanceAlerts();
+            maintenanceForm.reset();
+            document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
+            showSuccessModal();
+        });
+
+        // Renderizar lista de clientes
+        function renderClients(clientsToRender = clients) {
+            if (clientsToRender.length === 0) {
+                clientList.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">👥</span>
+                        <p>No hay clientes registrados aún</p>
+                        <p class="text-sm">Agrega tu primer cliente usando el formulario</p>
+                    </div>
+                `;
+                return;
+            }
+
+            clientList.innerHTML = clientsToRender.map(client => `
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in" data-client-id="${client.id}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 text-lg">${client.nombre} ${client.apellido}</h3>
+                            <div class="text-sm text-gray-600 mt-1 space-y-1">
+                                <p><span class="font-medium">📧</span> ${client.email}</p>
+                                <p><span class="font-medium">📱</span> ${client.telefono}</p>
+                                <p><span class="font-medium">🏠</span> ${client.direccion}</p>
+                                <p><span class="font-medium">📍</span> ${client.ciudad}</p>
+                                <p><span class="font-medium">🏢</span> ${client.empresa}</p>
+                                <p><span class="font-medium">🔧</span> ${client.tipoEquipo}</p>
+                                ${client.ultimoMantenimiento ? `<p><span class="font-medium">🛠️</span> Último mantenimiento: ${new Date(client.ultimoMantenimiento).toLocaleDateString('es-ES')}</p>` : '<p><span class="font-medium">🛠️</span> Sin mantenimientos registrados</p>'}
+                                <p><span class="font-medium">📅</span> Registrado: ${client.fechaRegistro}</p>
+                                ${client.notas !== 'Sin notas' ? `<p><span class="font-medium">📝</span> ${client.notas}</p>` : ''}
+                            </div>
+                        </div>
+                        <button onclick="deleteClient(${client.id})" 
+                                class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors ml-4">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Eliminar cliente
+        function deleteClient(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
+                clients = clients.filter(client => client.id !== id);
+                saveToLocalStorage();
+                renderClients();
+                updateClientCount();
+                
+                // Si hay una búsqueda activa, actualizar resultados
+                if (searchInput.value) {
+                    searchClients();
+                }
+            }
+        }
+
+        // Actualizar contador de clientes
+        function updateClientCount() {
+            const count = clients.length;
+            clientCount.textContent = `${count} cliente${count !== 1 ? 's' : ''}`;
+        }
+
+        // Buscar clientes
+        searchInput.addEventListener('input', searchClients);
+
+        function searchClients() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredClients = clients.filter(client => 
+                client.nombre.toLowerCase().includes(searchTerm) ||
+                client.apellido.toLowerCase().includes(searchTerm) ||
+                client.email.toLowerCase().includes(searchTerm) ||
+                client.empresa.toLowerCase().includes(searchTerm) ||
+                client.direccion.toLowerCase().includes(searchTerm) ||
+                client.ciudad.toLowerCase().includes(searchTerm)
+            );
+            renderClients(filteredClients);
+        }
+
+        // Exportar datos
+        exportBtn.addEventListener('click', function() {
+            if (clients.length === 0) {
+                alert('No hay clientes para exportar');
+                return;
+            }
+
+            const csvContent = [
+                ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Dirección', 'Ciudad', 'Empresa', 'Notas', 'Fecha Registro'],
+                ...clients.map(client => [
+                    client.nombre,
+                    client.apellido,
+                    client.email,
+                    client.telefono,
+                    client.direccion,
+                    client.ciudad,
+                    client.empresa,
+                    client.notas,
+                    client.fechaRegistro
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `clientes_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Actualizar selector de clientes
+        function updateClientSelect() {
+            clientSelect.innerHTML = '<option value="">Seleccionar cliente</option>';
+            clients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.id;
+                option.textContent = `${client.nombre} ${client.apellido} - ${client.empresa}`;
+                clientSelect.appendChild(option);
+            });
+        }
+
+        // Renderizar mantenimientos
+        function renderMaintenances(maintenancesToRender = maintenances) {
+            if (maintenancesToRender.length === 0) {
+                maintenanceList.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">🔧</span>
+                        <p>No hay mantenimientos registrados</p>
+                        <p class="text-sm">Registra el primer mantenimiento</p>
+                    </div>
+                `;
+                return;
+            }
+
+            maintenanceList.innerHTML = maintenancesToRender.map(maintenance => `
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-semibold text-gray-800 text-lg">${maintenance.clientName}</h3>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium ${getMaintenanceTypeColor(maintenance.tipo)}">${maintenance.tipo}</span>
+                            </div>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <p><span class="font-medium">📅</span> ${new Date(maintenance.fecha).toLocaleDateString('es-ES')}</p>
+                                <p><span class="font-medium">🔧</span> ${maintenance.descripcion}</p>
+                                <p><span class="font-medium">👨‍🔧</span> ${maintenance.tecnico}</p>
+                                ${maintenance.costo > 0 ? `<p><span class="font-medium">💰</span> $${maintenance.costo.toFixed(2)}</p>` : ''}
+                            </div>
+                        </div>
+                        <button onclick="deleteMaintenance(${maintenance.id})" 
+                                class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors ml-4">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Obtener color para tipo de mantenimiento
+        function getMaintenanceTypeColor(tipo) {
+            const colors = {
+                'Preventivo': 'bg-green-100 text-green-800',
+                'Correctivo': 'bg-red-100 text-red-800',
+                'Limpieza': 'bg-blue-100 text-blue-800',
+                'Revisión': 'bg-yellow-100 text-yellow-800',
+                'Reparación': 'bg-orange-100 text-orange-800'
+            };
+            return colors[tipo] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Eliminar mantenimiento
+        function deleteMaintenance(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este registro de mantenimiento?')) {
+                maintenances = maintenances.filter(m => m.id !== id);
+                saveToLocalStorage();
+                renderMaintenances();
+                updateMaintenanceCount();
+                checkMaintenanceAlerts();
+                
+                if (searchMaintenance.value || filterType.value) {
+                    searchMaintenances();
+                }
+            }
+        }
+
+        // Actualizar contador de mantenimientos
+        function updateMaintenanceCount() {
+            const count = maintenances.length;
+            maintenanceCount.textContent = `${count} registro${count !== 1 ? 's' : ''}`;
+        }
+
+        // Buscar mantenimientos
+        searchMaintenance.addEventListener('input', searchMaintenances);
+        filterType.addEventListener('change', searchMaintenances);
+
+        function searchMaintenances() {
+            const searchTerm = searchMaintenance.value.toLowerCase();
+            const typeFilter = filterType.value;
+            
+            const filteredMaintenances = maintenances.filter(maintenance => {
+                const matchesSearch = maintenance.clientName.toLowerCase().includes(searchTerm) ||
+                                    maintenance.descripcion.toLowerCase().includes(searchTerm) ||
+                                    maintenance.tecnico.toLowerCase().includes(searchTerm);
+                const matchesType = !typeFilter || maintenance.tipo === typeFilter;
+                
+                return matchesSearch && matchesType;
+            });
+            
+            renderMaintenances(filteredMaintenances);
+        }
+
+        // Verificar recordatorios de mantenimiento
+        function checkMaintenanceAlerts() {
+            const today = new Date();
+            const alerts = [];
+
+            clients.forEach(client => {
+                if (client.ultimoMantenimiento) {
+                    const lastMaintenance = new Date(client.ultimoMantenimiento);
+                    const sixMonthsLater = new Date(lastMaintenance);
+                    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+                    
+                    const daysDiff = Math.ceil((sixMonthsLater - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysDiff <= 30) { // Mostrar alerta 30 días antes
+                        alerts.push({
+                            client: client,
+                            lastMaintenance: lastMaintenance,
+                            nextMaintenance: sixMonthsLater,
+                            daysRemaining: daysDiff,
+                            isOverdue: daysDiff < 0
+                        });
+                    }
+                }
+            });
+
+            renderAlerts(alerts);
+            updateAlertBadge(alerts.length);
+        }
+
+        // Renderizar alertas
+        function renderAlerts(alerts) {
+            if (alerts.length === 0) {
+                alertsList.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">✅</span>
+                        <p>No hay recordatorios pendientes</p>
+                        <p class="text-sm">Todos los mantenimientos están al día</p>
+                    </div>
+                `;
+                return;
+            }
+
+            alertsList.innerHTML = alerts.map(alert => `
+                <div class="border-l-4 ${alert.isOverdue ? 'border-red-500 bg-red-50' : 'border-yellow-500 bg-yellow-50'} p-4 rounded-r-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <span class="text-2xl">${alert.isOverdue ? '🚨' : '⚠️'}</span>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <h3 class="text-lg font-semibold ${alert.isOverdue ? 'text-red-800' : 'text-yellow-800'}">
+                                ${alert.client.nombre} ${alert.client.apellido}
+                            </h3>
+                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'} mt-1">
+                                <span class="font-medium">🏢</span> ${alert.client.empresa}
+                            </p>
+                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'}">
+                                <span class="font-medium">🔧</span> ${alert.client.tipoEquipo}
+                            </p>
+                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'}">
+                                <span class="font-medium">📅</span> Último mantenimiento: ${alert.lastMaintenance.toLocaleDateString('es-ES')}
+                            </p>
+                            <p class="text-sm font-medium ${alert.isOverdue ? 'text-red-800' : 'text-yellow-800'} mt-2">
+                                ${alert.isOverdue 
+                                    ? `⏰ Mantenimiento vencido hace ${Math.abs(alert.daysRemaining)} días`
+                                    : `⏰ Mantenimiento requerido en ${alert.daysRemaining} días`
+                                }
+                            </p>
+                            <button onclick="scheduleMaintenanceForClient(${alert.client.id})" 
+                                    class="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors">
+                                📋 Programar Mantenimiento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Actualizar badge de alertas
+        function updateAlertBadge(count) {
+            if (count > 0) {
+                alertBadge.textContent = count;
+                alertBadge.classList.remove('hidden');
+            } else {
+                alertBadge.classList.add('hidden');
+            }
+        }
+
+        // Programar mantenimiento para cliente específico
+        function scheduleMaintenanceForClient(clientId) {
+            switchTab('maintenance');
+            clientSelect.value = clientId;
+            document.getElementById('tipoMantenimiento').value = 'Preventivo';
+            document.getElementById('descripcionTrabajo').focus();
+        }
+
+        // Guardar en localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('clients', JSON.stringify(clients));
+            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
+            localStorage.setItem('maintenances', JSON.stringify(maintenances));
+            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
+        }
+
+        // Inicializar la aplicación
+        init();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986cdcf215ef23d7',t:'MTc1OTE2MzQwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
