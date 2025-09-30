@@ -9,7 +9,7 @@
     <style>
         body {
             box-sizing: border-box;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #ffffff 50%, #dc2626 100%);
             position: relative;
             min-height: 100vh;
         }
@@ -22,22 +22,22 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 30%);
             pointer-events: none;
             z-index: -2;
         }
         
         body::after {
-            content: '❄️ 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 🌀 ❄️ 💨 🌀 ❄️';
+            content: '❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️ 🔥 ❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️ 🔥 ❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️';
             position: fixed;
             top: 0;
             left: 0;
             width: 200%;
             height: 100%;
             font-size: 2rem;
-            opacity: 0.05;
+            opacity: 0.08;
             animation: float 60s linear infinite;
             pointer-events: none;
             z-index: -1;
@@ -66,27 +66,44 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        /* Animación de copos de nieve */
-        .snowflake {
+        /* Animación de elementos térmicos */
+        .thermal-element {
             position: fixed;
-            top: -10px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-            animation: fall linear infinite;
+            font-size: 1.5rem;
+            animation: thermalFloat linear infinite;
             pointer-events: none;
             z-index: -1;
         }
         
-        @keyframes fall {
+        .cold-element {
+            color: rgba(59, 130, 246, 0.6);
+            left: 0;
+            animation-duration: 8s;
+        }
+        
+        .hot-element {
+            color: rgba(239, 68, 68, 0.6);
+            right: 0;
+            animation-duration: 6s;
+        }
+        
+        @keyframes thermalFloat {
             0% {
-                transform: translateY(-100vh) rotate(0deg);
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(-100vh) rotate(360deg);
                 opacity: 0;
             }
         }
+        
         .calendar-day {
             min-height: 100px;
             border: 1px solid #e5e7eb;
@@ -153,14 +170,6 @@
                     Iniciar Sesión
                 </button>
             </form>
-            
-            <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Credenciales por defecto:</h3>
-                <p class="text-blue-700 text-sm"><strong>Usuario:</strong> admin</p>
-                <p class="text-blue-700 text-sm"><strong>Contraseña:</strong> admin123</p>
-                <p class="text-blue-600 text-xs mt-2">💡 Puedes cambiar estas credenciales en la configuración</p>
-            </div>
-        </div>
         </div>
     </div>
 
@@ -456,6 +465,11 @@
                                 <option value="Reparación de fuga de refrigerante, soldadura y recarga">Reparación de Fugas</option>
                                 <option value="Cambio de compresor, pruebas de funcionamiento">Cambio de Compresor</option>
                                 <option value="Reparación de tarjeta electrónica, calibración de sensores">Reparación Electrónica</option>
+                                <option value="Cambio de capacitor, verificación de conexiones eléctricas y pruebas de funcionamiento">Cambio de Capacitor</option>
+                                <option value="Cambio de contactor, verificación de bobina y contactos, pruebas de operación">Cambio de Contactor</option>
+                                <option value="Cambio de termostato, calibración de temperatura y programación">Cambio de Termostato</option>
+                                <option value="Cambio de relay, verificación del circuito de control y pruebas">Cambio de Relay</option>
+                                <option value="Cambio de componentes eléctricos, revisión completa de conexiones y verificación de voltajes">Cambio de Componentes Eléctricos</option>
                             </select>
                         </div>
 
@@ -779,7 +793,6 @@
                     Continuar
                 </button>
             </div>
-        </div>
         </div>
     </div>
 
@@ -1933,52 +1946,44 @@
             localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
         }
 
-        // Crear animación de copos de nieve
-        function createSnowflakes() {
-            const snowflakes = ['❄️', '🌨️', '💨', '🌀'];
+        // Crear animación de elementos térmicos
+        function createThermalElements() {
+            const coldElements = ['❄️', '🧊', '🌨️', '💨'];
+            const hotElements = ['🔥', '🌡️', '♨️', '🔴'];
             
             setInterval(() => {
-                if (Math.random() > 0.7) { // 30% de probabilidad cada segundo
-                    const snowflake = document.createElement('div');
-                    snowflake.className = 'snowflake';
-                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                    snowflake.style.left = Math.random() * 100 + 'vw';
-                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    snowflake.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                if (Math.random() > 0.8) { // 20% de probabilidad cada segundo
+                    // Elemento frío del lado izquierdo
+                    const coldElement = document.createElement('div');
+                    coldElement.className = 'thermal-element cold-element';
+                    coldElement.textContent = coldElements[Math.floor(Math.random() * coldElements.length)];
+                    coldElement.style.left = Math.random() * 30 + '%';
+                    coldElement.style.top = '100vh';
                     
-                    document.body.appendChild(snowflake);
+                    document.body.appendChild(coldElement);
                     
-                    // Remover después de la animación
                     setTimeout(() => {
-                        if (snowflake.parentNode) {
-                            snowflake.parentNode.removeChild(snowflake);
+                        if (coldElement.parentNode) {
+                            coldElement.parentNode.removeChild(coldElement);
                         }
-                    }, 5000);
+                    }, 8000);
                 }
-            }, 1000);
-        }
-
-        // Crear animación de copos de nieve
-        function createSnowflakes() {
-            const snowflakes = ['❄️', '🌨️', '💨', '🌀'];
-            
-            setInterval(() => {
-                if (Math.random() > 0.7) { // 30% de probabilidad cada segundo
-                    const snowflake = document.createElement('div');
-                    snowflake.className = 'snowflake';
-                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                    snowflake.style.left = Math.random() * 100 + 'vw';
-                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    snowflake.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                
+                if (Math.random() > 0.8) { // 20% de probabilidad cada segundo
+                    // Elemento caliente del lado derecho
+                    const hotElement = document.createElement('div');
+                    hotElement.className = 'thermal-element hot-element';
+                    hotElement.textContent = hotElements[Math.floor(Math.random() * hotElements.length)];
+                    hotElement.style.right = Math.random() * 30 + '%';
+                    hotElement.style.top = '100vh';
                     
-                    document.body.appendChild(snowflake);
+                    document.body.appendChild(hotElement);
                     
-                    // Remover después de la animación
                     setTimeout(() => {
-                        if (snowflake.parentNode) {
-                            snowflake.parentNode.removeChild(snowflake);
+                        if (hotElement.parentNode) {
+                            hotElement.parentNode.removeChild(hotElement);
                         }
-                    }, 5000);
+                    }, 6000);
                 }
             }, 1000);
         }
@@ -1986,11 +1991,8 @@
         // Inicializar la aplicación
         init();
         
-        // Iniciar animación de copos de nieve
-        createSnowflakes();
-        
-        // Iniciar animación de copos de nieve
-        createSnowflakes();
+        // Iniciar animación de elementos térmicos
+        createThermalElements();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98738a5ac7fc3353',t:'MTc1OTIzMzQyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873f1bd817f9cda',t:'MTc1OTIzNzY1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
