@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> FG HVAC SOLUTIONS - Panel de Control</title>
+    <title>MI EMPRESA - Panel de Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -135,7 +135,7 @@
         <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md">
             <div class="text-center mb-8">
                 <div class="text-6xl mb-4">🔐</div>
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">FG HVAC SOLUTIONS</h1>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">MI EMPRESA</h1>
 <p class="text-gray-600">Panel de Control Administrativo</p>
             </div>
             
@@ -179,7 +179,7 @@
             <!-- Header con botón de logout -->
             <div class="flex justify-between items-center mb-8">
                 <div class="text-center flex-1">
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">❄️ FG HVAC SOLUTIONS  - Sistema de Gestión</h1>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">❄️ MI EMPRESA - Sistema de Gestión</h1>
                     <p class="text-gray-600">Panel completo para gestionar clientes, servicios y finanzas</p>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -814,12 +814,29 @@
     </div>
 
     <script>
-        // Sistema de autenticación
+        // Sistema de autenticación - Credenciales fijas
         let currentUser = localStorage.getItem('currentUser') || null;
-        let adminCredentials = JSON.parse(localStorage.getItem('adminCredentials')) || {
+        let adminCredentials = {
             username: 'admin',
             password: 'admin123'
         };
+        
+        // Verificar si hay credenciales guardadas, si no usar las por defecto
+        const savedCredentials = localStorage.getItem('adminCredentials');
+        if (savedCredentials) {
+            try {
+                adminCredentials = JSON.parse(savedCredentials);
+            } catch (error) {
+                // Si hay error, usar credenciales por defecto
+                adminCredentials = {
+                    username: 'admin',
+                    password: 'admin123'
+                };
+                localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            }
+        } else {
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+        }
         let systemSettings = JSON.parse(localStorage.getItem('systemSettings')) || {
             maintenanceFrequency: 6,
             reminderDays: 30
@@ -2104,6 +2121,61 @@
                         updateMaintenanceCount();
                         updateClientSelect();
                         updateDashboard();
+                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV correctamente`);
+                    } else {
+                        alert('No se pudieron importar datos del archivo CSV');
+                    }
+                } else {
+                    alert('Importación cancelada');
+                }
+                
+            } catch (error) {
+                alert('Error al procesar el archivo CSV: ' + error.message);
+            }
+        }
+
+        // Guardar en localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('clients', JSON.stringify(clients));
+            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
+            localStorage.setItem('maintenances', JSON.stringify(maintenances));
+            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
+            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
+        }
+
+        // Inicializar la aplicación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Crear elementos térmicos flotantes
+        function createThermalElements() {
+            setInterval(() => {
+                // Elemento frío
+                const coldElement = document.createElement('div');
+                coldElement.className = 'thermal-element cold-element';
+                coldElement.textContent = ['❄️', '🌨️', '🧊'][Math.floor(Math.random() * 3)];
+                coldElement.style.left = Math.random() * 20 + '%';
+                document.body.appendChild(coldElement);
+                
+                // Elemento caliente
+                const hotElement = document.createElement('div');
+                hotElement.className = 'thermal-element hot-element';
+                hotElement.textContent = ['🔥', '🌡️', '☀️'][Math.floor(Math.random() * 3)];
+                hotElement.style.right = Math.random() * 20 + '%';
+                document.body.appendChild(hotElement);
+                
+                // Remover elementos después de la animación
+                setTimeout(() => {
+                    if (coldElement.parentNode) coldElement.parentNode.removeChild(coldElement);
+                    if (hotElement.parentNode) hotElement.parentNode.removeChild(hotElement);
+                }, 8000);
+            }, 3000);
+        }
+
+        // Iniciar elementos térmicos
+        setTimeout(createThermalElements, 2000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9875298213d92ba1',t:'MTc1OTI1MDQyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>ashboard();
                         renderCalendar();
                         checkMaintenanceAlerts();
                         updateSystemStats();
@@ -2313,7 +2385,59 @@
                         renderClients();
                         updateClientCount();
                         updateClientSelect();
-                        updateD
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987519bad6823353',t:'MTc1OTI0OTc4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+                        updateDashboard();
+                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV correctamente`);
+                    } else {
+                        alert('No se pudieron importar datos del archivo CSV');
+                    }
+                } else {
+                    alert('Importación cancelada');
+                }
+                
+            } catch (error) {
+                alert('Error al procesar el archivo CSV: ' + error.message);
+            }
+        }
 
+        // Guardar en localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('clients', JSON.stringify(clients));
+            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
+            localStorage.setItem('maintenances', JSON.stringify(maintenances));
+            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
+            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
+        }
 
+        // Inicializar la aplicación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Crear elementos térmicos flotantes
+        function createThermalElements() {
+            setInterval(() => {
+                // Elemento frío
+                const coldElement = document.createElement('div');
+                coldElement.className = 'thermal-element cold-element';
+                coldElement.textContent = ['❄️', '🌨️', '🧊'][Math.floor(Math.random() * 3)];
+                coldElement.style.left = Math.random() * 20 + '%';
+                document.body.appendChild(coldElement);
+                
+                // Elemento caliente
+                const hotElement = document.createElement('div');
+                hotElement.className = 'thermal-element hot-element';
+                hotElement.textContent = ['🔥', '🌡️', '☀️'][Math.floor(Math.random() * 3)];
+                hotElement.style.right = Math.random() * 20 + '%';
+                document.body.appendChild(hotElement);
+                
+                // Remover elementos después de la animación
+                setTimeout(() => {
+                    if (coldElement.parentNode) coldElement.parentNode.removeChild(coldElement);
+                    if (hotElement.parentNode) hotElement.parentNode.removeChild(hotElement);
+                }, 8000);
+            }, 3000);
+        }
+
+        // Iniciar elementos térmicos
+        setTimeout(createThermalElements, 2000);
+    </script>
+</body>
+</html>
