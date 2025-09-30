@@ -675,16 +675,61 @@
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Color del Logo</label>
-                                <select id="logoColor" 
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Logo</label>
+                                <select id="logoType" 
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                    <option value="from-blue-600 to-red-600">Azul a Rojo (Predeterminado)</option>
-                                    <option value="from-green-600 to-blue-600">Verde a Azul</option>
-                                    <option value="from-purple-600 to-pink-600">Morado a Rosa</option>
-                                    <option value="from-orange-600 to-red-600">Naranja a Rojo</option>
-                                    <option value="from-indigo-600 to-purple-600">Índigo a Morado</option>
-                                    <option value="from-gray-700 to-gray-900">Gris Oscuro</option>
+                                    <option value="text">Logo con Iniciales</option>
+                                    <option value="image">Logo Personalizado (Imagen)</option>
                                 </select>
+                            </div>
+
+                            <!-- Configuración para logo de texto -->
+                            <div id="textLogoConfig">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Color del Logo</label>
+                                    <select id="logoColor" 
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                        <option value="from-blue-600 to-red-600">Azul a Rojo (Predeterminado)</option>
+                                        <option value="from-green-600 to-blue-600">Verde a Azul</option>
+                                        <option value="from-purple-600 to-pink-600">Morado a Rosa</option>
+                                        <option value="from-orange-600 to-red-600">Naranja a Rojo</option>
+                                        <option value="from-indigo-600 to-purple-600">Índigo a Morado</option>
+                                        <option value="from-gray-700 to-gray-900">Gris Oscuro</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Configuración para logo personalizado -->
+                            <div id="imageLogoConfig" class="hidden">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cargar Logo Personal</label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                                        <input type="file" id="logoFileInput" accept="image/*" class="hidden">
+                                        <button type="button" id="selectLogoBtn" 
+                                                class="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                            <span class="mr-2">🖼️</span>
+                                            Seleccionar Imagen
+                                        </button>
+                                        <p class="text-xs text-gray-500 mt-2">PNG, JPG, GIF hasta 2MB</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Vista previa del logo -->
+                                <div id="logoPreview" class="hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Vista Previa</label>
+                                    <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                                        <div class="w-16 h-16 bg-white rounded-xl shadow-md flex items-center justify-center overflow-hidden">
+                                            <img id="previewImage" src="" alt="Logo preview" class="w-full h-full object-contain">
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-600">Tu logo se verá así en el sistema</p>
+                                            <button type="button" id="removeLogoBtn" 
+                                                    class="text-red-500 hover:text-red-700 text-sm mt-1">
+                                                🗑️ Quitar logo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <button id="updateLogoBtn" 
@@ -824,7 +869,9 @@
             reminderDays: 30,
             companyName: 'MI EMPRESA',
             logoInitials: 'ME',
-            logoColor: 'from-blue-600 to-red-600'
+            logoColor: 'from-blue-600 to-red-600',
+            logoType: 'text',
+            logoImage: null
         };
 
         // Preservar datos existentes y agregar nuevas funcionalidades
@@ -888,6 +935,14 @@
         const companyName = document.getElementById('companyName');
         const logoInitials = document.getElementById('logoInitials');
         const logoColor = document.getElementById('logoColor');
+        const logoType = document.getElementById('logoType');
+        const logoFileInput = document.getElementById('logoFileInput');
+        const selectLogoBtn = document.getElementById('selectLogoBtn');
+        const removeLogoBtn = document.getElementById('removeLogoBtn');
+        const logoPreview = document.getElementById('logoPreview');
+        const previewImage = document.getElementById('previewImage');
+        const textLogoConfig = document.getElementById('textLogoConfig');
+        const imageLogoConfig = document.getElementById('imageLogoConfig');
         const updateLogoBtn = document.getElementById('updateLogoBtn');
 
         // Elementos de mantenimiento
@@ -1736,6 +1791,12 @@
         recoverDataBtn.addEventListener('click', manualDataRecovery);
         saveSettingsBtn.addEventListener('click', saveSystemSettings);
         updateLogoBtn.addEventListener('click', updateCompanyLogo);
+        
+        // Event Listeners para logo personalizado
+        logoType.addEventListener('change', toggleLogoConfig);
+        selectLogoBtn.addEventListener('click', () => logoFileInput.click());
+        logoFileInput.addEventListener('change', handleLogoUpload);
+        removeLogoBtn.addEventListener('click', removeCustomLogo);
 
         // Verificar recordatorios de mantenimiento
         function checkMaintenanceAlerts() {
@@ -1840,6 +1901,16 @@
             companyName.value = systemSettings.companyName;
             logoInitials.value = systemSettings.logoInitials;
             logoColor.value = systemSettings.logoColor;
+            logoType.value = systemSettings.logoType || 'text';
+            
+            // Configurar interfaz según tipo de logo
+            toggleLogoConfig();
+            
+            // Si hay logo personalizado, mostrarlo
+            if (systemSettings.logoImage) {
+                previewImage.src = systemSettings.logoImage;
+                logoPreview.classList.remove('hidden');
+            }
             
             // Aplicar configuración actual del logo
             updateLogoDisplay();
@@ -1860,19 +1931,30 @@
         // Funciones del logo
         function updateCompanyLogo() {
             const newName = companyName.value.trim() || 'MI EMPRESA';
-            const newInitials = logoInitials.value.trim().toUpperCase() || 'ME';
-            const newColor = logoColor.value;
+            const newType = logoType.value;
             
-            // Validar iniciales (máximo 3 caracteres)
-            if (newInitials.length > 3) {
-                alert('Las iniciales no pueden tener más de 3 caracteres');
-                return;
-            }
-            
-            // Actualizar configuración
+            // Actualizar configuración básica
             systemSettings.companyName = newName;
-            systemSettings.logoInitials = newInitials;
-            systemSettings.logoColor = newColor;
+            systemSettings.logoType = newType;
+            
+            if (newType === 'text') {
+                const newInitials = logoInitials.value.trim().toUpperCase() || 'ME';
+                const newColor = logoColor.value;
+                
+                // Validar iniciales (máximo 3 caracteres)
+                if (newInitials.length > 3) {
+                    alert('Las iniciales no pueden tener más de 3 caracteres');
+                    return;
+                }
+                
+                systemSettings.logoInitials = newInitials;
+                systemSettings.logoColor = newColor;
+            } else if (newType === 'image') {
+                if (!systemSettings.logoImage) {
+                    alert('Por favor selecciona una imagen para el logo personalizado');
+                    return;
+                }
+            }
             
             localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
             
@@ -1883,37 +1965,25 @@
         }
 
         function updateLogoDisplay() {
-            // Actualizar todos los logos en la página
-            const logos = document.querySelectorAll('.w-16.h-16, .company-logo');
-            logos.forEach(logo => {
-                // Actualizar clases de color
-                logo.className = logo.className.replace(/from-\w+-\d+ to-\w+-\d+/g, systemSettings.logoColor);
-                if (!logo.className.includes(systemSettings.logoColor)) {
-                    logo.className = logo.className.replace(/bg-gradient-to-br \S+/, `bg-gradient-to-br ${systemSettings.logoColor}`);
-                }
-                
-                // Actualizar texto de iniciales
-                const textElement = logo.querySelector('span');
-                if (textElement) {
-                    textElement.textContent = systemSettings.logoInitials;
-                }
-            });
-            
             // Actualizar nombre de la empresa en headers
             const companyHeaders = document.querySelectorAll('h1');
             companyHeaders.forEach(header => {
-                if (header.textContent.includes('MI EMPRESA')) {
-                    header.textContent = header.textContent.replace('MI EMPRESA', systemSettings.companyName);
+                if (header.textContent.includes('MI EMPRESA') || header.textContent.includes(systemSettings.companyName)) {
+                    header.innerHTML = `❄️ ${systemSettings.companyName}`;
                 }
             });
             
             // Actualizar logo del header principal
             const mainLogo = document.querySelector('.flex.items-center .w-16.h-16');
             if (mainLogo) {
-                mainLogo.className = `w-16 h-16 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
-                const logoText = mainLogo.querySelector('span');
-                if (logoText) {
-                    logoText.textContent = systemSettings.logoInitials;
+                if (systemSettings.logoType === 'image' && systemSettings.logoImage) {
+                    // Logo personalizado
+                    mainLogo.className = 'w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden';
+                    mainLogo.innerHTML = `<img src="${systemSettings.logoImage}" alt="Logo" class="w-full h-full object-contain">`;
+                } else {
+                    // Logo con iniciales
+                    mainLogo.className = `w-16 h-16 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
+                    mainLogo.innerHTML = `<span class="text-white text-lg font-bold">${systemSettings.logoInitials}</span>`;
                 }
             }
         }
@@ -2257,8 +2327,80 @@ Escribe "ELIMINAR TODO" para confirmar:`;
             }
         }
 
+        // Funciones para logo personalizado
+        function toggleLogoConfig() {
+            const type = logoType.value;
+            
+            if (type === 'text') {
+                textLogoConfig.classList.remove('hidden');
+                imageLogoConfig.classList.add('hidden');
+            } else {
+                textLogoConfig.classList.add('hidden');
+                imageLogoConfig.classList.remove('hidden');
+            }
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validar tipo de archivo
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor selecciona un archivo de imagen válido');
+                return;
+            }
+
+            // Validar tamaño (2MB máximo)
+            if (file.size > 2 * 1024 * 1024) {
+                alert('La imagen es demasiado grande. El tamaño máximo es 2MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+                
+                // Guardar imagen en configuración
+                systemSettings.logoImage = imageData;
+                
+                // Mostrar vista previa
+                previewImage.src = imageData;
+                logoPreview.classList.remove('hidden');
+                
+                // Actualizar botón
+                selectLogoBtn.innerHTML = '<span class="mr-2">✅</span>Imagen Cargada';
+                selectLogoBtn.classList.add('bg-green-50', 'text-green-600');
+                selectLogoBtn.classList.remove('bg-blue-50', 'text-blue-600');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function removeCustomLogo() {
+            if (confirm('¿Estás seguro de que quieres quitar el logo personalizado?')) {
+                systemSettings.logoImage = null;
+                logoPreview.classList.add('hidden');
+                previewImage.src = '';
+                logoFileInput.value = '';
+                
+                // Restaurar botón
+                selectLogoBtn.innerHTML = '<span class="mr-2">🖼️</span>Seleccionar Imagen';
+                selectLogoBtn.classList.remove('bg-green-50', 'text-green-600');
+                selectLogoBtn.classList.add('bg-blue-50', 'text-blue-600');
+                
+                // Si está en modo imagen, cambiar a texto
+                if (logoType.value === 'image') {
+                    logoType.value = 'text';
+                    toggleLogoConfig();
+                }
+                
+                localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
+                updateLogoDisplay();
+            }
+        }
+
         // Inicializar la aplicación cuando se carga la página
         document.addEventListener('DOMContentLoaded', init);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98760264039f9cda',t:'MTc1OTI1OTMxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9876288f75519cda',t:'MTc1OTI2MDg3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
