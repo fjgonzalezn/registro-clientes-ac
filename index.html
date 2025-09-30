@@ -136,7 +136,7 @@
             <div class="text-center mb-8">
                 <div class="text-6xl mb-4">🔐</div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">MI EMPRESA</h1>
-<p class="text-gray-600">Panel de Control Administrativo</p>
+                <p class="text-gray-600">Panel de Control Administrativo</p>
             </div>
             
             <form id="loginForm" class="space-y-6">
@@ -169,6 +169,14 @@
                     <span class="mr-2">🚀</span>
                     Iniciar Sesión
                 </button>
+                
+                <!-- Enlace de recuperación de emergencia -->
+                <div class="text-center mt-4">
+                    <button type="button" id="emergencyRecovery" 
+                            class="text-red-600 hover:text-red-800 text-sm underline transition-colors">
+                        🆘 ¿Olvidaste tu usuario? Recuperación de emergencia
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -837,6 +845,7 @@
         } else {
             localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
         }
+        
         let systemSettings = JSON.parse(localStorage.getItem('systemSettings')) || {
             maintenanceFrequency: 6,
             reminderDays: 30
@@ -873,6 +882,7 @@
         const togglePassword = document.getElementById('togglePassword');
         const logoutBtn = document.getElementById('logoutBtn');
         const currentUserSpan = document.getElementById('currentUser');
+        const emergencyRecovery = document.getElementById('emergencyRecovery');
 
         // Elementos del DOM
         const clientForm = document.getElementById('clientForm');
@@ -1046,6 +1056,33 @@
         loginForm.addEventListener('submit', handleLogin);
         togglePassword.addEventListener('click', () => togglePasswordVisibility('password'));
         logoutBtn.addEventListener('click', handleLogout);
+        emergencyRecovery.addEventListener('click', handleEmergencyRecovery);
+
+        // Función de recuperación de emergencia
+        function handleEmergencyRecovery() {
+            if (confirm('🆘 RECUPERACIÓN DE EMERGENCIA\n\n¿Estás seguro de que quieres restablecer las credenciales?\n\nEsto restaurará:\n• Usuario: admin\n• Contraseña: admin123\n\n⚠️ Se perderán las credenciales personalizadas.')) {
+                // Restablecer credenciales por defecto
+                adminCredentials = {
+                    username: 'admin',
+                    password: 'admin123'
+                };
+                
+                // Guardar en localStorage
+                localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+                
+                // Limpiar sesión actual
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                
+                // Mostrar mensaje de éxito
+                alert('✅ RECUPERACIÓN EXITOSA\n\nLas credenciales han sido restablecidas:\n\n👤 Usuario: admin\n🔑 Contraseña: admin123\n\nYa puedes iniciar sesión con estas credenciales.');
+                
+                // Limpiar formulario
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                loginError.classList.add('hidden');
+            }
+        }
 
         // Navegación entre pestañas
         dashboardTab.addEventListener('click', () => switchTab('dashboard'));
@@ -2121,61 +2158,6 @@
                         updateMaintenanceCount();
                         updateClientSelect();
                         updateDashboard();
-                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV correctamente`);
-                    } else {
-                        alert('No se pudieron importar datos del archivo CSV');
-                    }
-                } else {
-                    alert('Importación cancelada');
-                }
-                
-            } catch (error) {
-                alert('Error al procesar el archivo CSV: ' + error.message);
-            }
-        }
-
-        // Guardar en localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
-            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
-            localStorage.setItem('maintenances', JSON.stringify(maintenances));
-            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
-            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
-        }
-
-        // Inicializar la aplicación cuando se carga la página
-        document.addEventListener('DOMContentLoaded', init);
-
-        // Crear elementos térmicos flotantes
-        function createThermalElements() {
-            setInterval(() => {
-                // Elemento frío
-                const coldElement = document.createElement('div');
-                coldElement.className = 'thermal-element cold-element';
-                coldElement.textContent = ['❄️', '🌨️', '🧊'][Math.floor(Math.random() * 3)];
-                coldElement.style.left = Math.random() * 20 + '%';
-                document.body.appendChild(coldElement);
-                
-                // Elemento caliente
-                const hotElement = document.createElement('div');
-                hotElement.className = 'thermal-element hot-element';
-                hotElement.textContent = ['🔥', '🌡️', '☀️'][Math.floor(Math.random() * 3)];
-                hotElement.style.right = Math.random() * 20 + '%';
-                document.body.appendChild(hotElement);
-                
-                // Remover elementos después de la animación
-                setTimeout(() => {
-                    if (coldElement.parentNode) coldElement.parentNode.removeChild(coldElement);
-                    if (hotElement.parentNode) hotElement.parentNode.removeChild(hotElement);
-                }, 8000);
-            }, 3000);
-        }
-
-        // Iniciar elementos térmicos
-        setTimeout(createThermalElements, 2000);
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9875298213d92ba1',t:'MTc1OTI1MDQyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>ashboard();
                         renderCalendar();
                         checkMaintenanceAlerts();
                         updateSystemStats();
@@ -2341,103 +2323,4 @@
             }
         }
 
-        function importFromCSV(content) {
-            try {
-                const lines = content.split('\n').filter(line => line.trim());
-                if (lines.length < 2) {
-                    alert('El archivo CSV debe tener al menos una fila de encabezados y una fila de datos');
-                    return;
-                }
-                
-                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-                const dataLines = lines.slice(1);
-                
-                if (confirm(`¿Quieres importar ${dataLines.length} clientes desde el archivo CSV?\nEsto se agregará a los datos existentes.`)) {
-                    let importedCount = 0;
-                    
-                    dataLines.forEach(line => {
-                        const values = line.split(',').map(v => v.trim());
-                        
-                        if (values.length >= 2) { // Al menos nombre y apellido
-                            const newClient = {
-                                id: clientIdCounter++,
-                                nombre: values[headers.indexOf('nombre')] || values[0] || '',
-                                apellido: values[headers.indexOf('apellido')] || values[1] || '',
-                                email: values[headers.indexOf('email')] || 'No especificado',
-                                telefono: values[headers.indexOf('teléfono') !== -1 ? headers.indexOf('teléfono') : headers.indexOf('telefono')] || values[3] || '',
-                                direccion: values[headers.indexOf('dirección') !== -1 ? headers.indexOf('dirección') : headers.indexOf('direccion')] || values[4] || '',
-                                ciudad: values[headers.indexOf('ciudad')] || values[5] || '',
-                                empresa: values[headers.indexOf('empresa')] || 'No especificada',
-                                ultimoMantenimiento: null,
-                                tipoEquipo: 'No especificado',
-                                notas: values[headers.indexOf('notas')] || 'Sin notas',
-                                fechaRegistro: new Date().toLocaleDateString('es-ES')
-                            };
-                            
-                            clients.push(newClient);
-                            importedCount++;
-                        }
-                    });
-                    
-                    if (importedCount > 0) {
-                        saveToLocalStorage();
-                        createAutoBackup(); // Crear respaldo automático
-                        renderClients();
-                        updateClientCount();
-                        updateClientSelect();
-                        updateDashboard();
-                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV correctamente`);
-                    } else {
-                        alert('No se pudieron importar datos del archivo CSV');
-                    }
-                } else {
-                    alert('Importación cancelada');
-                }
-                
-            } catch (error) {
-                alert('Error al procesar el archivo CSV: ' + error.message);
-            }
-        }
-
-        // Guardar en localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
-            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
-            localStorage.setItem('maintenances', JSON.stringify(maintenances));
-            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
-            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
-        }
-
-        // Inicializar la aplicación cuando se carga la página
-        document.addEventListener('DOMContentLoaded', init);
-
-        // Crear elementos térmicos flotantes
-        function createThermalElements() {
-            setInterval(() => {
-                // Elemento frío
-                const coldElement = document.createElement('div');
-                coldElement.className = 'thermal-element cold-element';
-                coldElement.textContent = ['❄️', '🌨️', '🧊'][Math.floor(Math.random() * 3)];
-                coldElement.style.left = Math.random() * 20 + '%';
-                document.body.appendChild(coldElement);
-                
-                // Elemento caliente
-                const hotElement = document.createElement('div');
-                hotElement.className = 'thermal-element hot-element';
-                hotElement.textContent = ['🔥', '🌡️', '☀️'][Math.floor(Math.random() * 3)];
-                hotElement.style.right = Math.random() * 20 + '%';
-                document.body.appendChild(hotElement);
-                
-                // Remover elementos después de la animación
-                setTimeout(() => {
-                    if (coldElement.parentNode) coldElement.parentNode.removeChild(coldElement);
-                    if (hotElement.parentNode) hotElement.parentNode.removeChild(hotElement);
-                }, 8000);
-            }, 3000);
-        }
-
-        // Iniciar elementos térmicos
-        setTimeout(createThermalElements, 2000);
-    </script>
-</body>
-</html>
+        function importFromCS<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9875583ce2893353',t:'MTc1OTI1MjM0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
