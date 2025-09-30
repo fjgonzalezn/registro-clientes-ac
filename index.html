@@ -741,6 +741,13 @@
                             </button>
                             
                             <div class="border-t pt-4">
+                                <h4 class="font-medium text-orange-800 mb-2">🔄 Recuperación de Datos</h4>
+                                <button id="recoverDataBtn" 
+                                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center mb-4">
+                                    <span class="mr-2">🔄</span>
+                                    Buscar y Recuperar Datos
+                                </button>
+                                
                                 <h4 class="font-medium text-red-800 mb-2">⚠️ Zona Peligrosa</h4>
                                 <button id="clearDataBtn" 
                                         class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
@@ -888,6 +895,7 @@
         const exportAllBtn = document.getElementById('exportAllBtn');
         const backupBtn = document.getElementById('backupBtn');
         const clearDataBtn = document.getElementById('clearDataBtn');
+        const recoverDataBtn = document.getElementById('recoverDataBtn');
         const maintenanceFrequency = document.getElementById('maintenanceFrequency');
         const reminderDays = document.getElementById('reminderDays');
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
@@ -1717,6 +1725,7 @@
         exportAllBtn.addEventListener('click', exportAllData);
         backupBtn.addEventListener('click', createBackup);
         clearDataBtn.addEventListener('click', clearAllData);
+        recoverDataBtn.addEventListener('click', manualDataRecovery);
         saveSettingsBtn.addEventListener('click', saveSystemSettings);
 
         // Verificar recordatorios de mantenimiento
@@ -1948,6 +1957,144 @@
             showSuccessModal('¡Respaldo Creado!', 'El respaldo completo ha sido creado exitosamente');
         }
 
+        // Función de recuperación manual avanzada
+        function manualDataRecovery() {
+            let recoveredData = [];
+            let totalRecovered = 0;
+            
+            // Buscar respaldos automáticos
+            const allKeys = Object.keys(localStorage);
+            const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort().reverse();
+            
+            if (backupKeys.length > 0) {
+                let backupOptions = '🔍 Respaldos automáticos encontrados:\n\n';
+                
+                backupKeys.forEach((key, index) => {
+                    try {
+                        const backup = JSON.parse(localStorage.getItem(key));
+                        const date = new Date(backup.timestamp).toLocaleString('es-ES');
+                        backupOptions += `${index + 1}. ${date} - ${backup.clients?.length || 0} clientes, ${backup.maintenances?.length || 0} mantenimientos\n`;
+                        recoveredData.push({key, backup, date});
+                    } catch (error) {
+                        console.log('Error al leer respaldo:', key);
+                    }
+                });
+                
+                backupOptions += '\n¿Qué respaldo quieres recuperar? (Escribe el número):';
+                
+                const choice = prompt(backupOptions);
+                const choiceNum = parseInt(choice);
+                
+                if (choiceNum >= 1 && choiceNum <= recoveredData.length) {
+                    const selectedBackup = recoveredData[choiceNum - 1].backup;
+                    
+                    if (confirm(`¿Confirmas la recuperación de:\n\n📊 ${selectedBackup.clients?.length || 0} clientes\n🔧 ${selectedBackup.maintenances?.length || 0} mantenimientos\n📅 Fecha: ${recoveredData[choiceNum - 1].date}\n\n⚠️ Esto se agregará a los datos actuales.`)) {
+                        
+                        // Recuperar clientes
+                        if (selectedBackup.clients && selectedBackup.clients.length > 0) {
+                            selectedBackup.clients.forEach(client => {
+                                // Verificar si el cliente ya existe
+                                const exists = clients.find(c => c.nombre === client.nombre && c.apellido === client.apellido && c.telefono === client.telefono);
+                                if (!exists) {
+                                    const newClient = {
+                                        ...client,
+                                        id: clientIdCounter++
+                                    };
+                                    clients.push(newClient);
+                                    totalRecovered++;
+                                }
+                            });
+                        }
+                        
+                        // Recuperar mantenimientos
+                        if (selectedBackup.maintenances && selectedBackup.maintenances.length > 0) {
+                            selectedBackup.maintenances.forEach(maintenance => {
+                                // Verificar si el mantenimiento ya existe
+                                const exists = maintenances.find(m => 
+                                    m.clientName === maintenance.clientName && 
+                                    m.fecha === maintenance.fecha && 
+                                    m.descripcion === maintenance.descripcion
+                                );
+                                if (!exists) {
+                                    const newMaintenance = {
+                                        ...maintenance,
+                                        id: maintenanceIdCounter++
+                                    };
+                                    maintenances.push(newMaintenance);
+                                    totalRecovered++;
+                                }
+                            });
+                        }
+                        
+                        // Guardar y actualizar interfaz
+                        saveToLocalStorage();
+                        renderClients();
+                        renderMaintenances();
+                        updateClientCount();
+                        updateMaintenanceCount();
+                        updateClientSelect();
+                        updateDashboard();
+                        renderCalendar();
+                        checkMaintenanceAlerts();
+                        updateSystemStats();
+                        
+                        showSuccessModal('¡Datos Recuperados!', `Se recuperaron exitosamente ${selectedBackup.clients?.length || 0} clientes y ${selectedBackup.maintenances?.length || 0} mantenimientos`);
+                    }
+                } else {
+                    alert('Selección inválida. Operación cancelada.');
+                }
+            } else {
+                // Buscar en sessionStorage
+                try {
+                    const sessionClients = sessionStorage.getItem('clients_session');
+                    const sessionMaintenances = sessionStorage.getItem('maintenances_session');
+                    
+                    if (sessionClients || sessionMaintenances) {
+                        const sClients = sessionClients ? JSON.parse(sessionClients) : [];
+                        const sMaintenances = sessionMaintenances ? JSON.parse(sessionMaintenances) : [];
+                        
+                        if (confirm(`🔄 Datos encontrados en sesión temporal:\n\n📊 ${sClients.length} clientes\n🔧 ${sMaintenances.length} mantenimientos\n\n¿Quieres recuperar estos datos?`)) {
+                            
+                            // Agregar datos sin duplicar
+                            sClients.forEach(client => {
+                                const exists = clients.find(c => c.nombre === client.nombre && c.apellido === client.apellido);
+                                if (!exists) {
+                                    clients.push({...client, id: clientIdCounter++});
+                                }
+                            });
+                            
+                            sMaintenances.forEach(maintenance => {
+                                const exists = maintenances.find(m => 
+                                    m.clientName === maintenance.clientName && 
+                                    m.fecha === maintenance.fecha
+                                );
+                                if (!exists) {
+                                    maintenances.push({...maintenance, id: maintenanceIdCounter++});
+                                }
+                            });
+                            
+                            saveToLocalStorage();
+                            renderClients();
+                            renderMaintenances();
+                            updateClientCount();
+                            updateMaintenanceCount();
+                            updateClientSelect();
+                            updateDashboard();
+                            renderCalendar();
+                            checkMaintenanceAlerts();
+                            updateSystemStats();
+                            
+                            showSuccessModal('¡Datos Recuperados!', `Se recuperaron ${sClients.length} clientes y ${sMaintenances.length} mantenimientos desde la sesión temporal`);
+                        }
+                    } else {
+                        alert('❌ No se encontraron datos para recuperar.\n\n💡 Sugerencias:\n• Verifica si tienes archivos de respaldo exportados\n• Usa la función "Importar" si tienes archivos .json o .csv\n• Los datos se guardan automáticamente, pero pueden perderse si se limpia el navegador');
+                    }
+                } catch (error) {
+                    alert('❌ No se encontraron datos para recuperar.\n\nSi tienes archivos de respaldo, usa la función "Importar" en la sección de clientes.');
+                }
+            }
+        }
+
         function clearAllData() {
             const confirmation = prompt('Esta acción borrará TODOS los datos permanentemente.\nEscribe "BORRAR TODO" para confirmar:');
             
@@ -2165,5 +2312,5 @@
         // Iniciar animación de elementos térmicos
         createThermalElements();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98740339435f9cda',t:'MTc1OTIzODM3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987490bd95167434',t:'MTc1OTI0NDE2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
