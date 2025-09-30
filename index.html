@@ -390,11 +390,18 @@
                     </h2>
                     <div class="flex items-center space-x-2">
                         <span id="clientCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 clientes</span>
-                        <button id="exportBtn" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
-                            <span class="mr-1">📥</span>
-                            Exportar
-                        </button>
+                        <div class="flex space-x-2">
+                            <button id="importBtn" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
+                                <span class="mr-1">📤</span>
+                                Importar
+                            </button>
+                            <button id="exportBtn" 
+                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
+                                <span class="mr-1">📥</span>
+                                Exportar
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -782,6 +789,9 @@
         </div>
     </div>
 
+    <!-- Input oculto para importar archivos -->
+    <input type="file" id="importFileInput" accept=".json,.csv" style="display: none;">
+
     <!-- Modal de confirmación -->
     <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="glass-effect rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
@@ -848,6 +858,8 @@
         const successModal = document.getElementById('successModal');
         const closeModal = document.getElementById('closeModal');
         const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const importFileInput = document.getElementById('importFileInput');
 
         // Elementos de pestañas
         const dashboardTab = document.getElementById('dashboardTab');
@@ -1430,6 +1442,35 @@
             renderClients(filteredClients);
         }
 
+        // Importar datos
+        importBtn.addEventListener('click', function() {
+            importFileInput.click();
+        });
+
+        importFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const content = event.target.result;
+                    
+                    if (file.name.endsWith('.json')) {
+                        importFromJSON(content);
+                    } else if (file.name.endsWith('.csv')) {
+                        importFromCSV(content);
+                    }
+                } catch (error) {
+                    alert('Error al leer el archivo: ' + error.message);
+                }
+            };
+            
+            reader.readAsText(file);
+            // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+            e.target.value = '';
+        });
+
         // Exportar datos
         exportBtn.addEventListener('click', function() {
             if (clients.length === 0) {
@@ -1937,6 +1978,136 @@
             }
         }
 
+        // Funciones de importación
+        function importFromJSON(content) {
+            try {
+                const data = JSON.parse(content);
+                let importedCount = 0;
+                
+                // Verificar si es un respaldo completo del sistema
+                if (data.clients && Array.isArray(data.clients)) {
+                    // Es un respaldo completo
+                    if (confirm(`¿Quieres importar ${data.clients.length} clientes desde el respaldo?\nEsto se agregará a los datos existentes.`)) {
+                        data.clients.forEach(client => {
+                            // Asignar nuevo ID para evitar conflictos
+                            const newClient = {
+                                ...client,
+                                id: clientIdCounter++,
+                                fechaRegistro: client.fechaRegistro || new Date().toLocaleDateString('es-ES')
+                            };
+                            clients.push(newClient);
+                            importedCount++;
+                        });
+                        
+                        // También importar mantenimientos si existen
+                        if (data.maintenances && Array.isArray(data.maintenances)) {
+                            data.maintenances.forEach(maintenance => {
+                                const newMaintenance = {
+                                    ...maintenance,
+                                    id: maintenanceIdCounter++,
+                                    fechaRegistro: maintenance.fechaRegistro || new Date().toISOString()
+                                };
+                                maintenances.push(newMaintenance);
+                            });
+                        }
+                    }
+                } else if (Array.isArray(data)) {
+                    // Es un array de clientes
+                    if (confirm(`¿Quieres importar ${data.length} clientes?\nEsto se agregará a los datos existentes.`)) {
+                        data.forEach(client => {
+                            const newClient = {
+                                id: clientIdCounter++,
+                                nombre: client.nombre || '',
+                                apellido: client.apellido || '',
+                                email: client.email || 'No especificado',
+                                telefono: client.telefono || '',
+                                direccion: client.direccion || '',
+                                ciudad: client.ciudad || '',
+                                empresa: client.empresa || 'No especificada',
+                                ultimoMantenimiento: client.ultimoMantenimiento || null,
+                                tipoEquipo: client.tipoEquipo || 'No especificado',
+                                notas: client.notas || 'Sin notas',
+                                fechaRegistro: client.fechaRegistro || new Date().toLocaleDateString('es-ES')
+                            };
+                            clients.push(newClient);
+                            importedCount++;
+                        });
+                    }
+                }
+                
+                if (importedCount > 0) {
+                    saveToLocalStorage();
+                    renderClients();
+                    updateClientCount();
+                    updateClientSelect();
+                    updateDashboard();
+                    showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes correctamente`);
+                } else {
+                    alert('No se importaron datos. Operación cancelada o archivo sin datos válidos.');
+                }
+                
+            } catch (error) {
+                alert('Error al procesar el archivo JSON: ' + error.message);
+            }
+        }
+
+        function importFromCSV(content) {
+            try {
+                const lines = content.split('\n').filter(line => line.trim());
+                if (lines.length < 2) {
+                    alert('El archivo CSV debe tener al menos una fila de encabezados y una fila de datos');
+                    return;
+                }
+                
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                const dataLines = lines.slice(1);
+                
+                if (confirm(`¿Quieres importar ${dataLines.length} clientes desde el archivo CSV?\nEsto se agregará a los datos existentes.`)) {
+                    let importedCount = 0;
+                    
+                    dataLines.forEach(line => {
+                        const values = line.split(',').map(v => v.trim());
+                        
+                        if (values.length >= 2) { // Al menos nombre y apellido
+                            const newClient = {
+                                id: clientIdCounter++,
+                                nombre: values[headers.indexOf('nombre')] || values[0] || '',
+                                apellido: values[headers.indexOf('apellido')] || values[1] || '',
+                                email: values[headers.indexOf('email')] || 'No especificado',
+                                telefono: values[headers.indexOf('teléfono') !== -1 ? headers.indexOf('teléfono') : headers.indexOf('telefono')] || values[3] || '',
+                                direccion: values[headers.indexOf('dirección') !== -1 ? headers.indexOf('dirección') : headers.indexOf('direccion')] || values[4] || '',
+                                ciudad: values[headers.indexOf('ciudad')] || values[5] || '',
+                                empresa: values[headers.indexOf('empresa')] || 'No especificada',
+                                ultimoMantenimiento: null,
+                                tipoEquipo: 'No especificado',
+                                notas: values[headers.indexOf('notas')] || 'Sin notas',
+                                fechaRegistro: new Date().toLocaleDateString('es-ES')
+                            };
+                            
+                            clients.push(newClient);
+                            importedCount++;
+                        }
+                    });
+                    
+                    if (importedCount > 0) {
+                        saveToLocalStorage();
+                        renderClients();
+                        updateClientCount();
+                        updateClientSelect();
+                        updateDashboard();
+                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV`);
+                    } else {
+                        alert('No se pudieron importar datos válidos del archivo CSV');
+                    }
+                } else {
+                    alert('Importación cancelada');
+                }
+                
+            } catch (error) {
+                alert('Error al procesar el archivo CSV: ' + error.message);
+            }
+        }
+
         // Guardar en localStorage
         function saveToLocalStorage() {
             localStorage.setItem('clients', JSON.stringify(clients));
@@ -1994,5 +2165,5 @@
         // Iniciar animación de elementos térmicos
         createThermalElements();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873f1bd817f9cda',t:'MTc1OTIzNzY1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98740339435f9cda',t:'MTc1OTIzODM3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
