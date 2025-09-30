@@ -9,13 +9,83 @@
     <style>
         body {
             box-sizing: border-box;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            min-height: 100vh;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        body::after {
+            content: '❄️ 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 💨 🌀 ❄️ 🌀 ❄️ 💨 🌀 ❄️';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            font-size: 2rem;
+            opacity: 0.05;
+            animation: float 60s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        
         .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Efectos de cristal para las tarjetas */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Animación de copos de nieve */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
         .calendar-day {
             min-height: 100px;
@@ -42,16 +112,82 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">🏢 Sistema de Gestión - Aire Acondicionado</h1>
-            <p class="text-gray-600">Panel completo para gestionar clientes, mantenimientos y finanzas</p>
+<body class="min-h-screen">
+    <!-- Pantalla de Login -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🔐</div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Panel de Administrador</h1>
+                <p class="text-gray-600">Sistema de Gestión - Aire Acondicionado</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+                    <input type="text" id="username" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="Ingresa tu usuario">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                               placeholder="Ingresa tu contraseña">
+                        <button type="button" id="togglePassword" 
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loginError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    <span class="font-medium">❌ Error:</span> Usuario o contraseña incorrectos
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <span class="mr-2">🚀</span>
+                    Iniciar Sesión
+                </button>
+            </form>
+            
+            <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Credenciales por defecto:</h3>
+                <p class="text-blue-700 text-sm"><strong>Usuario:</strong> admin</p>
+                <p class="text-blue-700 text-sm"><strong>Contraseña:</strong> admin123</p>
+                <p class="text-blue-600 text-xs mt-2">💡 Puedes cambiar estas credenciales en la configuración</p>
+            </div>
         </div>
+        </div>
+    </div>
+
+    <!-- Sistema Principal -->
+    <div id="mainSystem" class="hidden">
+        <div class="container mx-auto px-4 py-8">
+            <!-- Header con botón de logout -->
+            <div class="flex justify-between items-center mb-8">
+                <div class="text-center flex-1">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">🏢 Sistema de Gestión - Aire Acondicionado</h1>
+                    <p class="text-gray-600">Panel completo para gestionar clientes, mantenimientos y finanzas</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Bienvenido</p>
+                        <p class="font-semibold text-gray-800" id="currentUser">admin</p>
+                    </div>
+                    <button id="logoutBtn" 
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+                        <span class="mr-2">🚪</span>
+                        Salir
+                    </button>
+                </div>
+            </div>
 
         <!-- Pestañas de navegación -->
-        <div class="bg-white rounded-xl shadow-lg mb-8">
+        <div class="glass-effect rounded-xl shadow-lg mb-8">
             <div class="flex flex-wrap border-b">
                 <button id="dashboardTab" class="flex-1 py-4 px-6 text-center font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50 min-w-0">
                     📊 Dashboard
@@ -69,6 +205,9 @@
                     🔔 Recordatorios
                     <span id="alertBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden">0</span>
                 </button>
+                <button id="settingsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors min-w-0">
+                    ⚙️ Configuración
+                </button>
             </div>
         </div>
 
@@ -76,7 +215,7 @@
         <div id="dashboardContent">
             <!-- Métricas principales -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-blue-100 text-blue-600">
                             <span class="text-2xl">👥</span>
@@ -88,7 +227,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-green-100 text-green-600">
                             <span class="text-2xl">🔧</span>
@@ -100,7 +239,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
                             <span class="text-2xl">💰</span>
@@ -112,7 +251,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-red-100 text-red-600">
                             <span class="text-2xl">⏰</span>
@@ -127,19 +266,19 @@
 
             <!-- Gráficos -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">📈 Ingresos por Mes</h3>
                     <canvas id="revenueChart" width="400" height="200"></canvas>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">🔧 Tipos de Mantenimiento</h3>
                     <canvas id="maintenanceChart" width="400" height="200"></canvas>
                 </div>
             </div>
 
             <!-- Clientes más frecuentes -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="glass-effect rounded-xl shadow-lg p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">⭐ Clientes Más Frecuentes</h3>
                 <div id="topClients" class="space-y-3">
                     <p class="text-gray-500 text-center py-4">No hay datos suficientes aún</p>
@@ -150,7 +289,7 @@
         <!-- Contenido de Clientes -->
         <div id="clientsContent" class="hidden grid lg:grid-cols-2 gap-8">
             <!-- Formulario de Registro -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="glass-effect rounded-xl shadow-lg p-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                     <span class="mr-2">👤</span>
                     Nuevo Cliente
@@ -234,7 +373,7 @@
             </div>
 
             <!-- Lista de Clientes -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="glass-effect rounded-xl shadow-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
                         <span class="mr-2">📊</span>
@@ -271,7 +410,7 @@
         <div id="maintenanceContent" class="hidden">
             <div class="grid lg:grid-cols-2 gap-8">
                 <!-- Formulario de Mantenimiento -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                         <span class="mr-2">🔧</span>
                         Registrar Mantenimiento
@@ -360,7 +499,7 @@
                 </div>
 
                 <!-- Historial de Mantenimientos -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="glass-effect rounded-xl shadow-lg p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
                             <span class="mr-2">📋</span>
@@ -407,7 +546,7 @@
 
         <!-- Contenido del Calendario -->
         <div id="calendarContent" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="glass-effect rounded-xl shadow-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
                         <span class="mr-2">🗓️</span>
@@ -458,7 +597,7 @@
 
         <!-- Contenido de Recordatorios -->
         <div id="alertsContent" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="glass-effect rounded-xl shadow-lg p-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                     <span class="mr-2">🔔</span>
                     Recordatorios de Mantenimiento
@@ -478,11 +617,160 @@
                 </div>
             </div>
         </div>
+
+        <!-- Contenido de Configuración -->
+        <div id="settingsContent" class="hidden">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Configuración de Usuario -->
+                <div class="glass-effect rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">👤</span>
+                        Configuración de Usuario
+                    </h2>
+                    
+                    <form id="userSettingsForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Usuario Actual</label>
+                            <input type="text" id="currentUsername" readonly 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nuevo Usuario</label>
+                            <input type="text" id="newUsername" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="Ingresa el nuevo usuario">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Contraseña</label>
+                            <div class="relative">
+                                <input type="password" id="newPassword" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                                       placeholder="Ingresa la nueva contraseña">
+                                <button type="button" id="toggleNewPassword" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña</label>
+                            <div class="relative">
+                                <input type="password" id="confirmPassword" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                                       placeholder="Confirma la nueva contraseña">
+                                <button type="button" id="toggleConfirmPassword" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="passwordError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                            <span class="font-medium">❌ Error:</span> <span id="passwordErrorText"></span>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                            <span class="mr-2">💾</span>
+                            Actualizar Credenciales
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Configuración del Sistema -->
+                <div class="glass-effect rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">⚙️</span>
+                        Configuración del Sistema
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Información del Sistema -->
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h3 class="font-semibold text-blue-800 mb-3">📊 Estadísticas del Sistema</h3>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p class="text-blue-700"><strong>Total Clientes:</strong> <span id="statsClients">0</span></p>
+                                    <p class="text-blue-700"><strong>Total Mantenimientos:</strong> <span id="statsMaintenances">0</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-blue-700"><strong>Datos guardados:</strong> <span id="dataSize">0 KB</span></p>
+                                    <p class="text-blue-700"><strong>Última actualización:</strong> <span id="lastUpdate">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gestión de Datos -->
+                        <div class="space-y-4">
+                            <h3 class="font-semibold text-gray-800">🗄️ Gestión de Datos</h3>
+                            
+                            <button id="exportAllBtn" 
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                                <span class="mr-2">📥</span>
+                                Exportar Todos los Datos
+                            </button>
+                            
+                            <button id="backupBtn" 
+                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                                <span class="mr-2">💾</span>
+                                Crear Respaldo
+                            </button>
+                            
+                            <div class="border-t pt-4">
+                                <h4 class="font-medium text-red-800 mb-2">⚠️ Zona Peligrosa</h4>
+                                <button id="clearDataBtn" 
+                                        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                                    <span class="mr-2">🗑️</span>
+                                    Borrar Todos los Datos
+                                </button>
+                                <p class="text-red-600 text-xs mt-2">Esta acción no se puede deshacer</p>
+                            </div>
+                        </div>
+
+                        <!-- Configuración de Recordatorios -->
+                        <div class="space-y-4">
+                            <h3 class="font-semibold text-gray-800">🔔 Configuración de Recordatorios</h3>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Frecuencia de Mantenimiento (meses)</label>
+                                <select id="maintenanceFrequency" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                    <option value="3">Cada 3 meses</option>
+                                    <option value="6" selected>Cada 6 meses</option>
+                                    <option value="12">Cada 12 meses</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Días de anticipación para recordatorio</label>
+                                <select id="reminderDays" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                    <option value="15">15 días antes</option>
+                                    <option value="30" selected>30 días antes</option>
+                                    <option value="45">45 días antes</option>
+                                    <option value="60">60 días antes</option>
+                                </select>
+                            </div>
+                            
+                            <button id="saveSettingsBtn" 
+                                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                                <span class="mr-2">💾</span>
+                                Guardar Configuración
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
 
     <!-- Modal de confirmación -->
     <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
+        <div class="glass-effect rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
             <div class="text-center">
                 <div class="text-4xl mb-4">✅</div>
                 <h3 class="text-lg font-semibold text-gray-800 mb-2" id="modalTitle">¡Registro Exitoso!</h3>
@@ -492,9 +780,21 @@
                 </button>
             </div>
         </div>
+        </div>
     </div>
 
     <script>
+        // Sistema de autenticación
+        let currentUser = localStorage.getItem('currentUser') || null;
+        let adminCredentials = JSON.parse(localStorage.getItem('adminCredentials')) || {
+            username: 'admin',
+            password: 'admin123'
+        };
+        let systemSettings = JSON.parse(localStorage.getItem('systemSettings')) || {
+            maintenanceFrequency: 6,
+            reminderDays: 30
+        };
+
         // Preservar datos existentes y agregar nuevas funcionalidades
         let clients = JSON.parse(localStorage.getItem('clients')) || [];
         let clientIdCounter = parseInt(localStorage.getItem('clientIdCounter')) || 1;
@@ -518,6 +818,15 @@
         });
         let currentDate = new Date();
 
+        // Elementos del DOM - Login
+        const loginScreen = document.getElementById('loginScreen');
+        const mainSystem = document.getElementById('mainSystem');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const togglePassword = document.getElementById('togglePassword');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentUserSpan = document.getElementById('currentUser');
+
         // Elementos del DOM
         const clientForm = document.getElementById('clientForm');
         const clientList = document.getElementById('clientList');
@@ -533,11 +842,30 @@
         const maintenanceTab = document.getElementById('maintenanceTab');
         const calendarTab = document.getElementById('calendarTab');
         const alertsTab = document.getElementById('alertsTab');
+        const settingsTab = document.getElementById('settingsTab');
         const dashboardContent = document.getElementById('dashboardContent');
         const clientsContent = document.getElementById('clientsContent');
         const maintenanceContent = document.getElementById('maintenanceContent');
         const calendarContent = document.getElementById('calendarContent');
         const alertsContent = document.getElementById('alertsContent');
+        const settingsContent = document.getElementById('settingsContent');
+
+        // Elementos de configuración
+        const userSettingsForm = document.getElementById('userSettingsForm');
+        const currentUsername = document.getElementById('currentUsername');
+        const newUsername = document.getElementById('newUsername');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const passwordErrorText = document.getElementById('passwordErrorText');
+        const toggleNewPassword = document.getElementById('toggleNewPassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const exportAllBtn = document.getElementById('exportAllBtn');
+        const backupBtn = document.getElementById('backupBtn');
+        const clearDataBtn = document.getElementById('clearDataBtn');
+        const maintenanceFrequency = document.getElementById('maintenanceFrequency');
+        const reminderDays = document.getElementById('reminderDays');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 
         // Elementos de mantenimiento
         const maintenanceForm = document.getElementById('maintenanceForm');
@@ -563,6 +891,27 @@
 
         // Inicializar la aplicación
         function init() {
+            // Verificar autenticación
+            if (currentUser) {
+                showMainSystem();
+            } else {
+                showLoginScreen();
+            }
+        }
+
+        // Mostrar pantalla de login
+        function showLoginScreen() {
+            loginScreen.classList.remove('hidden');
+            mainSystem.classList.add('hidden');
+        }
+
+        // Mostrar sistema principal
+        function showMainSystem() {
+            loginScreen.classList.add('hidden');
+            mainSystem.classList.remove('hidden');
+            currentUserSpan.textContent = currentUser || adminCredentials.username;
+            
+            // Inicializar datos
             renderClients();
             updateClientCount();
             updateClientSelect();
@@ -571,10 +920,17 @@
             checkMaintenanceAlerts();
             updateDashboard();
             renderCalendar();
+            loadSettings();
+            updateSystemStats();
             
             // Configurar fecha por defecto para mantenimiento
             document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
         }
+
+        // Event Listeners - Login
+        loginForm.addEventListener('submit', handleLogin);
+        togglePassword.addEventListener('click', () => togglePasswordVisibility('password'));
+        logoutBtn.addEventListener('click', handleLogout);
 
         // Navegación entre pestañas
         dashboardTab.addEventListener('click', () => switchTab('dashboard'));
@@ -582,15 +938,16 @@
         maintenanceTab.addEventListener('click', () => switchTab('maintenance'));
         calendarTab.addEventListener('click', () => switchTab('calendar'));
         alertsTab.addEventListener('click', () => switchTab('alerts'));
+        settingsTab.addEventListener('click', () => switchTab('settings'));
 
         function switchTab(tab) {
             // Resetear todas las pestañas
-            [dashboardTab, clientsTab, maintenanceTab, calendarTab, alertsTab].forEach(t => {
+            [dashboardTab, clientsTab, maintenanceTab, calendarTab, alertsTab, settingsTab].forEach(t => {
                 t.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
                 t.classList.add('text-gray-600');
             });
             
-            [dashboardContent, clientsContent, maintenanceContent, calendarContent, alertsContent].forEach(c => {
+            [dashboardContent, clientsContent, maintenanceContent, calendarContent, alertsContent, settingsContent].forEach(c => {
                 c.classList.add('hidden');
             });
 
@@ -624,6 +981,13 @@
                     alertsTab.classList.remove('text-gray-600');
                     alertsContent.classList.remove('hidden');
                     checkMaintenanceAlerts();
+                    break;
+                case 'settings':
+                    settingsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
+                    settingsTab.classList.remove('text-gray-600');
+                    settingsContent.classList.remove('hidden');
+                    loadSettings();
+                    updateSystemStats();
                     break;
             }
         }
@@ -1250,24 +1614,77 @@
             renderMaintenances(filteredMaintenances);
         }
 
+        // Funciones de autenticación
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                currentUser = username;
+                localStorage.setItem('currentUser', currentUser);
+                loginError.classList.add('hidden');
+                showMainSystem();
+                loginForm.reset();
+            } else {
+                loginError.classList.remove('hidden');
+                setTimeout(() => {
+                    loginError.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                showLoginScreen();
+            }
+        }
+
+        function togglePasswordVisibility(fieldId) {
+            const field = document.getElementById(fieldId);
+            const button = fieldId === 'password' ? togglePassword : 
+                          fieldId === 'newPassword' ? toggleNewPassword : toggleConfirmPassword;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                field.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        // Event Listeners para configuración
+        userSettingsForm.addEventListener('submit', handleUserSettingsUpdate);
+        toggleNewPassword.addEventListener('click', () => togglePasswordVisibility('newPassword'));
+        toggleConfirmPassword.addEventListener('click', () => togglePasswordVisibility('confirmPassword'));
+        exportAllBtn.addEventListener('click', exportAllData);
+        backupBtn.addEventListener('click', createBackup);
+        clearDataBtn.addEventListener('click', clearAllData);
+        saveSettingsBtn.addEventListener('click', saveSystemSettings);
+
         // Verificar recordatorios de mantenimiento
         function checkMaintenanceAlerts() {
             const today = new Date();
             const alerts = [];
+            const frequency = systemSettings.maintenanceFrequency;
+            const reminderDays = systemSettings.reminderDays;
 
             clients.forEach(client => {
                 if (client.ultimoMantenimiento) {
                     const lastMaintenance = new Date(client.ultimoMantenimiento);
-                    const sixMonthsLater = new Date(lastMaintenance);
-                    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+                    const nextMaintenance = new Date(lastMaintenance);
+                    nextMaintenance.setMonth(nextMaintenance.getMonth() + frequency);
                     
-                    const daysDiff = Math.ceil((sixMonthsLater - today) / (1000 * 60 * 60 * 24));
+                    const daysDiff = Math.ceil((nextMaintenance - today) / (1000 * 60 * 60 * 24));
                     
-                    if (daysDiff <= 30) { // Mostrar alerta 30 días antes
+                    if (daysDiff <= reminderDays) {
                         alerts.push({
                             client: client,
                             lastMaintenance: lastMaintenance,
-                            nextMaintenance: sixMonthsLater,
+                            nextMaintenance: nextMaintenance,
                             daysRemaining: daysDiff,
                             isOverdue: daysDiff < 0
                         });
@@ -1345,16 +1762,235 @@
             document.getElementById('descripcionTrabajo').focus();
         }
 
+        // Funciones de configuración
+        function handleUserSettingsUpdate(e) {
+            e.preventDefault();
+            
+            const newUser = newUsername.value.trim();
+            const newPass = newPassword.value;
+            const confirmPass = confirmPassword.value;
+            
+            // Validaciones
+            if (!newUser && !newPass) {
+                showPasswordError('Debes ingresar al menos un campo para actualizar');
+                return;
+            }
+            
+            if (newPass && newPass !== confirmPass) {
+                showPasswordError('Las contraseñas no coinciden');
+                return;
+            }
+            
+            if (newPass && newPass.length < 6) {
+                showPasswordError('La contraseña debe tener al menos 6 caracteres');
+                return;
+            }
+            
+            // Actualizar credenciales
+            if (newUser) {
+                adminCredentials.username = newUser;
+                currentUser = newUser;
+                localStorage.setItem('currentUser', currentUser);
+                currentUserSpan.textContent = currentUser;
+            }
+            
+            if (newPass) {
+                adminCredentials.password = newPass;
+            }
+            
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            
+            // Limpiar formulario
+            userSettingsForm.reset();
+            passwordError.classList.add('hidden');
+            
+            showSuccessModal('¡Credenciales Actualizadas!', 'Las credenciales han sido actualizadas exitosamente');
+        }
+
+        function showPasswordError(message) {
+            passwordErrorText.textContent = message;
+            passwordError.classList.remove('hidden');
+            setTimeout(() => {
+                passwordError.classList.add('hidden');
+            }, 5000);
+        }
+
+        function loadSettings() {
+            currentUsername.value = adminCredentials.username;
+            maintenanceFrequency.value = systemSettings.maintenanceFrequency;
+            reminderDays.value = systemSettings.reminderDays;
+        }
+
+        function saveSystemSettings() {
+            systemSettings.maintenanceFrequency = parseInt(maintenanceFrequency.value);
+            systemSettings.reminderDays = parseInt(reminderDays.value);
+            
+            localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
+            
+            // Actualizar recordatorios con nueva configuración
+            checkMaintenanceAlerts();
+            
+            showSuccessModal('¡Configuración Guardada!', 'La configuración del sistema ha sido actualizada');
+        }
+
+        function updateSystemStats() {
+            document.getElementById('statsClients').textContent = clients.length;
+            document.getElementById('statsMaintenances').textContent = maintenances.length;
+            
+            // Calcular tamaño de datos
+            const dataString = JSON.stringify({clients, maintenances, adminCredentials, systemSettings});
+            const dataSize = (new Blob([dataString]).size / 1024).toFixed(2);
+            document.getElementById('dataSize').textContent = `${dataSize} KB`;
+            
+            // Última actualización
+            const lastUpdate = localStorage.getItem('lastUpdate') || 'Nunca';
+            document.getElementById('lastUpdate').textContent = lastUpdate;
+        }
+
+        function exportAllData() {
+            if (clients.length === 0 && maintenances.length === 0) {
+                alert('No hay datos para exportar');
+                return;
+            }
+
+            const allData = {
+                clients: clients,
+                maintenances: maintenances,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `sistema_completo_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showSuccessModal('¡Datos Exportados!', 'Todos los datos han sido exportados exitosamente');
+        }
+
+        function createBackup() {
+            const backup = {
+                clients: clients,
+                maintenances: maintenances,
+                adminCredentials: adminCredentials,
+                systemSettings: systemSettings,
+                backupDate: new Date().toISOString(),
+                version: '1.0'
+            };
+
+            const backupStr = JSON.stringify(backup, null, 2);
+            const blob = new Blob([backupStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `respaldo_completo_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showSuccessModal('¡Respaldo Creado!', 'El respaldo completo ha sido creado exitosamente');
+        }
+
+        function clearAllData() {
+            const confirmation = prompt('Esta acción borrará TODOS los datos permanentemente.\nEscribe "BORRAR TODO" para confirmar:');
+            
+            if (confirmation === 'BORRAR TODO') {
+                // Limpiar todos los datos excepto credenciales
+                clients.length = 0;
+                maintenances.length = 0;
+                clientIdCounter = 1;
+                maintenanceIdCounter = 1;
+                
+                // Guardar cambios
+                saveToLocalStorage();
+                
+                // Actualizar interfaz
+                renderClients();
+                renderMaintenances();
+                updateClientCount();
+                updateMaintenanceCount();
+                updateClientSelect();
+                updateDashboard();
+                renderCalendar();
+                checkMaintenanceAlerts();
+                updateSystemStats();
+                
+                showSuccessModal('¡Datos Borrados!', 'Todos los datos han sido eliminados del sistema');
+            } else {
+                alert('Operación cancelada. Los datos no fueron eliminados.');
+            }
+        }
+
         // Guardar en localStorage
         function saveToLocalStorage() {
             localStorage.setItem('clients', JSON.stringify(clients));
             localStorage.setItem('clientIdCounter', clientIdCounter.toString());
             localStorage.setItem('maintenances', JSON.stringify(maintenances));
             localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
+            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
+        }
+
+        // Crear animación de copos de nieve
+        function createSnowflakes() {
+            const snowflakes = ['❄️', '🌨️', '💨', '🌀'];
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% de probabilidad cada segundo
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    snowflake.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                    
+                    document.body.appendChild(snowflake);
+                    
+                    // Remover después de la animación
+                    setTimeout(() => {
+                        if (snowflake.parentNode) {
+                            snowflake.parentNode.removeChild(snowflake);
+                        }
+                    }, 5000);
+                }
+            }, 1000);
+        }
+
+        // Crear animación de copos de nieve
+        function createSnowflakes() {
+            const snowflakes = ['❄️', '🌨️', '💨', '🌀'];
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% de probabilidad cada segundo
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    snowflake.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+                    
+                    document.body.appendChild(snowflake);
+                    
+                    // Remover después de la animación
+                    setTimeout(() => {
+                        if (snowflake.parentNode) {
+                            snowflake.parentNode.removeChild(snowflake);
+                        }
+                    }, 5000);
+                }
+            }, 1000);
         }
 
         // Inicializar la aplicación
         init();
+        
+        // Iniciar animación de copos de nieve
+        createSnowflakes();
+        
+        // Iniciar animación de copos de nieve
+        createSnowflakes();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986de0b8822fd9a1',t:'MTc1OTE3NDA0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98738a5ac7fc3353',t:'MTc1OTIzMzQyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
