@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión de Clientes - FG Hvac Solutions - </title>
+    <title>Mi Sistema de Gestión - Personalizado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -136,7 +136,7 @@
             <div class="text-center mb-8">
                 <div class="text-6xl mb-4">🔐</div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Panel de Administrador</h1>
-                <p class="text-gray-600">Sistema de Gestión - Aire Acondicionado</p>
+                <p class="text-gray-600">Mi Sistema de Gestión Personalizado</p>
             </div>
             
             <form id="loginForm" class="space-y-6">
@@ -179,8 +179,8 @@
             <!-- Header con botón de logout -->
             <div class="flex justify-between items-center mb-8">
                 <div class="text-center flex-1">
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">🏢 Sistema de Gestión - Aire Acondicionado</h1>
-                    <p class="text-gray-600">Panel completo para gestionar clientes, mantenimientos y finanzas</p>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">🏢 Mi Sistema de Gestión Personalizado</h1>
+                    <p class="text-gray-600">Panel completo para gestionar clientes, servicios y finanzas</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="text-right">
@@ -361,7 +361,6 @@
                             <option value="">Seleccionar equipo</option>
                             <option value="Aire Acondicionado Split">Aire Acondicionado Split</option>
                             <option value="Aire Acondicionado Central">Aire Acondicionado Central</option>
-                            <option value="Aire Acondicionado Central">Package Unit</option>
                             <option value="Aire Acondicionado Ventana">Aire Acondicionado Ventana</option>
                             <option value="Sistema VRF">Sistema VRF</option>
                             <option value="Chiller">Chiller</option>
@@ -923,8 +922,73 @@
         let revenueChart = null;
         let maintenanceChart = null;
 
+        // Función de recuperación automática al iniciar
+        function autoRecoverData() {
+            // Verificar si hay datos perdidos
+            if (clients.length === 0 && maintenances.length === 0) {
+                // Buscar respaldos automáticos
+                const allKeys = Object.keys(localStorage);
+                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort().reverse();
+                
+                if (backupKeys.length > 0) {
+                    try {
+                        const latestBackup = JSON.parse(localStorage.getItem(backupKeys[0]));
+                        if (latestBackup.clients && latestBackup.clients.length > 0) {
+                            console.log('🔄 Recuperando datos automáticamente...');
+                            
+                            // Recuperar clientes
+                            latestBackup.clients.forEach(client => {
+                                clients.push({...client, id: clientIdCounter++});
+                            });
+                            
+                            // Recuperar mantenimientos
+                            if (latestBackup.maintenances) {
+                                latestBackup.maintenances.forEach(maintenance => {
+                                    maintenances.push({...maintenance, id: maintenanceIdCounter++});
+                                });
+                            }
+                            
+                            saveToLocalStorage();
+                            console.log(`✅ Recuperados ${clients.length} clientes y ${maintenances.length} mantenimientos`);
+                        }
+                    } catch (error) {
+                        console.log('Error en recuperación automática:', error);
+                    }
+                }
+            }
+        }
+
+        // Crear respaldos automáticos
+        function createAutoBackup() {
+            if (clients.length > 0 || maintenances.length > 0) {
+                const backup = {
+                    clients: clients,
+                    maintenances: maintenances,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Mantener solo los últimos 3 respaldos
+                const allKeys = Object.keys(localStorage);
+                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort();
+                
+                if (backupKeys.length >= 3) {
+                    localStorage.removeItem(backupKeys[0]);
+                }
+                
+                const backupKey = `auto_backup_${Date.now()}`;
+                localStorage.setItem(backupKey, JSON.stringify(backup));
+                
+                // También guardar en sessionStorage como respaldo temporal
+                sessionStorage.setItem('clients_session', JSON.stringify(clients));
+                sessionStorage.setItem('maintenances_session', JSON.stringify(maintenances));
+            }
+        }
+
         // Inicializar la aplicación
         function init() {
+            // Recuperación automática al iniciar
+            autoRecoverData();
+            
             // Verificar autenticación
             if (currentUser) {
                 showMainSystem();
@@ -1054,6 +1118,7 @@
 
             clients.unshift(newClient);
             saveToLocalStorage();
+            createAutoBackup(); // Crear respaldo automático
             renderClients();
             updateClientCount();
             updateClientSelect();
@@ -1101,6 +1166,7 @@
             
             maintenances.unshift(newMaintenance);
             saveToLocalStorage();
+            createAutoBackup(); // Crear respaldo automático
             renderMaintenances();
             updateMaintenanceCount();
             checkMaintenanceAlerts();
@@ -1418,6 +1484,7 @@
             if (confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
                 clients = clients.filter(client => client.id !== id);
                 saveToLocalStorage();
+                createAutoBackup(); // Crear respaldo automático
                 renderClients();
                 updateClientCount();
                 updateDashboard();
@@ -1609,6 +1676,7 @@
             maintenance.estadoPago = statusOrder[nextIndex];
             
             saveToLocalStorage();
+            createAutoBackup(); // Crear respaldo automático
             renderMaintenances();
             updateDashboard();
             renderCalendar();
@@ -1636,6 +1704,7 @@
             if (confirm('¿Estás seguro de que quieres eliminar este registro de mantenimiento?')) {
                 maintenances = maintenances.filter(m => m.id !== id);
                 saveToLocalStorage();
+                createAutoBackup(); // Crear respaldo automático
                 renderMaintenances();
                 updateMaintenanceCount();
                 checkMaintenanceAlerts();
@@ -2185,6 +2254,7 @@
                 
                 if (importedCount > 0) {
                     saveToLocalStorage();
+                    createAutoBackup(); // Crear respaldo automático
                     renderClients();
                     updateClientCount();
                     updateClientSelect();
@@ -2236,85 +2306,4 @@
                             importedCount++;
                         }
                     });
-                    
-                    if (importedCount > 0) {
-                        saveToLocalStorage();
-                        renderClients();
-                        updateClientCount();
-                        updateClientSelect();
-                        updateDashboard();
-                        showSuccessModal('¡Importación Exitosa!', `Se importaron ${importedCount} clientes desde CSV`);
-                    } else {
-                        alert('No se pudieron importar datos válidos del archivo CSV');
-                    }
-                } else {
-                    alert('Importación cancelada');
-                }
-                
-            } catch (error) {
-                alert('Error al procesar el archivo CSV: ' + error.message);
-            }
-        }
-
-        // Guardar en localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
-            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
-            localStorage.setItem('maintenances', JSON.stringify(maintenances));
-            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
-            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
-        }
-
-        // Crear animación de elementos térmicos
-        function createThermalElements() {
-            const coldElements = ['❄️', '🧊', '🌨️', '💨'];
-            const hotElements = ['🔥', '🌡️', '♨️', '🔴'];
-            
-            setInterval(() => {
-                if (Math.random() > 0.8) { // 20% de probabilidad cada segundo
-                    // Elemento frío del lado izquierdo
-                    const coldElement = document.createElement('div');
-                    coldElement.className = 'thermal-element cold-element';
-                    coldElement.textContent = coldElements[Math.floor(Math.random() * coldElements.length)];
-                    coldElement.style.left = Math.random() * 30 + '%';
-                    coldElement.style.top = '100vh';
-                    
-                    document.body.appendChild(coldElement);
-                    
-                    setTimeout(() => {
-                        if (coldElement.parentNode) {
-                            coldElement.parentNode.removeChild(coldElement);
-                        }
-                    }, 8000);
-                }
-                
-                if (Math.random() > 0.8) { // 20% de probabilidad cada segundo
-                    // Elemento caliente del lado derecho
-                    const hotElement = document.createElement('div');
-                    hotElement.className = 'thermal-element hot-element';
-                    hotElement.textContent = hotElements[Math.floor(Math.random() * hotElements.length)];
-                    hotElement.style.right = Math.random() * 30 + '%';
-                    hotElement.style.top = '100vh';
-                    
-                    document.body.appendChild(hotElement);
-                    
-                    setTimeout(() => {
-                        if (hotElement.parentNode) {
-                            hotElement.parentNode.removeChild(hotElement);
-                        }
-                    }, 6000);
-                }
-            }, 1000);
-        }
-
-        // Inicializar la aplicación
-        init();
-        
-        // Iniciar animación de elementos térmicos
-        createThermalElements();
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987490bd95167434',t:'MTc1OTI0NDE2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
-
-
-
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9874f193d5de9cda',t:'MTc1OTI0ODEzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
