@@ -129,6 +129,98 @@
         }
     </style>
 </head>
+    <body>
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Sistema de Clientes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .login-box button:hover {
+      background: #45a049;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Iniciar Sesión</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    // ⚠️ SOLO EJEMPLO: usuario y clave definidos en el código.
+    // En producción, valida contra una base de datos en servidor.
+    const USER = "admin";
+    const PASS = "1234";
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // evita recargar la página
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if(user === USER && pass === PASS){
+        alert("✅ Acceso concedido. Bienvenido " + user);
+        // aquí puedes redirigir a tu sistema
+        window.location.href = "sistema.html";
+      } else {
+        document.getElementById("errorMsg").textContent = "❌ Usuario o contraseña incorrectos";
+      }
+    });
+  </script>
+</body>
+</html>
+
+   <div class="login-box">
+      ...
+   </div>
+</body>
+
 <body class="min-h-screen">
     <!-- Sistema Principal - ACCESO DIRECTO -->
     <div id="mainSystem">
@@ -2404,3 +2496,4 @@ Escribe "ELIMINAR TODO" para confirmar:`;
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9876288f75519cda',t:'MTc1OTI2MDg3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
