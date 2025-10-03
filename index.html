@@ -129,103 +129,67 @@
         }
     </style>
 </head>
-    <body>
-  <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Login - Sistema de Clientes</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-box {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      width: 300px;
-      text-align: center;
-    }
-    .login-box h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-    .login-box input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    .login-box button {
-      width: 100%;
-      padding: 10px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .login-box button:hover {
-      background: #45a049;
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="login-box">
-    <h2>Iniciar Sesión</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Usuario" required>
-      <input type="password" id="password" placeholder="Contraseña" required>
-      <button type="submit">Entrar</button>
-      <div class="error" id="errorMsg"></div>
-    </form>
-  </div>
-
-  <script>
-    // ⚠️ SOLO EJEMPLO: usuario y clave definidos en el código.
-    // En producción, valida contra una base de datos en servidor.
-    const USER = "admin";
-    const PASS = "1234";
-
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // evita recargar la página
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-
-      if(user === USER && pass === PASS){
-        alert("✅ Acceso concedido. Bienvenido " + user);
-        // aquí puedes redirigir a tu sistema
-        window.location.href = "sistema.html";
-      } else {
-        document.getElementById("errorMsg").textContent = "❌ Usuario o contraseña incorrectos";
-      }
-    });
-  </script>
-</body>
-</html>
-
-   <div class="login-box">
-      ...
-   </div>
-</body>
-
 <body class="min-h-screen">
-    <!-- Sistema Principal - ACCESO DIRECTO -->
-    <div id="mainSystem">
+    <!-- Pantalla de Login -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <!-- Logo de la empresa -->
+                <div class="mb-6">
+                    <div id="companyLogo" class="mx-auto w-24 h-24 bg-gradient-to-br from-blue-600 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white text-2xl font-bold">ME</span>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">MI EMPRESA</h1>
+                <p class="text-gray-600">Panel de Control Administrativo</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+                    <input type="text" id="username" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="Ingresa tu usuario">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                               placeholder="Ingresa tu contraseña">
+                        <button type="button" id="togglePassword" 
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loginError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    <span class="font-medium">❌ Error:</span> Usuario o contraseña incorrectos
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <span class="mr-2">🚀</span>
+                    Iniciar Sesión
+                </button>
+                
+                <!-- Enlace de recuperación de emergencia -->
+                <div class="text-center mt-4">
+                    <button type="button" id="emergencyRecovery" 
+                            class="text-red-600 hover:text-red-800 text-sm underline transition-colors">
+                        🆘 ¿Olvidaste tu usuario? Recuperación de emergencia
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sistema Principal -->
+    <div id="mainSystem" class="hidden">
         <div class="container mx-auto px-4 py-8">
-            <!-- Header -->
+            <!-- Header con botón de logout -->
             <div class="flex justify-between items-center mb-8">
                 <div class="flex items-center">
                     <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-red-600 rounded-xl flex items-center justify-center shadow-lg mr-4">
@@ -238,9 +202,14 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="text-right">
-                        <p class="text-sm text-gray-600">Sistema Activo</p>
-                        <p class="font-semibold text-gray-800">Panel de Control</p>
+                        <p class="text-sm text-gray-600">Bienvenido</p>
+                        <p class="font-semibold text-gray-800" id="currentUser">admin</p>
                     </div>
+                    <button id="logoutBtn" 
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+                        <span class="mr-2">🚪</span>
+                        Salir
+                    </button>
                 </div>
             </div>
 
@@ -691,6 +660,65 @@
         <!-- Contenido de Configuración -->
         <div id="settingsContent" class="hidden">
             <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Configuración de Usuario -->
+                <div class="glass-effect rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">👤</span>
+                        Configuración de Usuario
+                    </h2>
+                    
+                    <form id="userSettingsForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Usuario Actual</label>
+                            <input type="text" id="currentUsername" readonly 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nuevo Usuario</label>
+                            <input type="text" id="newUsername" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="Ingresa el nuevo usuario">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Contraseña</label>
+                            <div class="relative">
+                                <input type="password" id="newPassword" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                                       placeholder="Ingresa la nueva contraseña">
+                                <button type="button" id="toggleNewPassword" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña</label>
+                            <div class="relative">
+                                <input type="password" id="confirmPassword" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                                       placeholder="Confirma la nueva contraseña">
+                                <button type="button" id="toggleConfirmPassword" 
+                                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="passwordError" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                            <span class="font-medium">❌ Error:</span> <span id="passwordErrorText"></span>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                            <span class="mr-2">💾</span>
+                            Actualizar Credenciales
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Configuración del Sistema -->
                 <div class="glass-effect rounded-xl shadow-lg p-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
@@ -767,61 +795,16 @@
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Logo</label>
-                                <select id="logoType" 
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Color del Logo</label>
+                                <select id="logoColor" 
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                    <option value="text">Logo con Iniciales</option>
-                                    <option value="image">Logo Personalizado (Imagen)</option>
+                                    <option value="from-blue-600 to-red-600">Azul a Rojo (Predeterminado)</option>
+                                    <option value="from-green-600 to-blue-600">Verde a Azul</option>
+                                    <option value="from-purple-600 to-pink-600">Morado a Rosa</option>
+                                    <option value="from-orange-600 to-red-600">Naranja a Rojo</option>
+                                    <option value="from-indigo-600 to-purple-600">Índigo a Morado</option>
+                                    <option value="from-gray-700 to-gray-900">Gris Oscuro</option>
                                 </select>
-                            </div>
-
-                            <!-- Configuración para logo de texto -->
-                            <div id="textLogoConfig">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Color del Logo</label>
-                                    <select id="logoColor" 
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                        <option value="from-blue-600 to-red-600">Azul a Rojo (Predeterminado)</option>
-                                        <option value="from-green-600 to-blue-600">Verde a Azul</option>
-                                        <option value="from-purple-600 to-pink-600">Morado a Rosa</option>
-                                        <option value="from-orange-600 to-red-600">Naranja a Rojo</option>
-                                        <option value="from-indigo-600 to-purple-600">Índigo a Morado</option>
-                                        <option value="from-gray-700 to-gray-900">Gris Oscuro</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Configuración para logo personalizado -->
-                            <div id="imageLogoConfig" class="hidden">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cargar Logo Personal</label>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
-                                        <input type="file" id="logoFileInput" accept="image/*" class="hidden">
-                                        <button type="button" id="selectLogoBtn" 
-                                                class="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
-                                            <span class="mr-2">🖼️</span>
-                                            Seleccionar Imagen
-                                        </button>
-                                        <p class="text-xs text-gray-500 mt-2">PNG, JPG, GIF hasta 2MB</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Vista previa del logo -->
-                                <div id="logoPreview" class="hidden">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Vista Previa</label>
-                                    <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                                        <div class="w-16 h-16 bg-white rounded-xl shadow-md flex items-center justify-center overflow-hidden">
-                                            <img id="previewImage" src="" alt="Logo preview" class="w-full h-full object-contain">
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm text-gray-600">Tu logo se verá así en el sistema</p>
-                                            <button type="button" id="removeLogoBtn" 
-                                                    class="text-red-500 hover:text-red-700 text-sm mt-1">
-                                                🗑️ Quitar logo
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             
                             <button id="updateLogoBtn" 
@@ -864,74 +847,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Información de Acceso -->
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <span class="mr-2">🔓</span>
-                        Información de Acceso
-                    </h2>
-                    
-                    <div class="space-y-6">
-                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
-                            <h3 class="font-semibold text-green-800 mb-3">✅ Acceso Directo Activado</h3>
-                            <p class="text-green-700 text-sm mb-3">
-                                Esta versión del sistema no requiere usuario ni contraseña. El acceso es directo y automático.
-                            </p>
-                            <div class="text-sm text-green-600">
-                                <p><strong>🔹 Ventajas:</strong></p>
-                                <ul class="list-disc list-inside ml-4 space-y-1">
-                                    <li>Acceso inmediato sin credenciales</li>
-                                    <li>No hay riesgo de olvidar contraseñas</li>
-                                    <li>Inicio rápido del sistema</li>
-                                    <li>Ideal para uso personal o local</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <h3 class="font-semibold text-blue-800 mb-3">🔒 Seguridad de Datos</h3>
-                            <p class="text-blue-700 text-sm mb-3">
-                                Todos tus datos se guardan localmente en tu navegador y están protegidos por:
-                            </p>
-                            <div class="text-sm text-blue-600">
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li>Almacenamiento local del navegador</li>
-                                    <li>Respaldos automáticos</li>
-                                    <li>Funciones de exportación e importación</li>
-                                    <li>Recuperación automática de datos</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                            <h3 class="font-semibold text-yellow-800 mb-3">⚠️ Recomendaciones</h3>
-                            <div class="text-sm text-yellow-700 space-y-2">
-                                <p><strong>Para mayor seguridad:</strong></p>
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li>Crea respaldos regulares de tus datos</li>
-                                    <li>No uses este sistema en computadoras públicas</li>
-                                    <li>Mantén tu navegador actualizado</li>
-                                    <li>Considera usar la versión con login para entornos compartidos</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <h3 class="font-semibold text-gray-800 mb-3">📋 Funciones Disponibles</h3>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <p>✅ Gestión completa de clientes</p>
-                                <p>✅ Registro de mantenimientos</p>
-                                <p>✅ Calendario visual</p>
-                                <p>✅ Recordatorios automáticos</p>
-                                <p>✅ Dashboard con estadísticas</p>
-                                <p>✅ Exportación e importación de datos</p>
-                                <p>✅ Personalización del sistema</p>
-                                <p>✅ Respaldos y recuperación</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         </div>
@@ -955,15 +870,35 @@
     </div>
 
     <script>
-        // Sistema sin autenticación - acceso directo
+        // ⚠️ CAMBIAR CREDENCIALES AQUÍ ⚠️
+        // Para cambiar el usuario y contraseña, modifica estos valores:
+        let adminCredentials = {
+            username: 'admin',        // ← Cambia aquí el usuario
+            password: 'admin123'      // ← Cambia aquí la contraseña
+        };
+        
+        // Sistema de autenticación
+        let currentUser = localStorage.getItem('currentUser') || null;
+        
+        // Verificar si hay credenciales guardadas, si no usar las por defecto
+        const savedCredentials = localStorage.getItem('adminCredentials');
+        if (savedCredentials) {
+            try {
+                adminCredentials = JSON.parse(savedCredentials);
+            } catch (error) {
+                // Si hay error, usar credenciales por defecto del código
+                localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            }
+        } else {
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+        }
+        
         let systemSettings = JSON.parse(localStorage.getItem('systemSettings')) || {
             maintenanceFrequency: 6,
             reminderDays: 30,
             companyName: 'MI EMPRESA',
             logoInitials: 'ME',
-            logoColor: 'from-blue-600 to-red-600',
-            logoType: 'text',
-            logoImage: null
+            logoColor: 'from-blue-600 to-red-600'
         };
 
         // Preservar datos existentes y agregar nuevas funcionalidades
@@ -988,6 +923,16 @@
             }
         });
         let currentDate = new Date();
+
+        // Elementos del DOM - Login
+        const loginScreen = document.getElementById('loginScreen');
+        const mainSystem = document.getElementById('mainSystem');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const togglePassword = document.getElementById('togglePassword');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentUserSpan = document.getElementById('currentUser');
+        const emergencyRecovery = document.getElementById('emergencyRecovery');
 
         // Elementos del DOM
         const clientForm = document.getElementById('clientForm');
@@ -1015,6 +960,15 @@
         const settingsContent = document.getElementById('settingsContent');
 
         // Elementos de configuración
+        const userSettingsForm = document.getElementById('userSettingsForm');
+        const currentUsername = document.getElementById('currentUsername');
+        const newUsername = document.getElementById('newUsername');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const passwordErrorText = document.getElementById('passwordErrorText');
+        const toggleNewPassword = document.getElementById('toggleNewPassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
         const exportAllBtn = document.getElementById('exportAllBtn');
         const backupBtn = document.getElementById('backupBtn');
         const clearDataBtn = document.getElementById('clearDataBtn');
@@ -1027,14 +981,6 @@
         const companyName = document.getElementById('companyName');
         const logoInitials = document.getElementById('logoInitials');
         const logoColor = document.getElementById('logoColor');
-        const logoType = document.getElementById('logoType');
-        const logoFileInput = document.getElementById('logoFileInput');
-        const selectLogoBtn = document.getElementById('selectLogoBtn');
-        const removeLogoBtn = document.getElementById('removeLogoBtn');
-        const logoPreview = document.getElementById('logoPreview');
-        const previewImage = document.getElementById('previewImage');
-        const textLogoConfig = document.getElementById('textLogoConfig');
-        const imageLogoConfig = document.getElementById('imageLogoConfig');
         const updateLogoBtn = document.getElementById('updateLogoBtn');
 
         // Elementos de mantenimiento
@@ -1130,17 +1076,31 @@
             }
         }
 
-        // Inicializar la aplicación - ACCESO DIRECTO
+        // Inicializar la aplicación
         function init() {
             // Recuperación automática al iniciar
             autoRecoverData();
             
-            // Mostrar sistema principal directamente (sin login)
-            showMainSystem();
+            // Verificar autenticación
+            if (currentUser) {
+                showMainSystem();
+            } else {
+                showLoginScreen();
+            }
+        }
+
+        // Mostrar pantalla de login
+        function showLoginScreen() {
+            loginScreen.classList.remove('hidden');
+            mainSystem.classList.add('hidden');
         }
 
         // Mostrar sistema principal
         function showMainSystem() {
+            loginScreen.classList.add('hidden');
+            mainSystem.classList.remove('hidden');
+            currentUserSpan.textContent = currentUser || adminCredentials.username;
+            
             // Inicializar datos
             renderClients();
             updateClientCount();
@@ -1158,6 +1118,85 @@
             
             // Aplicar configuración del logo
             updateLogoDisplay();
+        }
+
+        // Event Listeners - Login
+        loginForm.addEventListener('submit', handleLogin);
+        togglePassword.addEventListener('click', () => togglePasswordVisibility('password'));
+        logoutBtn.addEventListener('click', handleLogout);
+        emergencyRecovery.addEventListener('click', handleEmergencyRecovery);
+
+        // Función de recuperación de emergencia
+        function handleEmergencyRecovery() {
+            // Mostrar información detallada sobre la recuperación
+            const recoveryMessage = `🆘 RECUPERACIÓN DE EMERGENCIA
+
+¿Olvidaste tu usuario o contraseña?
+
+Esta función restablecerá las credenciales a los valores por defecto:
+
+👤 Usuario: ${adminCredentials.username}
+🔑 Contraseña: ${adminCredentials.password}
+
+⚠️ IMPORTANTE:
+• Se perderán las credenciales personalizadas
+• Todos tus datos (clientes y mantenimientos) se mantendrán seguros
+• Solo se restablecen las credenciales de acceso
+
+¿Quieres continuar con la recuperación?`;
+
+            if (confirm(recoveryMessage)) {
+                try {
+                    // Restablecer credenciales por defecto del código
+                    const defaultCredentials = {
+                        username: 'admin',
+                        password: 'admin123'
+                    };
+                    
+                    // Guardar en localStorage
+                    localStorage.setItem('adminCredentials', JSON.stringify(defaultCredentials));
+                    
+                    // Actualizar variable global
+                    adminCredentials = defaultCredentials;
+                    
+                    // Limpiar sesión actual
+                    currentUser = null;
+                    localStorage.removeItem('currentUser');
+                    
+                    // Limpiar formulario de login
+                    const usernameField = document.getElementById('username');
+                    const passwordField = document.getElementById('password');
+                    
+                    if (usernameField) {
+                        usernameField.value = '';
+                        usernameField.focus();
+                    }
+                    if (passwordField) {
+                        passwordField.value = '';
+                    }
+                    
+                    // Ocultar mensaje de error si está visible
+                    if (loginError) {
+                        loginError.classList.add('hidden');
+                    }
+                    
+                    // Mostrar mensaje de éxito detallado
+                    alert(`✅ RECUPERACIÓN EXITOSA
+
+Las credenciales han sido restablecidas correctamente:
+
+👤 Usuario: ${defaultCredentials.username}
+🔑 Contraseña: ${defaultCredentials.password}
+
+🔒 Ahora puedes iniciar sesión con estas credenciales.
+
+💡 Consejo: Una vez dentro del sistema, puedes cambiar estas credenciales en la sección "Configuración" para mayor seguridad.`);
+                    
+                } catch (error) {
+                    console.error('Error en recuperación de emergencia:', error);
+                    alert('❌ Error durante la recuperación. Por favor, recarga la página e intenta nuevamente.');
+                }
+            }
         }
 
         // Navegación entre pestañas
@@ -1876,19 +1915,58 @@
             renderMaintenances(filteredMaintenances);
         }
 
+        // Funciones de autenticación
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                currentUser = username;
+                localStorage.setItem('currentUser', currentUser);
+                loginError.classList.add('hidden');
+                showMainSystem();
+                loginForm.reset();
+            } else {
+                loginError.classList.remove('hidden');
+                setTimeout(() => {
+                    loginError.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                showLoginScreen();
+            }
+        }
+
+        function togglePasswordVisibility(fieldId) {
+            const field = document.getElementById(fieldId);
+            const button = fieldId === 'password' ? togglePassword : 
+                          fieldId === 'newPassword' ? toggleNewPassword : toggleConfirmPassword;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                field.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
         // Event Listeners para configuración
+        userSettingsForm.addEventListener('submit', handleUserSettingsUpdate);
+        toggleNewPassword.addEventListener('click', () => togglePasswordVisibility('newPassword'));
+        toggleConfirmPassword.addEventListener('click', () => togglePasswordVisibility('confirmPassword'));
         exportAllBtn.addEventListener('click', exportAllData);
         backupBtn.addEventListener('click', createBackup);
         clearDataBtn.addEventListener('click', clearAllData);
         recoverDataBtn.addEventListener('click', manualDataRecovery);
         saveSettingsBtn.addEventListener('click', saveSystemSettings);
         updateLogoBtn.addEventListener('click', updateCompanyLogo);
-        
-        // Event Listeners para logo personalizado
-        logoType.addEventListener('change', toggleLogoConfig);
-        selectLogoBtn.addEventListener('click', () => logoFileInput.click());
-        logoFileInput.addEventListener('change', handleLogoUpload);
-        removeLogoBtn.addEventListener('click', removeCustomLogo);
 
         // Verificar recordatorios de mantenimiento
         function checkMaintenanceAlerts() {
@@ -1987,22 +2065,66 @@
             document.getElementById('descripcionTrabajo').focus();
         }
 
+        // Funciones de configuración
+        function handleUserSettingsUpdate(e) {
+            e.preventDefault();
+            
+            const newUser = newUsername.value.trim();
+            const newPass = newPassword.value;
+            const confirmPass = confirmPassword.value;
+            
+            // Validaciones
+            if (!newUser && !newPass) {
+                showPasswordError('Debes ingresar al menos un campo para actualizar');
+                return;
+            }
+            
+            if (newPass && newPass !== confirmPass) {
+                showPasswordError('Las contraseñas no coinciden');
+                return;
+            }
+            
+            if (newPass && newPass.length < 6) {
+                showPasswordError('La contraseña debe tener al menos 6 caracteres');
+                return;
+            }
+            
+            // Actualizar credenciales
+            if (newUser) {
+                adminCredentials.username = newUser;
+                currentUser = newUser;
+                localStorage.setItem('currentUser', currentUser);
+                currentUserSpan.textContent = currentUser;
+            }
+            
+            if (newPass) {
+                adminCredentials.password = newPass;
+            }
+            
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            
+            // Limpiar formulario
+            userSettingsForm.reset();
+            passwordError.classList.add('hidden');
+            
+            showSuccessModal('¡Credenciales Actualizadas!', 'Las credenciales han sido actualizadas exitosamente');
+        }
+
+        function showPasswordError(message) {
+            passwordErrorText.textContent = message;
+            passwordError.classList.remove('hidden');
+            setTimeout(() => {
+                passwordError.classList.add('hidden');
+            }, 5000);
+        }
+
         function loadSettings() {
+            currentUsername.value = adminCredentials.username;
             maintenanceFrequency.value = systemSettings.maintenanceFrequency;
             reminderDays.value = systemSettings.reminderDays;
             companyName.value = systemSettings.companyName;
             logoInitials.value = systemSettings.logoInitials;
             logoColor.value = systemSettings.logoColor;
-            logoType.value = systemSettings.logoType || 'text';
-            
-            // Configurar interfaz según tipo de logo
-            toggleLogoConfig();
-            
-            // Si hay logo personalizado, mostrarlo
-            if (systemSettings.logoImage) {
-                previewImage.src = systemSettings.logoImage;
-                logoPreview.classList.remove('hidden');
-            }
             
             // Aplicar configuración actual del logo
             updateLogoDisplay();
@@ -2023,30 +2145,19 @@
         // Funciones del logo
         function updateCompanyLogo() {
             const newName = companyName.value.trim() || 'MI EMPRESA';
-            const newType = logoType.value;
+            const newInitials = logoInitials.value.trim().toUpperCase() || 'ME';
+            const newColor = logoColor.value;
             
-            // Actualizar configuración básica
-            systemSettings.companyName = newName;
-            systemSettings.logoType = newType;
-            
-            if (newType === 'text') {
-                const newInitials = logoInitials.value.trim().toUpperCase() || 'ME';
-                const newColor = logoColor.value;
-                
-                // Validar iniciales (máximo 3 caracteres)
-                if (newInitials.length > 3) {
-                    alert('Las iniciales no pueden tener más de 3 caracteres');
-                    return;
-                }
-                
-                systemSettings.logoInitials = newInitials;
-                systemSettings.logoColor = newColor;
-            } else if (newType === 'image') {
-                if (!systemSettings.logoImage) {
-                    alert('Por favor selecciona una imagen para el logo personalizado');
-                    return;
-                }
+            // Validar iniciales (máximo 3 caracteres)
+            if (newInitials.length > 3) {
+                alert('Las iniciales no pueden tener más de 3 caracteres');
+                return;
             }
+            
+            // Actualizar configuración
+            systemSettings.companyName = newName;
+            systemSettings.logoInitials = newInitials;
+            systemSettings.logoColor = newColor;
             
             localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
             
@@ -2057,25 +2168,47 @@
         }
 
         function updateLogoDisplay() {
+            // Actualizar todos los logos en la página
+            const logos = document.querySelectorAll('#companyLogo, .company-logo');
+            logos.forEach(logo => {
+                // Actualizar clases de color
+                logo.className = logo.className.replace(/from-\w+-\d+ to-\w+-\d+/g, systemSettings.logoColor);
+                if (!logo.className.includes(systemSettings.logoColor)) {
+                    logo.className = logo.className.replace(/bg-gradient-to-br \S+/, `bg-gradient-to-br ${systemSettings.logoColor}`);
+                }
+                
+                // Actualizar texto de iniciales
+                const textElement = logo.querySelector('span');
+                if (textElement) {
+                    textElement.textContent = systemSettings.logoInitials;
+                }
+            });
+            
             // Actualizar nombre de la empresa en headers
             const companyHeaders = document.querySelectorAll('h1');
             companyHeaders.forEach(header => {
-                if (header.textContent.includes('MI EMPRESA') || header.textContent.includes(systemSettings.companyName)) {
-                    header.innerHTML = `❄️ ${systemSettings.companyName}`;
+                if (header.textContent.includes('MI EMPRESA')) {
+                    header.textContent = header.textContent.replace('MI EMPRESA', systemSettings.companyName);
                 }
             });
             
             // Actualizar logo del header principal
             const mainLogo = document.querySelector('.flex.items-center .w-16.h-16');
             if (mainLogo) {
-                if (systemSettings.logoType === 'image' && systemSettings.logoImage) {
-                    // Logo personalizado
-                    mainLogo.className = 'w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden';
-                    mainLogo.innerHTML = `<img src="${systemSettings.logoImage}" alt="Logo" class="w-full h-full object-contain">`;
-                } else {
-                    // Logo con iniciales
-                    mainLogo.className = `w-16 h-16 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
-                    mainLogo.innerHTML = `<span class="text-white text-lg font-bold">${systemSettings.logoInitials}</span>`;
+                mainLogo.className = `w-16 h-16 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
+                const logoText = mainLogo.querySelector('span');
+                if (logoText) {
+                    logoText.textContent = systemSettings.logoInitials;
+                }
+            }
+            
+            // Actualizar logo de login
+            const loginLogo = document.querySelector('#companyLogo');
+            if (loginLogo) {
+                loginLogo.className = `mx-auto w-24 h-24 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
+                const loginLogoText = loginLogo.querySelector('span');
+                if (loginLogoText) {
+                    loginLogoText.textContent = systemSettings.logoInitials;
                 }
             }
         }
@@ -2085,7 +2218,7 @@
             document.getElementById('statsMaintenances').textContent = maintenances.length;
             
             // Calcular tamaño de datos
-            const dataString = JSON.stringify({clients, maintenances, systemSettings});
+            const dataString = JSON.stringify({clients, maintenances, adminCredentials, systemSettings});
             const dataSize = (new Blob([dataString]).size / 1024).toFixed(2);
             document.getElementById('dataSize').textContent = `${dataSize} KB`;
             
@@ -2123,6 +2256,7 @@
             const backup = {
                 clients: clients,
                 maintenances: maintenances,
+                adminCredentials: adminCredentials,
                 systemSettings: systemSettings,
                 backupDate: new Date().toISOString(),
                 version: '1.0'
@@ -2140,63 +2274,7 @@
             showSuccessModal('¡Respaldo Creado!', 'El respaldo completo ha sido creado exitosamente');
         }
 
-        function clearAllData() {
-            const confirmMessage = `⚠️ ADVERTENCIA CRÍTICA ⚠️
-
-Esta acción eliminará PERMANENTEMENTE:
-• ${clients.length} clientes registrados
-• ${maintenances.length} mantenimientos
-• Todas las configuraciones personalizadas
-• Todos los respaldos automáticos
-
-Esta acción NO SE PUEDE DESHACER.
-
-¿Estás COMPLETAMENTE SEGURO de que quieres continuar?
-
-Escribe "ELIMINAR TODO" para confirmar:`;
-
-            const confirmation = prompt(confirmMessage);
-            
-            if (confirmation === 'ELIMINAR TODO') {
-                // Limpiar todos los datos
-                clients.length = 0;
-                maintenances.length = 0;
-                clientIdCounter = 1;
-                maintenanceIdCounter = 1;
-                
-                // Limpiar localStorage
-                localStorage.removeItem('clients');
-                localStorage.removeItem('maintenances');
-                localStorage.removeItem('clientIdCounter');
-                localStorage.removeItem('maintenanceIdCounter');
-                localStorage.removeItem('lastUpdate');
-                
-                // Limpiar respaldos automáticos
-                const allKeys = Object.keys(localStorage);
-                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_'));
-                backupKeys.forEach(key => localStorage.removeItem(key));
-                
-                // Limpiar sessionStorage
-                sessionStorage.removeItem('clients_session');
-                sessionStorage.removeItem('maintenances_session');
-                
-                // Actualizar interfaz
-                renderClients();
-                updateClientCount();
-                updateClientSelect();
-                renderMaintenances();
-                updateMaintenanceCount();
-                checkMaintenanceAlerts();
-                updateDashboard();
-                renderCalendar();
-                updateSystemStats();
-                
-                alert('✅ Todos los datos han sido eliminados correctamente.\n\nEl sistema ha sido reiniciado completamente.');
-            } else {
-                alert('❌ Operación cancelada. Los datos permanecen seguros.');
-            }
-        }
-
+        // Función de recuperación manual avanzada
         function manualDataRecovery() {
             let recoveredData = [];
             let totalRecovered = 0;
@@ -2227,273 +2305,4 @@ Escribe "ELIMINAR TODO" para confirmar:`;
                 if (choiceNum >= 1 && choiceNum <= recoveredData.length) {
                     const selectedBackup = recoveredData[choiceNum - 1].backup;
                     
-                    if (confirm(`¿Confirmas la recuperación del respaldo del ${recoveredData[choiceNum - 1].date}?\n\nEsto reemplazará los datos actuales.`)) {
-                        // Recuperar datos
-                        clients.length = 0;
-                        maintenances.length = 0;
-                        
-                        if (selectedBackup.clients) {
-                            selectedBackup.clients.forEach(client => {
-                                clients.push({...client});
-                                totalRecovered++;
-                            });
-                            clientIdCounter = Math.max(...clients.map(c => c.id), 0) + 1;
-                        }
-                        
-                        if (selectedBackup.maintenances) {
-                            selectedBackup.maintenances.forEach(maintenance => {
-                                maintenances.push({...maintenance});
-                                totalRecovered++;
-                            });
-                            maintenanceIdCounter = Math.max(...maintenances.map(m => m.id), 0) + 1;
-                        }
-                        
-                        saveToLocalStorage();
-                        
-                        // Actualizar interfaz
-                        renderClients();
-                        updateClientCount();
-                        updateClientSelect();
-                        renderMaintenances();
-                        updateMaintenanceCount();
-                        checkMaintenanceAlerts();
-                        updateDashboard();
-                        renderCalendar();
-                        updateSystemStats();
-                        
-                        showSuccessModal('¡Datos Recuperados!', `Se han recuperado ${clients.length} clientes y ${maintenances.length} mantenimientos exitosamente`);
-                    }
-                } else {
-                    alert('❌ Selección inválida');
-                }
-            } else {
-                // Buscar en sessionStorage
-                const sessionClients = sessionStorage.getItem('clients_session');
-                const sessionMaintenances = sessionStorage.getItem('maintenances_session');
-                
-                if (sessionClients || sessionMaintenances) {
-                    if (confirm('🔍 Se encontraron datos en la sesión temporal.\n\n¿Quieres recuperar estos datos?')) {
-                        try {
-                            if (sessionClients) {
-                                const tempClients = JSON.parse(sessionClients);
-                                tempClients.forEach(client => {
-                                    if (!clients.find(c => c.id === client.id)) {
-                                        clients.push(client);
-                                        totalRecovered++;
-                                    }
-                                });
-                            }
-                            
-                            if (sessionMaintenances) {
-                                const tempMaintenances = JSON.parse(sessionMaintenances);
-                                tempMaintenances.forEach(maintenance => {
-                                    if (!maintenances.find(m => m.id === maintenance.id)) {
-                                        maintenances.push(maintenance);
-                                        totalRecovered++;
-                                    }
-                                });
-                            }
-                            
-                            if (totalRecovered > 0) {
-                                saveToLocalStorage();
-                                createAutoBackup();
-                                
-                                // Actualizar interfaz
-                                renderClients();
-                                updateClientCount();
-                                updateClientSelect();
-                                renderMaintenances();
-                                updateMaintenanceCount();
-                                checkMaintenanceAlerts();
-                                updateDashboard();
-                                renderCalendar();
-                                updateSystemStats();
-                                
-                                showSuccessModal('¡Datos Recuperados!', `Se han recuperado ${totalRecovered} registros de la sesión temporal`);
-                            } else {
-                                alert('ℹ️ No se encontraron datos nuevos para recuperar');
-                            }
-                        } catch (error) {
-                            alert('❌ Error al recuperar datos de la sesión temporal');
-                        }
-                    }
-                } else {
-                    alert('ℹ️ No se encontraron respaldos para recuperar.\n\nConsejo: El sistema crea respaldos automáticos cuando agregas datos.');
-                }
-            }
-        }
-
-        // Funciones de importación
-        function importFromJSON(content) {
-            try {
-                const data = JSON.parse(content);
-                let importedCount = 0;
-                
-                if (data.clients && Array.isArray(data.clients)) {
-                    data.clients.forEach(client => {
-                        const newClient = {
-                            ...client,
-                            id: clientIdCounter++,
-                            fechaRegistro: client.fechaRegistro || new Date().toLocaleDateString('es-ES')
-                        };
-                        clients.unshift(newClient);
-                        importedCount++;
-                    });
-                }
-                
-                if (data.maintenances && Array.isArray(data.maintenances)) {
-                    data.maintenances.forEach(maintenance => {
-                        const newMaintenance = {
-                            ...maintenance,
-                            id: maintenanceIdCounter++,
-                            fechaRegistro: maintenance.fechaRegistro || new Date().toISOString()
-                        };
-                        maintenances.unshift(newMaintenance);
-                        importedCount++;
-                    });
-                }
-                
-                if (importedCount > 0) {
-                    saveToLocalStorage();
-                    createAutoBackup();
-                    renderClients();
-                    updateClientCount();
-                    updateClientSelect();
-                    renderMaintenances();
-                    updateMaintenanceCount();
-                    updateDashboard();
-                    showSuccessModal('¡Datos Importados!', `Se han importado ${importedCount} registros exitosamente`);
-                } else {
-                    alert('❌ No se encontraron datos válidos en el archivo');
-                }
-            } catch (error) {
-                alert('❌ Error al procesar el archivo JSON: ' + error.message);
-            }
-        }
-
-        function importFromCSV(content) {
-            try {
-                const lines = content.split('\n');
-                const headers = lines[0].split(',').map(h => h.trim());
-                let importedCount = 0;
-                
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (!line) continue;
-                    
-                    const values = line.split(',').map(v => v.trim());
-                    if (values.length >= 6) {
-                        const newClient = {
-                            id: clientIdCounter++,
-                            nombre: values[0] || '',
-                            apellido: values[1] || '',
-                            email: values[2] || 'No especificado',
-                            telefono: values[3] || '',
-                            direccion: values[4] || '',
-                            ciudad: values[5] || '',
-                            empresa: values[6] || 'No especificada',
-                            notas: values[7] || 'Sin notas',
-                            fechaRegistro: values[8] || new Date().toLocaleDateString('es-ES'),
-                            ultimoMantenimiento: null,
-                            tipoEquipo: 'No especificado'
-                        };
-                        
-                        clients.unshift(newClient);
-                        importedCount++;
-                    }
-                }
-                
-                if (importedCount > 0) {
-                    saveToLocalStorage();
-                    createAutoBackup();
-                    renderClients();
-                    updateClientCount();
-                    updateClientSelect();
-                    updateDashboard();
-                    showSuccessModal('¡Datos Importados!', `Se han importado ${importedCount} clientes desde CSV`);
-                } else {
-                    alert('❌ No se pudieron importar datos del archivo CSV');
-                }
-            } catch (error) {
-                alert('❌ Error al procesar el archivo CSV: ' + error.message);
-            }
-        }
-
-        // Funciones para logo personalizado
-        function toggleLogoConfig() {
-            const type = logoType.value;
-            
-            if (type === 'text') {
-                textLogoConfig.classList.remove('hidden');
-                imageLogoConfig.classList.add('hidden');
-            } else {
-                textLogoConfig.classList.add('hidden');
-                imageLogoConfig.classList.remove('hidden');
-            }
-        }
-
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Validar tipo de archivo
-            if (!file.type.startsWith('image/')) {
-                alert('Por favor selecciona un archivo de imagen válido');
-                return;
-            }
-
-            // Validar tamaño (2MB máximo)
-            if (file.size > 2 * 1024 * 1024) {
-                alert('La imagen es demasiado grande. El tamaño máximo es 2MB');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageData = e.target.result;
-                
-                // Guardar imagen en configuración
-                systemSettings.logoImage = imageData;
-                
-                // Mostrar vista previa
-                previewImage.src = imageData;
-                logoPreview.classList.remove('hidden');
-                
-                // Actualizar botón
-                selectLogoBtn.innerHTML = '<span class="mr-2">✅</span>Imagen Cargada';
-                selectLogoBtn.classList.add('bg-green-50', 'text-green-600');
-                selectLogoBtn.classList.remove('bg-blue-50', 'text-blue-600');
-            };
-            
-            reader.readAsDataURL(file);
-        }
-
-        function removeCustomLogo() {
-            if (confirm('¿Estás seguro de que quieres quitar el logo personalizado?')) {
-                systemSettings.logoImage = null;
-                logoPreview.classList.add('hidden');
-                previewImage.src = '';
-                logoFileInput.value = '';
-                
-                // Restaurar botón
-                selectLogoBtn.innerHTML = '<span class="mr-2">🖼️</span>Seleccionar Imagen';
-                selectLogoBtn.classList.remove('bg-green-50', 'text-green-600');
-                selectLogoBtn.classList.add('bg-blue-50', 'text-blue-600');
-                
-                // Si está en modo imagen, cambiar a texto
-                if (logoType.value === 'image') {
-                    logoType.value = 'text';
-                    toggleLogoConfig();
-                }
-                
-                localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
-                updateLogoDisplay();
-            }
-        }
-
-        // Inicializar la aplicación cuando se carga la página
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9876288f75519cda',t:'MTc1OTI2MDg3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
-
+                    if (confirm(`<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9875700dc2d12ba1',t:'MTc1OTI1MzMxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
