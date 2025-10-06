@@ -3,54 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MI EMPRESA - Panel de Control</title>
+    <title>Registro de Clientes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             box-sizing: border-box;
-            background: linear-gradient(135deg, #1e3a8a 0%, #ffffff 50%, #dc2626 100%);
-            position: relative;
-            min-height: 100vh;
         }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 30%);
-            pointer-events: none;
-            z-index: -2;
-        }
-        
-        body::after {
-            content: '❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️ 🔥 ❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️ 🔥 ❄️ 🌡️ 🔥 ❄️ 🌨️ 🌡️';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            font-size: 2rem;
-            opacity: 0.08;
-            animation: float 60s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-        }
-        
-        @keyframes float {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0%); }
-        }
-        
         .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
@@ -58,204 +16,36 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Efectos de cristal para las tarjetas */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Animación de elementos térmicos */
-        .thermal-element {
-            position: fixed;
-            font-size: 1.5rem;
-            animation: thermalFloat linear infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .cold-element {
-            color: rgba(59, 130, 246, 0.6);
-            left: 0;
-            animation-duration: 8s;
-        }
-        
-        .hot-element {
-            color: rgba(239, 68, 68, 0.6);
-            right: 0;
-            animation-duration: 6s;
-        }
-        
-        @keyframes thermalFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        .calendar-day {
-            min-height: 100px;
-            border: 1px solid #e5e7eb;
-        }
-        .calendar-event {
-            font-size: 0.75rem;
-            padding: 2px 4px;
-            margin: 1px 0;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .maintenance-paid {
-            background-color: #dcfce7;
-            border-left: 4px solid #16a34a;
-        }
-        .maintenance-pending {
-            background-color: #fef3c7;
-            border-left: 4px solid #f59e0b;
-        }
-        .maintenance-overdue {
-            background-color: #fee2e2;
-            border-left: 4px solid #dc2626;
-        }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- Sistema Principal - ACCESO DIRECTO -->
-    <div id="mainSystem">
-        <div class="container mx-auto px-4 py-8">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-8">
-                <div class="flex items-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-red-600 rounded-xl flex items-center justify-center shadow-lg mr-4">
-                        <span class="text-white text-lg font-bold">ME</span>
-                    </div>
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800 mb-1">❄️ MI EMPRESA</h1>
-                        <p class="text-gray-600">Sistema de Gestión</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-right">
-                        <p class="text-sm text-gray-600">Sistema Activo</p>
-                        <p class="font-semibold text-gray-800">Panel de Control</p>
-                    </div>
-                </div>
-            </div>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">📋 Registro de Clientes</h1>
+            <p class="text-gray-600">Gestiona tu base de clientes de manera eficiente</p>
+        </div>
 
         <!-- Pestañas de navegación -->
-        <div class="glass-effect rounded-xl shadow-lg mb-8">
-            <div class="flex flex-wrap border-b">
-                <button id="dashboardTab" class="flex-1 py-4 px-6 text-center font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50 min-w-0">
-                    📊 Dashboard
-                </button>
-                <button id="clientsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors min-w-0">
+        <div class="bg-white rounded-xl shadow-lg mb-8">
+            <div class="flex border-b">
+                <button id="clientsTab" class="flex-1 py-4 px-6 text-center font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50">
                     👤 Clientes
                 </button>
-                <button id="maintenanceTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors min-w-0">
+                <button id="maintenanceTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors">
                     🔧 Mantenimientos
                 </button>
-                <button id="calendarTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors min-w-0">
-                    🗓️ Calendario
-                </button>
-                <button id="alertsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors relative min-w-0">
+                <button id="alertsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors relative">
                     🔔 Recordatorios
                     <span id="alertBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden">0</span>
                 </button>
-                <button id="settingsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors min-w-0">
-                    ⚙️ Configuración
-                </button>
-            </div>
-        </div>
-
-        <!-- Contenido del Dashboard -->
-        <div id="dashboardContent">
-            <!-- Métricas principales -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                            <span class="text-2xl">👥</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Total Clientes</p>
-                            <p id="totalClients" class="text-2xl font-bold text-gray-900">0</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 text-green-600">
-                            <span class="text-2xl">🔧</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Mantenimientos</p>
-                            <p id="totalMaintenances" class="text-2xl font-bold text-gray-900">0</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                            <span class="text-2xl">💰</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Ingresos Mes</p>
-                            <p id="monthlyRevenue" class="text-2xl font-bold text-gray-900">$0</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-red-100 text-red-600">
-                            <span class="text-2xl">⏰</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Pendientes Pago</p>
-                            <p id="pendingPayments" class="text-2xl font-bold text-gray-900">$0</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gráficos -->
-            <div class="grid lg:grid-cols-2 gap-8 mb-8">
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">📈 Ingresos por Mes</h3>
-                    <canvas id="revenueChart" width="400" height="200"></canvas>
-                </div>
-
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">🔧 Tipos de Mantenimiento</h3>
-                    <canvas id="maintenanceChart" width="400" height="200"></canvas>
-                </div>
-            </div>
-
-            <!-- Clientes más frecuentes -->
-            <div class="glass-effect rounded-xl shadow-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">⭐ Clientes Más Frecuentes</h3>
-                <div id="topClients" class="space-y-3">
-                    <p class="text-gray-500 text-center py-4">No hay datos suficientes aún</p>
-                </div>
             </div>
         </div>
 
         <!-- Contenido de Clientes -->
-        <div id="clientsContent" class="hidden grid lg:grid-cols-2 gap-8">
+        <div id="clientsContent" class="grid lg:grid-cols-2 gap-8">
             <!-- Formulario de Registro -->
-            <div class="glass-effect rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                     <span class="mr-2">👤</span>
                     Nuevo Cliente
@@ -276,8 +66,8 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email (opcional)</label>
-                        <input type="email" id="email" 
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" required 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
                     </div>
 
@@ -339,7 +129,7 @@
             </div>
 
             <!-- Lista de Clientes -->
-            <div class="glass-effect rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
                         <span class="mr-2">📊</span>
@@ -347,18 +137,11 @@
                     </h2>
                     <div class="flex items-center space-x-2">
                         <span id="clientCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 clientes</span>
-                        <div class="flex space-x-2">
-                            <button id="importBtn" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
-                                <span class="mr-1">📤</span>
-                                Importar
-                            </button>
-                            <button id="exportBtn" 
-                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
-                                <span class="mr-1">📥</span>
-                                Exportar
-                            </button>
-                        </div>
+                        <button id="exportBtn" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
+                            <span class="mr-1">📥</span>
+                            Exportar
+                        </button>
                     </div>
                 </div>
 
@@ -383,7 +166,7 @@
         <div id="maintenanceContent" class="hidden">
             <div class="grid lg:grid-cols-2 gap-8">
                 <!-- Formulario de Mantenimiento -->
-                <div class="glass-effect rounded-xl shadow-lg p-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                         <span class="mr-2">🔧</span>
                         Registrar Mantenimiento
@@ -417,23 +200,143 @@
                             </select>
                         </div>
 
-                        <!-- Plantillas de trabajo -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Plantilla de Trabajo</label>
-                            <select id="workTemplate" 
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Trabajo</label>
+                            <textarea id="descripcionTrabajo" rows="4" required 
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" 
+                                      placeholder="Describe el trabajo realizado..."></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Costo ($)</label>
+                                <input type="number" id="costoMantenimiento" step="0.01" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Técnico</label>
+                                <input type="text" id="tecnico" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                            <span class="mr-2">✅</span>
+                            Registrar Mantenimiento
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Historial de Mantenimientos -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                            <span class="mr-2">📋</span>
+                            Historial de Mantenimientos
+                        </h2>
+                        <span id="maintenanceCount" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0 registros</span>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="mb-4 space-y-2">
+                        <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <select id="filterType" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Todos los tipos</option>
+                            <option value="Preventivo">Preventivo</option>
+                            <option value="Correctivo">Correctivo</option>
+                            <option value="Limpieza">Limpieza</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Reparación">Reparación</option>
+                        </select>
+                    </div>
+
+                    <!-- Lista de mantenimientos -->
+                    <div id="maintenanceList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center text-gray-500 py-8">
+                            <span class="text-4xl mb-2 block">🔧</span>
+                            <p>No hay mantenimientos registrados</p>
+                            <p class="text-sm">Registra el primer mantenimiento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de Recordatorios -->
+        <div id="alertsContent" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="mr-2">🔔</span>
+                    Recordatorios de Mantenimiento
+                </h2>
+                
+                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Información</h3>
+                    <p class="text-blue-700 text-sm">Los recordatorios se generan automáticamente cada 6 meses después del último mantenimiento registrado para cada cliente.</p>
+                </div>
+
+                <div id="alertsList" class="space-y-4">
+                    <div class="text-center text-gray-500 py-8">
+                        <span class="text-4xl mb-2 block">✅</span>
+                        <p>No hay recordatorios pendientes</p>
+                        <p class="text-sm">Todos los mantenimientos están al día</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
+            <div class="text-center">
+                <div class="text-4xl mb-4">✅</div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">¡Cliente Registrado!</h3>
+                <p class="text-gray-600 mb-4">El cliente ha sido agregado exitosamente</p>
+                <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
+                    Continuar
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenido de Mantenimientos -->
+        <div id="maintenanceContent" class="hidden">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Formulario de Mantenimiento -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="mr-2">🔧</span>
+                        Registrar Mantenimiento
+                    </h2>
+                    
+                    <form id="maintenanceForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                            <select id="clientSelect" required 
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Seleccionar plantilla (opcional)</option>
-                                <option value="Limpieza de filtros y serpentines, revisión de refrigerante, verificación de conexiones eléctricas">Mantenimiento Preventivo Completo</option>
-                                <option value="Limpieza profunda de filtros, serpentines y drenajes">Limpieza General</option>
-                                <option value="Revisión de presiones, temperatura, y funcionamiento general del sistema">Revisión Técnica</option>
-                                <option value="Reparación de fuga de refrigerante, soldadura y recarga">Reparación de Fugas</option>
-                                <option value="Cambio de compresor, pruebas de funcionamiento">Cambio de Compresor</option>
-                                <option value="Reparación de tarjeta electrónica, calibración de sensores">Reparación Electrónica</option>
-                                <option value="Cambio de capacitor, verificación de conexiones eléctricas y pruebas de funcionamiento">Cambio de Capacitor</option>
-                                <option value="Cambio de contactor, verificación de bobina y contactos, pruebas de operación">Cambio de Contactor</option>
-                                <option value="Cambio de termostato, calibración de temperatura y programación">Cambio de Termostato</option>
-                                <option value="Cambio de relay, verificación del circuito de control y pruebas">Cambio de Relay</option>
-                                <option value="Cambio de componentes eléctricos, revisión completa de conexiones y verificación de voltajes">Cambio de Componentes Eléctricos</option>
+                                <option value="">Seleccionar cliente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Mantenimiento</label>
+                            <input type="date" id="fechaMantenimiento" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Mantenimiento</label>
+                            <select id="tipoMantenimiento" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="Preventivo">Mantenimiento Preventivo</option>
+                                <option value="Correctivo">Mantenimiento Correctivo</option>
+                                <option value="Limpieza">Limpieza General</option>
+                                <option value="Revisión">Revisión Técnica</option>
+                                <option value="Reparación">Reparación</option>
                             </select>
                         </div>
 
@@ -457,17 +360,6 @@
                             </div>
                         </div>
 
-                        <!-- Estado de pago -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Estado de Pago</label>
-                            <select id="estadoPago" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="pendiente">💰 Pendiente de Pago</option>
-                                <option value="pagado">✅ Pagado</option>
-                                <option value="vencido">🚨 Pago Vencido</option>
-                            </select>
-                        </div>
-
                         <button type="submit" 
                                 class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
                             <span class="mr-2">✅</span>
@@ -477,7 +369,7 @@
                 </div>
 
                 <!-- Historial de Mantenimientos -->
-                <div class="glass-effect rounded-xl shadow-lg p-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
                             <span class="mr-2">📋</span>
@@ -490,24 +382,15 @@
                     <div class="mb-4 space-y-2">
                         <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        <div class="grid grid-cols-2 gap-2">
-                            <select id="filterType" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Todos los tipos</option>
-                                <option value="Preventivo">Preventivo</option>
-                                <option value="Correctivo">Correctivo</option>
-                                <option value="Limpieza">Limpieza</option>
-                                <option value="Revisión">Revisión</option>
-                                <option value="Reparación">Reparación</option>
-                            </select>
-                            <select id="filterPayment" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Todos los pagos</option>
-                                <option value="pagado">Pagados</option>
-                                <option value="pendiente">Pendientes</option>
-                                <option value="vencido">Vencidos</option>
-                            </select>
-                        </div>
+                        <select id="filterType" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Todos los tipos</option>
+                            <option value="Preventivo">Preventivo</option>
+                            <option value="Correctivo">Correctivo</option>
+                            <option value="Limpieza">Limpieza</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Reparación">Reparación</option>
+                        </select>
                     </div>
 
                     <!-- Lista de mantenimientos -->
@@ -522,60 +405,9 @@
             </div>
         </div>
 
-        <!-- Contenido del Calendario -->
-        <div id="calendarContent" class="hidden">
-            <div class="glass-effect rounded-xl shadow-lg p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                        <span class="mr-2">🗓️</span>
-                        Calendario de Mantenimientos
-                    </h2>
-                    <div class="flex items-center space-x-4">
-                        <button id="prevMonth" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
-                            ← Anterior
-                        </button>
-                        <span id="currentMonth" class="font-semibold text-lg"></span>
-                        <button id="nextMonth" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
-                            Siguiente →
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Leyenda -->
-                <div class="flex flex-wrap gap-4 mb-6 text-sm">
-                    <div class="flex items-center">
-                        <div class="w-4 h-4 bg-green-200 border-l-4 border-green-500 mr-2"></div>
-                        <span>Pagado</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-4 h-4 bg-yellow-200 border-l-4 border-yellow-500 mr-2"></div>
-                        <span>Pendiente</span>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-4 h-4 bg-red-200 border-l-4 border-red-500 mr-2"></div>
-                        <span>Vencido</span>
-                    </div>
-                </div>
-
-                <!-- Calendario -->
-                <div class="grid grid-cols-7 gap-1 mb-4">
-                    <div class="p-2 text-center font-semibold text-gray-600">Dom</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Lun</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Mar</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Mié</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Jue</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Vie</div>
-                    <div class="p-2 text-center font-semibold text-gray-600">Sáb</div>
-                </div>
-                <div id="calendarGrid" class="grid grid-cols-7 gap-1">
-                    <!-- Los días se generarán dinámicamente -->
-                </div>
-            </div>
-        </div>
-
         <!-- Contenido de Recordatorios -->
         <div id="alertsContent" class="hidden">
-            <div class="glass-effect rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
                     <span class="mr-2">🔔</span>
                     Recordatorios de Mantenimiento
@@ -595,260 +427,13 @@
                 </div>
             </div>
         </div>
-
-        <!-- Contenido de Configuración -->
-        <div id="settingsContent" class="hidden">
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Configuración del Sistema -->
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <span class="mr-2">⚙️</span>
-                        Configuración del Sistema
-                    </h2>
-                    
-                    <div class="space-y-6">
-                        <!-- Información del Sistema -->
-                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <h3 class="font-semibold text-blue-800 mb-3">📊 Estadísticas del Sistema</h3>
-                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <p class="text-blue-700"><strong>Total Clientes:</strong> <span id="statsClients">0</span></p>
-                                    <p class="text-blue-700"><strong>Total Mantenimientos:</strong> <span id="statsMaintenances">0</span></p>
-                                </div>
-                                <div>
-                                    <p class="text-blue-700"><strong>Datos guardados:</strong> <span id="dataSize">0 KB</span></p>
-                                    <p class="text-blue-700"><strong>Última actualización:</strong> <span id="lastUpdate">-</span></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Gestión de Datos -->
-                        <div class="space-y-4">
-                            <h3 class="font-semibold text-gray-800">🗄️ Gestión de Datos</h3>
-                            
-                            <button id="exportAllBtn" 
-                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                                <span class="mr-2">📥</span>
-                                Exportar Todos los Datos
-                            </button>
-                            
-                            <button id="backupBtn" 
-                                    class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                                <span class="mr-2">💾</span>
-                                Crear Respaldo
-                            </button>
-                            
-                            <div class="border-t pt-4">
-                                <h4 class="font-medium text-orange-800 mb-2">🔄 Recuperación de Datos</h4>
-                                <button id="recoverDataBtn" 
-                                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center mb-4">
-                                    <span class="mr-2">🔄</span>
-                                    Buscar y Recuperar Datos
-                                </button>
-                                
-                                <h4 class="font-medium text-red-800 mb-2">⚠️ Zona Peligrosa</h4>
-                                <button id="clearDataBtn" 
-                                        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                                    <span class="mr-2">🗑️</span>
-                                    Borrar Todos los Datos
-                                </button>
-                                <p class="text-red-600 text-xs mt-2">Esta acción no se puede deshacer</p>
-                            </div>
-                        </div>
-
-                        <!-- Configuración del Logo -->
-                        <div class="space-y-4 border-t pt-4">
-                            <h3 class="font-semibold text-gray-800">🎨 Personalización del Logo</h3>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Empresa</label>
-                                <input type="text" id="companyName" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                       placeholder="MI EMPRESA" maxlength="20">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Iniciales del Logo</label>
-                                <input type="text" id="logoInitials" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                       placeholder="ME" maxlength="3">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Color del Logo</label>
-                                <select id="logoColor" 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                    <option value="from-blue-600 to-red-600">Azul a Rojo (Predeterminado)</option>
-                                    <option value="from-green-600 to-blue-600">Verde a Azul</option>
-                                    <option value="from-purple-600 to-pink-600">Morado a Rosa</option>
-                                    <option value="from-orange-600 to-red-600">Naranja a Rojo</option>
-                                    <option value="from-indigo-600 to-purple-600">Índigo a Morado</option>
-                                    <option value="from-gray-700 to-gray-900">Gris Oscuro</option>
-                                </select>
-                            </div>
-                            
-                            <button id="updateLogoBtn" 
-                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                                <span class="mr-2">🎨</span>
-                                Actualizar Logo
-                            </button>
-                        </div>
-
-                        <!-- Configuración de Recordatorios -->
-                        <div class="space-y-4 border-t pt-4">
-                            <h3 class="font-semibold text-gray-800">🔔 Configuración de Recordatorios</h3>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Frecuencia de Mantenimiento (meses)</label>
-                                <select id="maintenanceFrequency" 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                    <option value="3">Cada 3 meses</option>
-                                    <option value="6" selected>Cada 6 meses</option>
-                                    <option value="12">Cada 12 meses</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Días de anticipación para recordatorio</label>
-                                <select id="reminderDays" 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                    <option value="15">15 días antes</option>
-                                    <option value="30" selected>30 días antes</option>
-                                    <option value="45">45 días antes</option>
-                                    <option value="60">60 días antes</option>
-                                </select>
-                            </div>
-                            
-                            <button id="saveSettingsBtn" 
-                                    class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                                <span class="mr-2">💾</span>
-                                Guardar Configuración
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Información de Acceso -->
-                <div class="glass-effect rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <span class="mr-2">🔓</span>
-                        Información de Acceso
-                    </h2>
-                    
-                    <div class="space-y-6">
-                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
-                            <h3 class="font-semibold text-green-800 mb-3">✅ Acceso Directo Activado</h3>
-                            <p class="text-green-700 text-sm mb-3">
-                                Esta versión del sistema no requiere usuario ni contraseña. El acceso es directo y automático.
-                            </p>
-                            <div class="text-sm text-green-600">
-                                <p><strong>🔹 Ventajas:</strong></p>
-                                <ul class="list-disc list-inside ml-4 space-y-1">
-                                    <li>Acceso inmediato sin credenciales</li>
-                                    <li>No hay riesgo de olvidar contraseñas</li>
-                                    <li>Inicio rápido del sistema</li>
-                                    <li>Ideal para uso personal o local</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <h3 class="font-semibold text-blue-800 mb-3">🔒 Seguridad de Datos</h3>
-                            <p class="text-blue-700 text-sm mb-3">
-                                Todos tus datos se guardan localmente en tu navegador y están protegidos por:
-                            </p>
-                            <div class="text-sm text-blue-600">
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li>Almacenamiento local del navegador</li>
-                                    <li>Respaldos automáticos</li>
-                                    <li>Funciones de exportación e importación</li>
-                                    <li>Recuperación automática de datos</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                            <h3 class="font-semibold text-yellow-800 mb-3">⚠️ Recomendaciones</h3>
-                            <div class="text-sm text-yellow-700 space-y-2">
-                                <p><strong>Para mayor seguridad:</strong></p>
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li>Crea respaldos regulares de tus datos</li>
-                                    <li>No uses este sistema en computadoras públicas</li>
-                                    <li>Mantén tu navegador actualizado</li>
-                                    <li>Considera usar la versión con login para entornos compartidos</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <h3 class="font-semibold text-gray-800 mb-3">📋 Funciones Disponibles</h3>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <p>✅ Gestión completa de clientes</p>
-                                <p>✅ Registro de mantenimientos</p>
-                                <p>✅ Calendario visual</p>
-                                <p>✅ Recordatorios automáticos</p>
-                                <p>✅ Dashboard con estadísticas</p>
-                                <p>✅ Exportación e importación de datos</p>
-                                <p>✅ Personalización del sistema</p>
-                                <p>✅ Respaldos y recuperación</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Input oculto para importar archivos -->
-    <input type="file" id="importFileInput" accept=".json,.csv" style="display: none;">
-
-    <!-- Modal de confirmación -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="glass-effect rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
-            <div class="text-center">
-                <div class="text-4xl mb-4">✅</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2" id="modalTitle">¡Registro Exitoso!</h3>
-                <p class="text-gray-600 mb-4" id="modalMessage">El registro ha sido agregado exitosamente</p>
-                <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
-                    Continuar
-                </button>
-            </div>
-        </div>
     </div>
 
     <script>
-        // Sistema sin autenticación - acceso directo
-        let systemSettings = JSON.parse(localStorage.getItem('systemSettings')) || {
-            maintenanceFrequency: 6,
-            reminderDays: 30,
-            companyName: 'MI EMPRESA',
-            logoInitials: 'ME',
-            logoColor: 'from-blue-600 to-red-600'
-        };
-
-        // Preservar datos existentes y agregar nuevas funcionalidades
         let clients = JSON.parse(localStorage.getItem('clients')) || [];
         let clientIdCounter = parseInt(localStorage.getItem('clientIdCounter')) || 1;
         let maintenances = JSON.parse(localStorage.getItem('maintenances')) || [];
         let maintenanceIdCounter = parseInt(localStorage.getItem('maintenanceIdCounter')) || 1;
-        
-        // Migrar datos existentes si es necesario
-        clients.forEach(client => {
-            if (!client.fechaRegistro) {
-                client.fechaRegistro = new Date().toLocaleDateString('es-ES');
-            }
-        });
-        
-        maintenances.forEach(maintenance => {
-            if (!maintenance.estadoPago) {
-                maintenance.estadoPago = 'pendiente';
-            }
-            if (!maintenance.fechaRegistro) {
-                maintenance.fechaRegistro = new Date().toISOString();
-            }
-        });
-        let currentDate = new Date();
 
         // Elementos del DOM
         const clientForm = document.getElementById('clientForm');
@@ -858,37 +443,14 @@
         const successModal = document.getElementById('successModal');
         const closeModal = document.getElementById('closeModal');
         const exportBtn = document.getElementById('exportBtn');
-        const importBtn = document.getElementById('importBtn');
-        const importFileInput = document.getElementById('importFileInput');
 
         // Elementos de pestañas
-        const dashboardTab = document.getElementById('dashboardTab');
         const clientsTab = document.getElementById('clientsTab');
         const maintenanceTab = document.getElementById('maintenanceTab');
-        const calendarTab = document.getElementById('calendarTab');
         const alertsTab = document.getElementById('alertsTab');
-        const settingsTab = document.getElementById('settingsTab');
-        const dashboardContent = document.getElementById('dashboardContent');
         const clientsContent = document.getElementById('clientsContent');
         const maintenanceContent = document.getElementById('maintenanceContent');
-        const calendarContent = document.getElementById('calendarContent');
         const alertsContent = document.getElementById('alertsContent');
-        const settingsContent = document.getElementById('settingsContent');
-
-        // Elementos de configuración
-        const exportAllBtn = document.getElementById('exportAllBtn');
-        const backupBtn = document.getElementById('backupBtn');
-        const clearDataBtn = document.getElementById('clearDataBtn');
-        const recoverDataBtn = document.getElementById('recoverDataBtn');
-        const maintenanceFrequency = document.getElementById('maintenanceFrequency');
-        const reminderDays = document.getElementById('reminderDays');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        
-        // Elementos del logo
-        const companyName = document.getElementById('companyName');
-        const logoInitials = document.getElementById('logoInitials');
-        const logoColor = document.getElementById('logoColor');
-        const updateLogoBtn = document.getElementById('updateLogoBtn');
 
         // Elementos de mantenimiento
         const maintenanceForm = document.getElementById('maintenanceForm');
@@ -897,149 +459,40 @@
         const maintenanceCount = document.getElementById('maintenanceCount');
         const searchMaintenance = document.getElementById('searchMaintenance');
         const filterType = document.getElementById('filterType');
-        const filterPayment = document.getElementById('filterPayment');
         const alertsList = document.getElementById('alertsList');
         const alertBadge = document.getElementById('alertBadge');
-        const workTemplate = document.getElementById('workTemplate');
 
-        // Elementos del calendario
-        const prevMonth = document.getElementById('prevMonth');
-        const nextMonth = document.getElementById('nextMonth');
-        const currentMonth = document.getElementById('currentMonth');
-        const calendarGrid = document.getElementById('calendarGrid');
-
-        // Variables para gráficos
-        let revenueChart = null;
-        let maintenanceChart = null;
-
-        // Función para guardar en localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
-            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
-            localStorage.setItem('maintenances', JSON.stringify(maintenances));
-            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
-            localStorage.setItem('lastUpdate', new Date().toLocaleString('es-ES'));
-        }
-
-        // Función de recuperación automática al iniciar
-        function autoRecoverData() {
-            // Verificar si hay datos perdidos
-            if (clients.length === 0 && maintenances.length === 0) {
-                // Buscar respaldos automáticos
-                const allKeys = Object.keys(localStorage);
-                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort().reverse();
-                
-                if (backupKeys.length > 0) {
-                    try {
-                        const latestBackup = JSON.parse(localStorage.getItem(backupKeys[0]));
-                        if (latestBackup.clients && latestBackup.clients.length > 0) {
-                            console.log('🔄 Recuperando datos automáticamente...');
-                            
-                            // Recuperar clientes
-                            latestBackup.clients.forEach(client => {
-                                clients.push({...client, id: clientIdCounter++});
-                            });
-                            
-                            // Recuperar mantenimientos
-                            if (latestBackup.maintenances) {
-                                latestBackup.maintenances.forEach(maintenance => {
-                                    maintenances.push({...maintenance, id: maintenanceIdCounter++});
-                                });
-                            }
-                            
-                            saveToLocalStorage();
-                            console.log(`✅ Recuperados ${clients.length} clientes y ${maintenances.length} mantenimientos`);
-                        }
-                    } catch (error) {
-                        console.log('Error en recuperación automática:', error);
-                    }
-                }
-            }
-        }
-
-        // Crear respaldos automáticos
-        function createAutoBackup() {
-            if (clients.length > 0 || maintenances.length > 0) {
-                const backup = {
-                    clients: clients,
-                    maintenances: maintenances,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Mantener solo los últimos 3 respaldos
-                const allKeys = Object.keys(localStorage);
-                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort();
-                
-                if (backupKeys.length >= 3) {
-                    localStorage.removeItem(backupKeys[0]);
-                }
-                
-                const backupKey = `auto_backup_${Date.now()}`;
-                localStorage.setItem(backupKey, JSON.stringify(backup));
-                
-                // También guardar en sessionStorage como respaldo temporal
-                sessionStorage.setItem('clients_session', JSON.stringify(clients));
-                sessionStorage.setItem('maintenances_session', JSON.stringify(maintenances));
-            }
-        }
-
-        // Inicializar la aplicación - ACCESO DIRECTO
+        // Inicializar la aplicación
         function init() {
-            // Recuperación automática al iniciar
-            autoRecoverData();
-            
-            // Mostrar sistema principal directamente (sin login)
-            showMainSystem();
-        }
-
-        // Mostrar sistema principal
-        function showMainSystem() {
-            // Inicializar datos
             renderClients();
             updateClientCount();
             updateClientSelect();
             renderMaintenances();
             updateMaintenanceCount();
             checkMaintenanceAlerts();
-            updateDashboard();
-            renderCalendar();
-            loadSettings();
-            updateSystemStats();
             
             // Configurar fecha por defecto para mantenimiento
             document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
-            
-            // Aplicar configuración del logo
-            updateLogoDisplay();
         }
 
         // Navegación entre pestañas
-        dashboardTab.addEventListener('click', () => switchTab('dashboard'));
         clientsTab.addEventListener('click', () => switchTab('clients'));
         maintenanceTab.addEventListener('click', () => switchTab('maintenance'));
-        calendarTab.addEventListener('click', () => switchTab('calendar'));
         alertsTab.addEventListener('click', () => switchTab('alerts'));
-        settingsTab.addEventListener('click', () => switchTab('settings'));
 
         function switchTab(tab) {
             // Resetear todas las pestañas
-            [dashboardTab, clientsTab, maintenanceTab, calendarTab, alertsTab, settingsTab].forEach(t => {
+            [clientsTab, maintenanceTab, alertsTab].forEach(t => {
                 t.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
                 t.classList.add('text-gray-600');
             });
             
-            [dashboardContent, clientsContent, maintenanceContent, calendarContent, alertsContent, settingsContent].forEach(c => {
+            [clientsContent, maintenanceContent, alertsContent].forEach(c => {
                 c.classList.add('hidden');
             });
 
             // Activar pestaña seleccionada
             switch(tab) {
-                case 'dashboard':
-                    dashboardTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    dashboardTab.classList.remove('text-gray-600');
-                    dashboardContent.classList.remove('hidden');
-                    updateDashboard();
-                    break;
                 case 'clients':
                     clientsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
                     clientsTab.classList.remove('text-gray-600');
@@ -1051,34 +504,14 @@
                     maintenanceContent.classList.remove('hidden');
                     updateClientSelect();
                     break;
-                case 'calendar':
-                    calendarTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    calendarTab.classList.remove('text-gray-600');
-                    calendarContent.classList.remove('hidden');
-                    renderCalendar();
-                    break;
                 case 'alerts':
                     alertsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
                     alertsTab.classList.remove('text-gray-600');
                     alertsContent.classList.remove('hidden');
                     checkMaintenanceAlerts();
                     break;
-                case 'settings':
-                    settingsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    settingsTab.classList.remove('text-gray-600');
-                    settingsContent.classList.remove('hidden');
-                    loadSettings();
-                    updateSystemStats();
-                    break;
             }
         }
-
-        // Plantillas de trabajo
-        workTemplate.addEventListener('change', function() {
-            if (this.value) {
-                document.getElementById('descripcionTrabajo').value = this.value;
-            }
-        });
 
         // Manejar envío del formulario
         clientForm.addEventListener('submit', function(e) {
@@ -1088,7 +521,7 @@
                 id: clientIdCounter++,
                 nombre: document.getElementById('nombre').value,
                 apellido: document.getElementById('apellido').value,
-                email: document.getElementById('email').value || 'No especificado',
+                email: document.getElementById('email').value,
                 telefono: document.getElementById('telefono').value,
                 direccion: document.getElementById('direccion').value,
                 ciudad: document.getElementById('ciudad').value,
@@ -1101,19 +534,15 @@
 
             clients.unshift(newClient);
             saveToLocalStorage();
-            createAutoBackup(); // Crear respaldo automático
             renderClients();
             updateClientCount();
             updateClientSelect();
-            updateDashboard();
             clientForm.reset();
-            showSuccessModal('¡Cliente Registrado!', 'El cliente ha sido agregado exitosamente');
+            showSuccessModal();
         });
 
         // Mostrar modal de éxito
-        function showSuccessModal(title = '¡Registro Exitoso!', message = 'El registro ha sido agregado exitosamente') {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').textContent = message;
+        function showSuccessModal() {
             successModal.classList.remove('hidden');
             successModal.classList.add('flex');
         }
@@ -1140,7 +569,6 @@
                 descripcion: document.getElementById('descripcionTrabajo').value,
                 costo: parseFloat(document.getElementById('costoMantenimiento').value) || 0,
                 tecnico: document.getElementById('tecnico').value || 'No especificado',
-                estadoPago: document.getElementById('estadoPago').value,
                 fechaRegistro: new Date().toISOString()
             };
 
@@ -1149,278 +577,12 @@
             
             maintenances.unshift(newMaintenance);
             saveToLocalStorage();
-            createAutoBackup(); // Crear respaldo automático
             renderMaintenances();
             updateMaintenanceCount();
             checkMaintenanceAlerts();
-            updateDashboard();
-            renderCalendar();
             maintenanceForm.reset();
             document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
-            document.getElementById('estadoPago').value = 'pendiente';
-            showSuccessModal('¡Mantenimiento Registrado!', 'El mantenimiento ha sido registrado exitosamente');
-        });
-
-        // Actualizar Dashboard
-        function updateDashboard() {
-            // Métricas principales
-            document.getElementById('totalClients').textContent = clients.length;
-            document.getElementById('totalMaintenances').textContent = maintenances.length;
-            
-            // Ingresos del mes actual
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
-            const monthlyRevenue = maintenances
-                .filter(m => {
-                    const date = new Date(m.fecha);
-                    return date.getMonth() === currentMonth && 
-                           date.getFullYear() === currentYear &&
-                           m.estadoPago === 'pagado';
-                })
-                .reduce((sum, m) => sum + m.costo, 0);
-            
-            document.getElementById('monthlyRevenue').textContent = `$${monthlyRevenue.toFixed(2)}`;
-            
-            // Pagos pendientes
-            const pendingPayments = maintenances
-                .filter(m => m.estadoPago === 'pendiente' || m.estadoPago === 'vencido')
-                .reduce((sum, m) => sum + m.costo, 0);
-            
-            document.getElementById('pendingPayments').textContent = `$${pendingPayments.toFixed(2)}`;
-            
-            // Actualizar gráficos
-            updateCharts();
-            updateTopClients();
-        }
-
-        // Actualizar gráficos
-        function updateCharts() {
-            // Gráfico de ingresos por mes
-            const revenueData = getRevenueByMonth();
-            if (revenueChart) {
-                revenueChart.destroy();
-            }
-            
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            revenueChart = new Chart(revenueCtx, {
-                type: 'line',
-                data: {
-                    labels: revenueData.labels,
-                    datasets: [{
-                        label: 'Ingresos ($)',
-                        data: revenueData.data,
-                        borderColor: 'rgb(59, 130, 246)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de tipos de mantenimiento
-            const maintenanceData = getMaintenanceByType();
-            if (maintenanceChart) {
-                maintenanceChart.destroy();
-            }
-            
-            const maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
-            maintenanceChart = new Chart(maintenanceCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: maintenanceData.labels,
-                    datasets: [{
-                        data: maintenanceData.data,
-                        backgroundColor: [
-                            '#10b981',
-                            '#f59e0b',
-                            '#3b82f6',
-                            '#ef4444',
-                            '#8b5cf6'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
-
-        // Obtener datos de ingresos por mes
-        function getRevenueByMonth() {
-            const monthlyData = {};
-            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-            
-            // Inicializar últimos 6 meses
-            for (let i = 5; i >= 0; i--) {
-                const date = new Date();
-                date.setMonth(date.getMonth() - i);
-                const key = `${date.getFullYear()}-${date.getMonth()}`;
-                monthlyData[key] = 0;
-            }
-            
-            // Sumar ingresos pagados
-            maintenances
-                .filter(m => m.estadoPago === 'pagado')
-                .forEach(m => {
-                    const date = new Date(m.fecha);
-                    const key = `${date.getFullYear()}-${date.getMonth()}`;
-                    if (monthlyData.hasOwnProperty(key)) {
-                        monthlyData[key] += m.costo;
-                    }
-                });
-            
-            const labels = Object.keys(monthlyData).map(key => {
-                const [year, month] = key.split('-');
-                return months[parseInt(month)];
-            });
-            
-            const data = Object.values(monthlyData);
-            
-            return { labels, data };
-        }
-
-        // Obtener datos de mantenimientos por tipo
-        function getMaintenanceByType() {
-            const typeData = {};
-            
-            maintenances.forEach(m => {
-                typeData[m.tipo] = (typeData[m.tipo] || 0) + 1;
-            });
-            
-            return {
-                labels: Object.keys(typeData),
-                data: Object.values(typeData)
-            };
-        }
-
-        // Actualizar clientes más frecuentes
-        function updateTopClients() {
-            const clientFrequency = {};
-            
-            maintenances.forEach(m => {
-                clientFrequency[m.clientName] = (clientFrequency[m.clientName] || 0) + 1;
-            });
-            
-            const sortedClients = Object.entries(clientFrequency)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5);
-            
-            const topClientsElement = document.getElementById('topClients');
-            
-            if (sortedClients.length === 0) {
-                topClientsElement.innerHTML = '<p class="text-gray-500 text-center py-4">No hay datos suficientes aún</p>';
-                return;
-            }
-            
-            topClientsElement.innerHTML = sortedClients.map(([name, count], index) => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center">
-                        <span class="text-2xl mr-3">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '⭐'}</span>
-                        <span class="font-medium">${name}</span>
-                    </div>
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">${count} mantenimientos</span>
-                </div>
-            `).join('');
-        }
-
-        // Renderizar calendario
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            // Actualizar título del mes
-            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                               'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            currentMonth.textContent = `${monthNames[month]} ${year}`;
-            
-            // Obtener primer día del mes y número de días
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            
-            // Limpiar calendario
-            calendarGrid.innerHTML = '';
-            
-            // Días vacíos al inicio
-            for (let i = 0; i < firstDay; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day bg-gray-50';
-                calendarGrid.appendChild(emptyDay);
-            }
-            
-            // Días del mes
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day bg-white p-2';
-                
-                const dayNumber = document.createElement('div');
-                dayNumber.className = 'font-semibold text-sm mb-1';
-                dayNumber.textContent = day;
-                dayElement.appendChild(dayNumber);
-                
-                // Buscar mantenimientos para este día
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayMaintenances = maintenances.filter(m => m.fecha === dateStr);
-                
-                dayMaintenances.forEach(maintenance => {
-                    const event = document.createElement('div');
-                    event.className = `calendar-event ${getPaymentStatusClass(maintenance.estadoPago)}`;
-                    event.textContent = maintenance.clientName.split(' ')[0]; // Solo primer nombre
-                    event.title = `${maintenance.clientName} - ${maintenance.tipo} - $${maintenance.costo}`;
-                    event.onclick = () => showMaintenanceDetails(maintenance);
-                    dayElement.appendChild(event);
-                });
-                
-                calendarGrid.appendChild(dayElement);
-            }
-        }
-
-        // Obtener clase CSS para estado de pago
-        function getPaymentStatusClass(status) {
-            switch(status) {
-                case 'pagado': return 'bg-green-200 text-green-800';
-                case 'pendiente': return 'bg-yellow-200 text-yellow-800';
-                case 'vencido': return 'bg-red-200 text-red-800';
-                default: return 'bg-gray-200 text-gray-800';
-            }
-        }
-
-        // Mostrar detalles del mantenimiento
-        function showMaintenanceDetails(maintenance) {
-            const statusText = {
-                'pagado': '✅ Pagado',
-                'pendiente': '💰 Pendiente',
-                'vencido': '🚨 Vencido'
-            };
-            
-            alert(`Cliente: ${maintenance.clientName}\nTipo: ${maintenance.tipo}\nDescripción: ${maintenance.descripcion}\nCosto: $${maintenance.costo}\nTécnico: ${maintenance.tecnico}\nEstado: ${statusText[maintenance.estadoPago]}`);
-        }
-
-        // Navegación del calendario
-        prevMonth.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-
-        nextMonth.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
+            showSuccessModal();
         });
 
         // Renderizar lista de clientes
@@ -1442,7 +604,7 @@
                         <div class="flex-1">
                             <h3 class="font-semibold text-gray-800 text-lg">${client.nombre} ${client.apellido}</h3>
                             <div class="text-sm text-gray-600 mt-1 space-y-1">
-                                ${client.email !== 'No especificado' ? `<p><span class="font-medium">📧</span> ${client.email}</p>` : ''}
+                                <p><span class="font-medium">📧</span> ${client.email}</p>
                                 <p><span class="font-medium">📱</span> ${client.telefono}</p>
                                 <p><span class="font-medium">🏠</span> ${client.direccion}</p>
                                 <p><span class="font-medium">📍</span> ${client.ciudad}</p>
@@ -1467,10 +629,8 @@
             if (confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
                 clients = clients.filter(client => client.id !== id);
                 saveToLocalStorage();
-                createAutoBackup(); // Crear respaldo automático
                 renderClients();
                 updateClientCount();
-                updateDashboard();
                 
                 // Si hay una búsqueda activa, actualizar resultados
                 if (searchInput.value) {
@@ -1500,35 +660,6 @@
             );
             renderClients(filteredClients);
         }
-
-        // Importar datos
-        importBtn.addEventListener('click', function() {
-            importFileInput.click();
-        });
-
-        importFileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const content = event.target.result;
-                    
-                    if (file.name.endsWith('.json')) {
-                        importFromJSON(content);
-                    } else if (file.name.endsWith('.csv')) {
-                        importFromCSV(content);
-                    }
-                } catch (error) {
-                    alert('Error al leer el archivo: ' + error.message);
-                }
-            };
-            
-            reader.readAsText(file);
-            // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
-            e.target.value = '';
-        });
 
         // Exportar datos
         exportBtn.addEventListener('click', function() {
@@ -1588,18 +719,12 @@
             }
 
             maintenanceList.innerHTML = maintenancesToRender.map(maintenance => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in ${getMaintenanceStatusClass(maintenance.estadoPago)}">
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="font-semibold text-gray-800 text-lg">${maintenance.clientName}</h3>
-                                <div class="flex items-center space-x-2">
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium ${getMaintenanceTypeColor(maintenance.tipo)}">${maintenance.tipo}</span>
-                                    <button onclick="togglePaymentStatus(${maintenance.id})" 
-                                            class="px-3 py-1 rounded-full text-xs font-medium ${getPaymentButtonColor(maintenance.estadoPago)} hover:opacity-80 transition-opacity">
-                                        ${getPaymentStatusText(maintenance.estadoPago)}
-                                    </button>
-                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium ${getMaintenanceTypeColor(maintenance.tipo)}">${maintenance.tipo}</span>
                             </div>
                             <div class="text-sm text-gray-600 space-y-1">
                                 <p><span class="font-medium">📅</span> ${new Date(maintenance.fecha).toLocaleDateString('es-ES')}</p>
@@ -1615,59 +740,6 @@
                     </div>
                 </div>
             `).join('');
-        }
-
-        // Obtener clase CSS para estado de mantenimiento
-        function getMaintenanceStatusClass(status) {
-            switch(status) {
-                case 'pagado': return 'maintenance-paid';
-                case 'pendiente': return 'maintenance-pending';
-                case 'vencido': return 'maintenance-overdue';
-                default: return '';
-            }
-        }
-
-        // Obtener color para botón de pago
-        function getPaymentButtonColor(status) {
-            switch(status) {
-                case 'pagado': return 'bg-green-100 text-green-800';
-                case 'pendiente': return 'bg-yellow-100 text-yellow-800';
-                case 'vencido': return 'bg-red-100 text-red-800';
-                default: return 'bg-gray-100 text-gray-800';
-            }
-        }
-
-        // Obtener texto para estado de pago
-        function getPaymentStatusText(status) {
-            switch(status) {
-                case 'pagado': return '✅ Pagado';
-                case 'pendiente': return '💰 Pendiente';
-                case 'vencido': return '🚨 Vencido';
-                default: return 'Sin estado';
-            }
-        }
-
-        // Cambiar estado de pago
-        function togglePaymentStatus(id) {
-            const maintenance = maintenances.find(m => m.id === id);
-            if (!maintenance) return;
-            
-            const statusOrder = ['pendiente', 'pagado', 'vencido'];
-            const currentIndex = statusOrder.indexOf(maintenance.estadoPago);
-            const nextIndex = (currentIndex + 1) % statusOrder.length;
-            
-            maintenance.estadoPago = statusOrder[nextIndex];
-            
-            saveToLocalStorage();
-            createAutoBackup(); // Crear respaldo automático
-            renderMaintenances();
-            updateDashboard();
-            renderCalendar();
-            
-            // Si hay filtros activos, actualizar resultados
-            if (searchMaintenance.value || filterType.value || filterPayment.value) {
-                searchMaintenances();
-            }
         }
 
         // Obtener color para tipo de mantenimiento
@@ -1687,14 +759,11 @@
             if (confirm('¿Estás seguro de que quieres eliminar este registro de mantenimiento?')) {
                 maintenances = maintenances.filter(m => m.id !== id);
                 saveToLocalStorage();
-                createAutoBackup(); // Crear respaldo automático
                 renderMaintenances();
                 updateMaintenanceCount();
                 checkMaintenanceAlerts();
-                updateDashboard();
-                renderCalendar();
                 
-                if (searchMaintenance.value || filterType.value || filterPayment.value) {
+                if (searchMaintenance.value || filterType.value) {
                     searchMaintenances();
                 }
             }
@@ -1709,54 +778,41 @@
         // Buscar mantenimientos
         searchMaintenance.addEventListener('input', searchMaintenances);
         filterType.addEventListener('change', searchMaintenances);
-        filterPayment.addEventListener('change', searchMaintenances);
 
         function searchMaintenances() {
             const searchTerm = searchMaintenance.value.toLowerCase();
             const typeFilter = filterType.value;
-            const paymentFilter = filterPayment.value;
             
             const filteredMaintenances = maintenances.filter(maintenance => {
                 const matchesSearch = maintenance.clientName.toLowerCase().includes(searchTerm) ||
                                     maintenance.descripcion.toLowerCase().includes(searchTerm) ||
                                     maintenance.tecnico.toLowerCase().includes(searchTerm);
                 const matchesType = !typeFilter || maintenance.tipo === typeFilter;
-                const matchesPayment = !paymentFilter || maintenance.estadoPago === paymentFilter;
                 
-                return matchesSearch && matchesType && matchesPayment;
+                return matchesSearch && matchesType;
             });
             
             renderMaintenances(filteredMaintenances);
         }
 
-        // Event Listeners para configuración
-        exportAllBtn.addEventListener('click', exportAllData);
-        backupBtn.addEventListener('click', createBackup);
-        clearDataBtn.addEventListener('click', clearAllData);
-        recoverDataBtn.addEventListener('click', manualDataRecovery);
-        saveSettingsBtn.addEventListener('click', saveSystemSettings);
-        updateLogoBtn.addEventListener('click', updateCompanyLogo);
-
         // Verificar recordatorios de mantenimiento
         function checkMaintenanceAlerts() {
             const today = new Date();
             const alerts = [];
-            const frequency = systemSettings.maintenanceFrequency;
-            const reminderDays = systemSettings.reminderDays;
 
             clients.forEach(client => {
                 if (client.ultimoMantenimiento) {
                     const lastMaintenance = new Date(client.ultimoMantenimiento);
-                    const nextMaintenance = new Date(lastMaintenance);
-                    nextMaintenance.setMonth(nextMaintenance.getMonth() + frequency);
+                    const sixMonthsLater = new Date(lastMaintenance);
+                    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
                     
-                    const daysDiff = Math.ceil((nextMaintenance - today) / (1000 * 60 * 60 * 24));
+                    const daysDiff = Math.ceil((sixMonthsLater - today) / (1000 * 60 * 60 * 24));
                     
-                    if (daysDiff <= reminderDays) {
+                    if (daysDiff <= 30) { // Mostrar alerta 30 días antes
                         alerts.push({
                             client: client,
                             lastMaintenance: lastMaintenance,
-                            nextMaintenance: nextMaintenance,
+                            nextMaintenance: sixMonthsLater,
                             daysRemaining: daysDiff,
                             isOverdue: daysDiff < 0
                         });
@@ -1834,431 +890,16 @@
             document.getElementById('descripcionTrabajo').focus();
         }
 
-        function loadSettings() {
-            maintenanceFrequency.value = systemSettings.maintenanceFrequency;
-            reminderDays.value = systemSettings.reminderDays;
-            companyName.value = systemSettings.companyName;
-            logoInitials.value = systemSettings.logoInitials;
-            logoColor.value = systemSettings.logoColor;
-            
-            // Aplicar configuración actual del logo
-            updateLogoDisplay();
+        // Guardar en localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('clients', JSON.stringify(clients));
+            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
+            localStorage.setItem('maintenances', JSON.stringify(maintenances));
+            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
         }
 
-        function saveSystemSettings() {
-            systemSettings.maintenanceFrequency = parseInt(maintenanceFrequency.value);
-            systemSettings.reminderDays = parseInt(reminderDays.value);
-            
-            localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
-            
-            // Actualizar recordatorios con nueva configuración
-            checkMaintenanceAlerts();
-            
-            showSuccessModal('¡Configuración Guardada!', 'La configuración del sistema ha sido actualizada');
-        }
-
-        // Funciones del logo
-        function updateCompanyLogo() {
-            const newName = companyName.value.trim() || 'MI EMPRESA';
-            const newInitials = logoInitials.value.trim().toUpperCase() || 'ME';
-            const newColor = logoColor.value;
-            
-            // Validar iniciales (máximo 3 caracteres)
-            if (newInitials.length > 3) {
-                alert('Las iniciales no pueden tener más de 3 caracteres');
-                return;
-            }
-            
-            // Actualizar configuración
-            systemSettings.companyName = newName;
-            systemSettings.logoInitials = newInitials;
-            systemSettings.logoColor = newColor;
-            
-            localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
-            
-            // Actualizar display
-            updateLogoDisplay();
-            
-            showSuccessModal('¡Logo Actualizado!', 'El logo de la empresa ha sido personalizado exitosamente');
-        }
-
-        function updateLogoDisplay() {
-            // Actualizar todos los logos en la página
-            const logos = document.querySelectorAll('.w-16.h-16, .company-logo');
-            logos.forEach(logo => {
-                // Actualizar clases de color
-                logo.className = logo.className.replace(/from-\w+-\d+ to-\w+-\d+/g, systemSettings.logoColor);
-                if (!logo.className.includes(systemSettings.logoColor)) {
-                    logo.className = logo.className.replace(/bg-gradient-to-br \S+/, `bg-gradient-to-br ${systemSettings.logoColor}`);
-                }
-                
-                // Actualizar texto de iniciales
-                const textElement = logo.querySelector('span');
-                if (textElement) {
-                    textElement.textContent = systemSettings.logoInitials;
-                }
-            });
-            
-            // Actualizar nombre de la empresa en headers
-            const companyHeaders = document.querySelectorAll('h1');
-            companyHeaders.forEach(header => {
-                if (header.textContent.includes('MI EMPRESA')) {
-                    header.textContent = header.textContent.replace('MI EMPRESA', systemSettings.companyName);
-                }
-            });
-            
-            // Actualizar logo del header principal
-            const mainLogo = document.querySelector('.flex.items-center .w-16.h-16');
-            if (mainLogo) {
-                mainLogo.className = `w-16 h-16 bg-gradient-to-br ${systemSettings.logoColor} rounded-xl flex items-center justify-center shadow-lg`;
-                const logoText = mainLogo.querySelector('span');
-                if (logoText) {
-                    logoText.textContent = systemSettings.logoInitials;
-                }
-            }
-        }
-
-        function updateSystemStats() {
-            document.getElementById('statsClients').textContent = clients.length;
-            document.getElementById('statsMaintenances').textContent = maintenances.length;
-            
-            // Calcular tamaño de datos
-            const dataString = JSON.stringify({clients, maintenances, systemSettings});
-            const dataSize = (new Blob([dataString]).size / 1024).toFixed(2);
-            document.getElementById('dataSize').textContent = `${dataSize} KB`;
-            
-            // Última actualización
-            const lastUpdate = localStorage.getItem('lastUpdate') || 'Nunca';
-            document.getElementById('lastUpdate').textContent = lastUpdate;
-        }
-
-        function exportAllData() {
-            if (clients.length === 0 && maintenances.length === 0) {
-                alert('No hay datos para exportar');
-                return;
-            }
-
-            const allData = {
-                clients: clients,
-                maintenances: maintenances,
-                exportDate: new Date().toISOString(),
-                version: '1.0'
-            };
-
-            const dataStr = JSON.stringify(allData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `sistema_completo_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            
-            showSuccessModal('¡Datos Exportados!', 'Todos los datos han sido exportados exitosamente');
-        }
-
-        function createBackup() {
-            const backup = {
-                clients: clients,
-                maintenances: maintenances,
-                systemSettings: systemSettings,
-                backupDate: new Date().toISOString(),
-                version: '1.0'
-            };
-
-            const backupStr = JSON.stringify(backup, null, 2);
-            const blob = new Blob([backupStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `respaldo_completo_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            
-            showSuccessModal('¡Respaldo Creado!', 'El respaldo completo ha sido creado exitosamente');
-        }
-
-        function clearAllData() {
-            const confirmMessage = `⚠️ ADVERTENCIA CRÍTICA ⚠️
-
-Esta acción eliminará PERMANENTEMENTE:
-• ${clients.length} clientes registrados
-• ${maintenances.length} mantenimientos
-• Todas las configuraciones personalizadas
-• Todos los respaldos automáticos
-
-Esta acción NO SE PUEDE DESHACER.
-
-¿Estás COMPLETAMENTE SEGURO de que quieres continuar?
-
-Escribe "ELIMINAR TODO" para confirmar:`;
-
-            const confirmation = prompt(confirmMessage);
-            
-            if (confirmation === 'ELIMINAR TODO') {
-                // Limpiar todos los datos
-                clients.length = 0;
-                maintenances.length = 0;
-                clientIdCounter = 1;
-                maintenanceIdCounter = 1;
-                
-                // Limpiar localStorage
-                localStorage.removeItem('clients');
-                localStorage.removeItem('maintenances');
-                localStorage.removeItem('clientIdCounter');
-                localStorage.removeItem('maintenanceIdCounter');
-                localStorage.removeItem('lastUpdate');
-                
-                // Limpiar respaldos automáticos
-                const allKeys = Object.keys(localStorage);
-                const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_'));
-                backupKeys.forEach(key => localStorage.removeItem(key));
-                
-                // Limpiar sessionStorage
-                sessionStorage.removeItem('clients_session');
-                sessionStorage.removeItem('maintenances_session');
-                
-                // Actualizar interfaz
-                renderClients();
-                updateClientCount();
-                updateClientSelect();
-                renderMaintenances();
-                updateMaintenanceCount();
-                checkMaintenanceAlerts();
-                updateDashboard();
-                renderCalendar();
-                updateSystemStats();
-                
-                alert('✅ Todos los datos han sido eliminados correctamente.\n\nEl sistema ha sido reiniciado completamente.');
-            } else {
-                alert('❌ Operación cancelada. Los datos permanecen seguros.');
-            }
-        }
-
-        function manualDataRecovery() {
-            let recoveredData = [];
-            let totalRecovered = 0;
-            
-            // Buscar respaldos automáticos
-            const allKeys = Object.keys(localStorage);
-            const backupKeys = allKeys.filter(key => key.startsWith('auto_backup_')).sort().reverse();
-            
-            if (backupKeys.length > 0) {
-                let backupOptions = '🔍 Respaldos automáticos encontrados:\n\n';
-                
-                backupKeys.forEach((key, index) => {
-                    try {
-                        const backup = JSON.parse(localStorage.getItem(key));
-                        const date = new Date(backup.timestamp).toLocaleString('es-ES');
-                        backupOptions += `${index + 1}. ${date} - ${backup.clients?.length || 0} clientes, ${backup.maintenances?.length || 0} mantenimientos\n`;
-                        recoveredData.push({key, backup, date});
-                    } catch (error) {
-                        console.log('Error al leer respaldo:', key);
-                    }
-                });
-                
-                backupOptions += '\n¿Qué respaldo quieres recuperar? (Escribe el número):';
-                
-                const choice = prompt(backupOptions);
-                const choiceNum = parseInt(choice);
-                
-                if (choiceNum >= 1 && choiceNum <= recoveredData.length) {
-                    const selectedBackup = recoveredData[choiceNum - 1].backup;
-                    
-                    if (confirm(`¿Confirmas la recuperación del respaldo del ${recoveredData[choiceNum - 1].date}?\n\nEsto reemplazará los datos actuales.`)) {
-                        // Recuperar datos
-                        clients.length = 0;
-                        maintenances.length = 0;
-                        
-                        if (selectedBackup.clients) {
-                            selectedBackup.clients.forEach(client => {
-                                clients.push({...client});
-                                totalRecovered++;
-                            });
-                            clientIdCounter = Math.max(...clients.map(c => c.id), 0) + 1;
-                        }
-                        
-                        if (selectedBackup.maintenances) {
-                            selectedBackup.maintenances.forEach(maintenance => {
-                                maintenances.push({...maintenance});
-                                totalRecovered++;
-                            });
-                            maintenanceIdCounter = Math.max(...maintenances.map(m => m.id), 0) + 1;
-                        }
-                        
-                        saveToLocalStorage();
-                        
-                        // Actualizar interfaz
-                        renderClients();
-                        updateClientCount();
-                        updateClientSelect();
-                        renderMaintenances();
-                        updateMaintenanceCount();
-                        checkMaintenanceAlerts();
-                        updateDashboard();
-                        renderCalendar();
-                        updateSystemStats();
-                        
-                        showSuccessModal('¡Datos Recuperados!', `Se han recuperado ${clients.length} clientes y ${maintenances.length} mantenimientos exitosamente`);
-                    }
-                } else {
-                    alert('❌ Selección inválida');
-                }
-            } else {
-                // Buscar en sessionStorage
-                const sessionClients = sessionStorage.getItem('clients_session');
-                const sessionMaintenances = sessionStorage.getItem('maintenances_session');
-                
-                if (sessionClients || sessionMaintenances) {
-                    if (confirm('🔍 Se encontraron datos en la sesión temporal.\n\n¿Quieres recuperar estos datos?')) {
-                        try {
-                            if (sessionClients) {
-                                const tempClients = JSON.parse(sessionClients);
-                                tempClients.forEach(client => {
-                                    if (!clients.find(c => c.id === client.id)) {
-                                        clients.push(client);
-                                        totalRecovered++;
-                                    }
-                                });
-                            }
-                            
-                            if (sessionMaintenances) {
-                                const tempMaintenances = JSON.parse(sessionMaintenances);
-                                tempMaintenances.forEach(maintenance => {
-                                    if (!maintenances.find(m => m.id === maintenance.id)) {
-                                        maintenances.push(maintenance);
-                                        totalRecovered++;
-                                    }
-                                });
-                            }
-                            
-                            if (totalRecovered > 0) {
-                                saveToLocalStorage();
-                                createAutoBackup();
-                                
-                                // Actualizar interfaz
-                                renderClients();
-                                updateClientCount();
-                                updateClientSelect();
-                                renderMaintenances();
-                                updateMaintenanceCount();
-                                checkMaintenanceAlerts();
-                                updateDashboard();
-                                renderCalendar();
-                                updateSystemStats();
-                                
-                                showSuccessModal('¡Datos Recuperados!', `Se han recuperado ${totalRecovered} registros de la sesión temporal`);
-                            } else {
-                                alert('ℹ️ No se encontraron datos nuevos para recuperar');
-                            }
-                        } catch (error) {
-                            alert('❌ Error al recuperar datos de la sesión temporal');
-                        }
-                    }
-                } else {
-                    alert('ℹ️ No se encontraron respaldos para recuperar.\n\nConsejo: El sistema crea respaldos automáticos cuando agregas datos.');
-                }
-            }
-        }
-
-        // Funciones de importación
-        function importFromJSON(content) {
-            try {
-                const data = JSON.parse(content);
-                let importedCount = 0;
-                
-                if (data.clients && Array.isArray(data.clients)) {
-                    data.clients.forEach(client => {
-                        const newClient = {
-                            ...client,
-                            id: clientIdCounter++,
-                            fechaRegistro: client.fechaRegistro || new Date().toLocaleDateString('es-ES')
-                        };
-                        clients.unshift(newClient);
-                        importedCount++;
-                    });
-                }
-                
-                if (data.maintenances && Array.isArray(data.maintenances)) {
-                    data.maintenances.forEach(maintenance => {
-                        const newMaintenance = {
-                            ...maintenance,
-                            id: maintenanceIdCounter++,
-                            fechaRegistro: maintenance.fechaRegistro || new Date().toISOString()
-                        };
-                        maintenances.unshift(newMaintenance);
-                        importedCount++;
-                    });
-                }
-                
-                if (importedCount > 0) {
-                    saveToLocalStorage();
-                    createAutoBackup();
-                    renderClients();
-                    updateClientCount();
-                    updateClientSelect();
-                    renderMaintenances();
-                    updateMaintenanceCount();
-                    updateDashboard();
-                    showSuccessModal('¡Datos Importados!', `Se han importado ${importedCount} registros exitosamente`);
-                } else {
-                    alert('❌ No se encontraron datos válidos en el archivo');
-                }
-            } catch (error) {
-                alert('❌ Error al procesar el archivo JSON: ' + error.message);
-            }
-        }
-
-        function importFromCSV(content) {
-            try {
-                const lines = content.split('\n');
-                const headers = lines[0].split(',').map(h => h.trim());
-                let importedCount = 0;
-                
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (!line) continue;
-                    
-                    const values = line.split(',').map(v => v.trim());
-                    if (values.length >= 6) {
-                        const newClient = {
-                            id: clientIdCounter++,
-                            nombre: values[0] || '',
-                            apellido: values[1] || '',
-                            email: values[2] || 'No especificado',
-                            telefono: values[3] || '',
-                            direccion: values[4] || '',
-                            ciudad: values[5] || '',
-                            empresa: values[6] || 'No especificada',
-                            notas: values[7] || 'Sin notas',
-                            fechaRegistro: values[8] || new Date().toLocaleDateString('es-ES'),
-                            ultimoMantenimiento: null,
-                            tipoEquipo: 'No especificado'
-                        };
-                        
-                        clients.unshift(newClient);
-                        importedCount++;
-                    }
-                }
-                
-                if (importedCount > 0) {
-                    saveToLocalStorage();
-                    createAutoBackup();
-                    renderClients();
-                    updateClientCount();
-                    updateClientSelect();
-                    updateDashboard();
-                    showSuccessModal('¡Datos Importados!', `Se han importado ${importedCount} clientes desde CSV`);
-                } else {
-                    alert('❌ No se pudieron importar datos del archivo CSV');
-                }
-            } catch (error) {
-                alert('❌ Error al procesar el archivo CSV: ' + error.message);
-            }
-        }
-
-        // Inicializar la aplicación cuando se carga la página
-        document.addEventListener('DOMContentLoaded', init);
+        // Inicializar la aplicación
+        init();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98760264039f9cda',t:'MTc1OTI1OTMxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986cdcf215ef23d7',t:'MTc1OTE2MzQwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
