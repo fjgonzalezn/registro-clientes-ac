@@ -999,7 +999,7 @@
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm font-medium text-gray-600">Ingresos del Mes</p>
-                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">€4,500</p>
+                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">4,500</p>
                                                 <p class="text-sm text-green-600 mt-1">+15% vs mes anterior</p>
                                             </div>
                                             <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
@@ -1383,7 +1383,7 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto (€) *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto ($) *</label>
                                         <input type="number" id="trabajo-presupuesto" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00">
                                     </div>
                                     <div>
@@ -1545,7 +1545,7 @@
                     <td class="max-w-xs truncate">${trabajo.descripcion}</td>
                     <td>${trabajo.tecnico}</td>
                     <td>${trabajo.fecha}</td>
-                    <td>€${trabajo.presupuesto}</td>
+                    <td>${trabajo.presupuesto}</td>
                     <td><span class="px-2 py-1 rounded-full text-xs font-medium ${estadoColor[trabajo.estado]}">${trabajo.estado}</span></td>
                     <td>
                         <button onclick="editarTrabajo(${trabajo.id})" class="text-blue-600 hover:text-blue-800 mr-2">
@@ -1751,7 +1751,7 @@
             const ingresosTotales = trabajosData.reduce((sum, trabajo) => sum + trabajo.presupuesto, 0);
             const ingresosElement = document.getElementById('ingresos-mes');
             if (ingresosElement) {
-                ingresosElement.textContent = `€${ingresosTotales.toLocaleString()}`;
+                ingresosElement.textContent = `${ingresosTotales.toLocaleString()}`;
             }
         }
 
@@ -1935,3 +1935,4 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6e5dc91ee571f',t:'MTc1OTc3MTk0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
