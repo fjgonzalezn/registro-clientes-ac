@@ -3,490 +3,1488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - Empresa AC</title>
+    <title>FG Hvac Solutions - Acceso Seguro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             box-sizing: border-box;
+            overflow-x: hidden;
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        
+        /* Fondo espectacular con gradientes animados */
+        .login-gradient {
+            background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .card-hover {
+        
+        /* Partículas flotantes mejoradas */
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
+        .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 0.5s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 1.5s; }
+        .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 2.5s; }
+        .particle:nth-child(10) { width: 6px; height: 6px; left: 15%; animation-delay: 3.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Tarjeta con efecto glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 25px 45px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Logo con animación 3D */
+        .logo-3d {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: logoFloat 4s ease-in-out infinite;
+            box-shadow: 
+                0 20px 40px rgba(102, 126, 234, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+            25% { transform: translateY(-10px) rotateX(5deg) rotateY(5deg); }
+            50% { transform: translateY(-5px) rotateX(-5deg) rotateY(-5deg); }
+            75% { transform: translateY(-15px) rotateX(5deg) rotateY(-5deg); }
+        }
+        
+        /* Inputs con efectos mágicos */
+        .magic-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .magic-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .magic-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 4px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Labels flotantes */
+        .floating-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Botón espectacular */
+        .magic-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 15px 35px rgba(102, 126, 234, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .magic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .magic-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            background-position: 100% 0;
+            box-shadow: 
+                0 25px 50px rgba(102, 126, 234, 0.4),
+                0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .magic-button:hover::before {
+            left: 100%;
+        }
+        
+        .magic-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        /* Animaciones de entrada */
+        .slide-in-up {
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Efectos de hover mejorados */
+        .hover-glow {
             transition: all 0.3s ease;
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Checkbox personalizado */
+        .custom-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .custom-checkbox:checked {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .custom-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Información de credenciales mejorada */
+        .credentials-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .credentials-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 200% 100%;
+            animation: gradientMove 3s linear infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+        
+        /* Efectos de texto */
+        .text-glow {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animación de shake mejorada */
+        .shake-enhanced {
+            animation: shakeEnhanced 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes shakeEnhanced {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            10% { transform: translateX(-10px) rotate(-1deg); }
+            20% { transform: translateX(10px) rotate(1deg); }
+            30% { transform: translateX(-10px) rotate(-1deg); }
+            40% { transform: translateX(10px) rotate(1deg); }
+            50% { transform: translateX(-5px) rotate(-0.5deg); }
+            60% { transform: translateX(5px) rotate(0.5deg); }
+            70% { transform: translateX(-5px) rotate(-0.5deg); }
+            80% { transform: translateX(5px) rotate(0.5deg); }
+            90% { transform: translateX(-2px) rotate(-0.2deg); }
+        }
+        
+        /* Loading spinner mejorado */
+        .magic-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: magicSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes magicSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        /* Efectos de partículas en el logo */
+        .logo-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .logo-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: logoParticleFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoParticleFloat {
+            0%, 100% { transform: translateY(0) scale(0); opacity: 0; }
+            50% { transform: translateY(-20px) scale(1); opacity: 1; }
+        }
+        
+        /* Responsive mejorado */
+        @media (max-width: 640px) {
+            .glass-card {
+                margin: 1rem;
+                border-radius: 20px;
+            }
+            
+            .magic-input {
+                font-size: 16px; /* Previene zoom en iOS */
+            }
+        }
+        
+        /* Efectos de focus mejorados */
+        .magic-input:focus + .input-icon {
+            color: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .input-icon {
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow-lg border-b-4 border-blue-600">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
-                <div class="flex items-center">
-                    <div class="bg-blue-600 p-3 rounded-lg mr-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
+<body class="login-gradient min-h-screen flex items-center justify-center">
+    <!-- Partículas flotantes espectaculares -->
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Contenedor principal de login -->
+    <div class="w-full max-w-md mx-4">
+        <!-- Tarjeta de login espectacular -->
+        <div id="login-card" class="glass-card p-8 slide-in-up">
+            <!-- Logo y título con efectos 3D -->
+            <div class="text-center mb-8">
+                <div class="logo-3d p-4 w-24 h-24 mx-auto mb-6 flex items-center justify-center relative">
+                    <!-- Partículas del logo -->
+                    <div class="logo-particles">
+                        <div class="logo-particle" style="top: 20%; left: 30%; animation-delay: 0s;"></div>
+                        <div class="logo-particle" style="top: 40%; left: 70%; animation-delay: 1s;"></div>
+                        <div class="logo-particle" style="top: 60%; left: 20%; animation-delay: 2s;"></div>
+                        <div class="logo-particle" style="top: 80%; left: 80%; animation-delay: 0.5s;"></div>
                     </div>
+                    <svg class="w-12 h-12 text-white relative z-10" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="rgba(255,255,255,0.9)"/>
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-3 text-glow slide-in-left">FG Hvac Solutions</h1>
+                <div class="text-3xl mb-4 slide-in-right">🔥 ❄️</div>
+                <p class="text-lg text-white opacity-90 slide-in-up">Acceso Seguro al Sistema</p>
+            </div>
+
+            <!-- Formulario de login -->
+            <form id="login-form" onsubmit="iniciarSesion(event)">
+                <div class="space-y-8">
+                    <!-- Campo de usuario mágico -->
+                    <div class="slide-in-left" style="animation-delay: 0.2s;">
+                        <label for="usuario" class="floating-label mb-3">
+                            <span class="text-2xl">👤</span>
+                            <span>Usuario</span>
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="usuario" 
+                                name="usuario"
+                                class="magic-input w-full px-6 py-4 text-lg"
+                                placeholder="Ingresa tu usuario"
+                                required
+                                autocomplete="username"
+                            >
+                            <div class="absolute inset-y-0 right-0 pr-4 flex items-center input-icon">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo de contraseña mágico -->
+                    <div class="slide-in-right" style="animation-delay: 0.4s;">
+                        <label for="password" class="floating-label mb-3">
+                            <span class="text-2xl">🔒</span>
+                            <span>Contraseña</span>
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password"
+                                class="magic-input w-full px-6 py-4 text-lg"
+                                placeholder="Ingresa tu contraseña"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button 
+                                type="button" 
+                                onclick="togglePassword()" 
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center input-icon hover-glow"
+                            >
+                                <svg id="eye-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Opciones adicionales mejoradas -->
+                    <div class="flex items-center justify-between slide-in-up" style="animation-delay: 0.6s;">
+                        <div class="flex items-center space-x-3">
+                            <input 
+                                id="recordar" 
+                                name="recordar" 
+                                type="checkbox" 
+                                class="custom-checkbox"
+                            >
+                            <label for="recordar" class="text-white opacity-90 font-medium cursor-pointer hover:opacity-100 transition-opacity">
+                                Recordar sesión
+                            </label>
+                        </div>
+                        <button type="button" onclick="mostrarRecuperacion()" class="text-white opacity-80 hover:opacity-100 font-medium hover-glow transition-all">
+                            ¿Olvidaste tu contraseña?
+                        </button>
+                    </div>
+
+                    <!-- Botón de login espectacular -->
+                    <button 
+                        type="submit" 
+                        id="btn-login"
+                        class="magic-button w-full py-4 px-6 text-lg slide-in-up"
+                        style="animation-delay: 0.8s;"
+                    >
+                        <span id="btn-text">🔐 Iniciar Sesión</span>
+                        <div id="btn-loading" class="magic-spinner mx-auto hidden"></div>
+                    </button>
+                </div>
+            </form>
+
+
+
+            <!-- Intentos de acceso mejorado -->
+            <div id="intentos-info" class="mt-6 text-center slide-in-up" style="animation-delay: 1.2s;">
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-full px-4 py-2 inline-block">
+                    <span class="text-white opacity-80">Intentos restantes: </span>
+                    <span id="intentos-restantes" class="font-bold text-white text-glow">3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de recuperación de contraseña -->
+        <div id="recovery-card" class="bg-white rounded-2xl card-shadow p-8 fade-in hidden">
+            <div class="text-center mb-6">
+                <div class="bg-yellow-100 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Recuperar Contraseña</h2>
+                <p class="text-gray-600">Ingresa tu usuario para recibir instrucciones</p>
+            </div>
+
+            <form id="recovery-form" onsubmit="enviarRecuperacion(event)">
+                <div class="space-y-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900">AirCool Pro</h1>
-                        <p class="text-gray-600">Panel de Control Empresarial</p>
+                        <label for="usuario-recovery" class="block text-sm font-medium text-gray-700 mb-2">
+                            👤 Usuario
+                        </label>
+                        <input 
+                            type="text" 
+                            id="usuario-recovery" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                            placeholder="Ingresa tu usuario"
+                            required
+                        >
                     </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="bg-green-100 px-4 py-2 rounded-full">
-                        <span class="text-green-800 font-semibold">● En línea</span>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-sm text-gray-600">Administrador</p>
-                        <p class="font-semibold text-gray-900">Juan Pérez</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Estadísticas Principales -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
-                <div class="flex items-center">
-                    <div class="bg-blue-500 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Órdenes Hoy</p>
-                        <p class="text-2xl font-bold text-gray-900" id="ordenes-hoy">24</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
-                <div class="flex items-center">
-                    <div class="bg-green-500 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Completadas</p>
-                        <p class="text-2xl font-bold text-gray-900" id="completadas">18</p>
+                    <div class="flex space-x-3">
+                        <button 
+                            type="button" 
+                            onclick="volverLogin()"
+                            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-colors"
+                        >
+                            ← Volver
+                        </button>
+                        <button 
+                            type="submit"
+                            class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+                        >
+                            📧 Enviar
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
-                <div class="flex items-center">
-                    <div class="bg-yellow-500 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Técnicos Activos</p>
-                        <p class="text-2xl font-bold text-gray-900" id="tecnicos">8</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
-                <div class="flex items-center">
-                    <div class="bg-purple-500 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Ingresos Hoy</p>
-                        <p class="text-2xl font-bold text-gray-900" id="ingresos">$12,450</p>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
 
-        <!-- Navegación de Secciones -->
-        <div class="bg-white rounded-xl shadow-lg mb-8">
-            <div class="border-b border-gray-200">
-                <nav class="flex space-x-8 px-6" id="nav-tabs">
-                    <button class="nav-tab active py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600" data-tab="ordenes">
-                        Órdenes de Servicio
-                    </button>
-                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="tecnicos">
-                        Técnicos
-                    </button>
-                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="inventario">
-                        Inventario
-                    </button>
-                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="clientes">
-                        Clientes
-                    </button>
-                </nav>
-            </div>
-
-            <!-- Contenido de Órdenes -->
-            <div id="ordenes-content" class="tab-content p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900">Órdenes de Servicio</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioOrden()">
-                        + Nueva Orden
-                    </button>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Técnico</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200" id="ordenes-tabla">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#001</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">María González</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Instalación AC</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Carlos Ruiz</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completado</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
-                                    <button class="text-red-600 hover:text-red-900">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#002</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Pedro López</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mantenimiento</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Ana Martín</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En Progreso</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
-                                    <button class="text-red-600 hover:text-red-900">Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Contenido de Técnicos -->
-            <div id="tecnicos-content" class="tab-content p-6 hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900">Gestión de Técnicos</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioTecnico()">
-                        + Nuevo Técnico
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-blue-500 p-2 rounded-full mr-3">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Carlos Ruiz</h3>
-                                <p class="text-sm text-gray-600">Técnico Senior</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <p class="text-sm"><span class="font-medium">Estado:</span> <span class="text-green-600">Disponible</span></p>
-                            <p class="text-sm"><span class="font-medium">Órdenes hoy:</span> 3</p>
-                            <p class="text-sm"><span class="font-medium">Calificación:</span> ⭐⭐⭐⭐⭐</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-green-500 p-2 rounded-full mr-3">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Ana Martín</h3>
-                                <p class="text-sm text-gray-600">Técnico Junior</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <p class="text-sm"><span class="font-medium">Estado:</span> <span class="text-yellow-600">En servicio</span></p>
-                            <p class="text-sm"><span class="font-medium">Órdenes hoy:</span> 2</p>
-                            <p class="text-sm"><span class="font-medium">Calificación:</span> ⭐⭐⭐⭐</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contenido de Inventario -->
-            <div id="inventario-content" class="tab-content p-6 hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900">Control de Inventario</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioInventario()">
-                        + Agregar Producto
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white border rounded-lg p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2">Filtros AC</h3>
-                        <p class="text-2xl font-bold text-blue-600 mb-1">45</p>
-                        <p class="text-sm text-gray-600">En stock</p>
-                        <div class="mt-3">
-                            <div class="bg-green-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border rounded-lg p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2">Refrigerante R410A</h3>
-                        <p class="text-2xl font-bold text-yellow-600 mb-1">12</p>
-                        <p class="text-sm text-gray-600">En stock</p>
-                        <div class="mt-3">
-                            <div class="bg-yellow-200 rounded-full h-2">
-                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 40%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border rounded-lg p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2">Compresores</h3>
-                        <p class="text-2xl font-bold text-red-600 mb-1">3</p>
-                        <p class="text-sm text-gray-600">Stock bajo</p>
-                        <div class="mt-3">
-                            <div class="bg-red-200 rounded-full h-2">
-                                <div class="bg-red-500 h-2 rounded-full" style="width: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border rounded-lg p-4">
-                        <h3 class="font-semibold text-gray-900 mb-2">Herramientas</h3>
-                        <p class="text-2xl font-bold text-green-600 mb-1">28</p>
-                        <p class="text-sm text-gray-600">En stock</p>
-                        <div class="mt-3">
-                            <div class="bg-green-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contenido de Clientes -->
-            <div id="clientes-content" class="tab-content p-6 hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900">Base de Clientes</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioCliente()">
-                        + Nuevo Cliente
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-lg border">
-                    <div class="p-4 border-b">
-                        <input type="text" placeholder="Buscar cliente..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-                    <div class="divide-y">
-                        <div class="p-4 hover:bg-gray-50">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h3 class="font-semibold text-gray-900">María González</h3>
-                                    <p class="text-sm text-gray-600">maria.gonzalez@email.com</p>
-                                    <p class="text-sm text-gray-600">📞 +1 234-567-8901</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-sm font-medium text-green-600">Cliente Premium</p>
-                                    <p class="text-sm text-gray-600">5 servicios</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4 hover:bg-gray-50">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h3 class="font-semibold text-gray-900">Pedro López</h3>
-                                    <p class="text-sm text-gray-600">pedro.lopez@email.com</p>
-                                    <p class="text-sm text-gray-600">📞 +1 234-567-8902</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-sm font-medium text-blue-600">Cliente Regular</p>
-                                    <p class="text-sm text-gray-600">2 servicios</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Footer con información de seguridad mejorado -->
+        <div class="text-center mt-8 slide-in-up" style="animation-delay: 1.4s;">
+            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-4 inline-block">
+                <p class="text-white font-semibold mb-2 text-glow">🔒 Conexión Segura SSL/TLS</p>
+                <p class="text-white opacity-75 text-sm">© 2024 FG Hvac Solutions - Todos los derechos reservados</p>
             </div>
         </div>
     </div>
 
-    <!-- Modal para Nueva Orden -->
-    <div id="modal-orden" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Nueva Orden de Servicio</h3>
-                <form id="form-orden" onsubmit="crearOrden(event)">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
-                            <input type="text" id="cliente-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Servicio</label>
-                            <select id="servicio-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="Instalación AC">Instalación AC</option>
-                                <option value="Mantenimiento">Mantenimiento</option>
-                                <option value="Reparación">Reparación</option>
-                                <option value="Limpieza">Limpieza</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Técnico Asignado</label>
-                            <select id="tecnico-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="Carlos Ruiz">Carlos Ruiz</option>
-                                <option value="Ana Martín">Ana Martín</option>
-                                <option value="Luis García">Luis García</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button type="button" onclick="cerrarModal('modal-orden')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                            Cancelar
+    <!-- Modal de bloqueo de seguridad -->
+    <div id="security-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+            <div class="bg-red-100 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 11c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1 4h-2v-2h2v2z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-red-600 mb-2">🚫 Acceso Bloqueado</h3>
+            <p class="text-gray-600 mb-4">Has excedido el número máximo de intentos de acceso.</p>
+            <p class="text-sm text-gray-500 mb-6">Intenta nuevamente en <span id="countdown">300</span> segundos.</p>
+            <div class="space-y-3">
+                <button onclick="mostrarRecuperacionEmergencia()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-lg w-full">
+                    🆘 Acceso de Emergencia
+                </button>
+                <button onclick="cerrarModalSeguridad()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg w-full">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Recuperación de Emergencia -->
+    <div id="emergency-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-lg mx-4">
+            <div class="text-center mb-6">
+                <div class="bg-orange-100 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-orange-600 mb-2">🆘 Recuperación de Emergencia</h3>
+                <p class="text-gray-600">Múltiples opciones para recuperar el acceso</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Opción 1: Código Maestro -->
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">🔑 Código Maestro</h4>
+                    <input type="text" id="codigo-maestro" placeholder="Ingresa código maestro" class="w-full px-3 py-2 border rounded-lg mb-2">
+                    <button onclick="verificarCodigoMaestro()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full">
+                        Verificar Código
+                    </button>
+                </div>
+
+                <!-- Opción 2: Pregunta de Seguridad -->
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">❓ Pregunta de Seguridad</h4>
+                    <input type="text" id="usuario-seguridad" placeholder="Usuario" class="w-full px-3 py-2 border rounded-lg mb-2">
+                    <button onclick="mostrarPreguntaSeguridad()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full">
+                        Obtener Pregunta
+                    </button>
+                    <div id="pregunta-container" class="hidden mt-3">
+                        <p id="pregunta-texto" class="text-sm text-gray-600 mb-2"></p>
+                        <input type="text" id="respuesta-seguridad" placeholder="Tu respuesta" class="w-full px-3 py-2 border rounded-lg mb-2">
+                        <button onclick="verificarRespuestaSeguridad()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full">
+                            Verificar Respuesta
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            Crear Orden
-                        </button>
                     </div>
-                </form>
+                </div>
+
+                <!-- Opción 3: Código de Respaldo -->
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">💾 Código de Respaldo</h4>
+                    <input type="text" id="codigo-respaldo" placeholder="Código de respaldo personal" class="w-full px-3 py-2 border rounded-lg mb-2">
+                    <button onclick="verificarCodigoRespaldo()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg w-full">
+                        Usar Código de Respaldo
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center">
+                <button onclick="cerrarModalEmergencia()" class="text-gray-500 hover:text-gray-700">
+                    ← Volver
+                </button>
+            </div>
+
+            <!-- Información de códigos de emergencia -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h5 class="font-semibold text-gray-800 mb-2">📋 Información de Seguridad</h5>
+                <div class="text-xs text-gray-600 space-y-1">
+                    <p><strong>Códigos Maestros:</strong> Solo disponibles para administradores autorizados</p>
+                    <p><strong>Preguntas de Seguridad:</strong> Configuradas individualmente por cada usuario</p>
+                    <p><strong>Códigos de Respaldo:</strong> Generados automáticamente y únicos por usuario</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Variables globales
-        let ordenCounter = 3;
-        
-        // Navegación entre pestañas
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const targetTab = this.getAttribute('data-tab');
-                
-                // Actualizar pestañas activas
-                document.querySelectorAll('.nav-tab').forEach(t => {
-                    t.classList.remove('active', 'border-blue-500', 'text-blue-600');
-                    t.classList.add('border-transparent', 'text-gray-500');
-                });
-                
-                this.classList.add('active', 'border-blue-500', 'text-blue-600');
-                this.classList.remove('border-transparent', 'text-gray-500');
-                
-                // Mostrar contenido correspondiente
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
-                
-                document.getElementById(targetTab + '-content').classList.remove('hidden');
-            });
+        // Variables de control de seguridad
+        let intentosRestantes = 3;
+        let bloqueado = false;
+        let tiempoBloqueo = 300; // 5 minutos en segundos
+
+        // Credenciales válidas con sistema de recuperación avanzado
+        const credencialesValidas = {
+            'admin': { 
+                password: 'admin123', 
+                rol: 'Administrador', 
+                nombre: 'Juan Pérez',
+                email: 'admin@fghvac.com',
+                preguntaSeguridad: '¿Cuál es el nombre de tu primera mascota?',
+                respuestaSeguridad: 'max',
+                codigosRespaldo: ['BACKUP001', 'BACKUP002', 'BACKUP003']
+            },
+            'tecnico': { 
+                password: 'tecnico123', 
+                rol: 'Técnico', 
+                nombre: 'Carlos Ruiz',
+                email: 'tecnico@fghvac.com',
+                preguntaSeguridad: '¿En qué ciudad naciste?',
+                respuestaSeguridad: 'madrid',
+                codigosRespaldo: ['TECH001', 'TECH002', 'TECH003']
+            },
+            'supervisor': { 
+                password: 'super123', 
+                rol: 'Supervisor', 
+                nombre: 'Ana Martín',
+                email: 'supervisor@fghvac.com',
+                preguntaSeguridad: '¿Cuál es tu comida favorita?',
+                respuestaSeguridad: 'pizza',
+                codigosRespaldo: ['SUPER001', 'SUPER002', 'SUPER003']
+            }
+        };
+
+        // Códigos maestros de emergencia (nunca expiran)
+        const codigosMaestros = {
+            'FGHVAC2024': { tipo: 'maestro', descripcion: 'Código maestro de emergencia' },
+            'RESET-FGHVAC-2024': { tipo: 'reset', descripcion: 'Reset completo del sistema' },
+            'EMERGENCY-ACCESS': { tipo: 'emergencia', descripcion: 'Acceso de emergencia' }
+        };
+
+        // Sistema de backup automático
+        const sistemaBackup = {
+            guardarBackup: function() {
+                const backup = {
+                    credenciales: credencialesValidas,
+                    fecha: new Date().toISOString(),
+                    version: '2.0'
+                };
+                localStorage.setItem('fghvac_backup_seguridad', JSON.stringify(backup));
+            },
+            
+            restaurarBackup: function() {
+                const backup = localStorage.getItem('fghvac_backup_seguridad');
+                if (backup) {
+                    return JSON.parse(backup);
+                }
+                return null;
+            }
+        };
+
+        // Verificar si hay una sesión guardada al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            verificarSesionGuardada();
+            verificarBloqueo();
+            sistemaBackup.guardarBackup(); // Crear backup automático
+            verificarIntegridadSistema();
         });
 
-        // Funciones para mostrar modales
-        function mostrarFormularioOrden() {
-            document.getElementById('modal-orden').classList.remove('hidden');
-            document.getElementById('modal-orden').classList.add('flex');
-        }
-
-        function mostrarFormularioTecnico() {
-            alert('Funcionalidad de agregar técnico próximamente disponible');
-        }
-
-        function mostrarFormularioInventario() {
-            alert('Funcionalidad de inventario próximamente disponible');
-        }
-
-        function mostrarFormularioCliente() {
-            alert('Funcionalidad de agregar cliente próximamente disponible');
-        }
-
-        function cerrarModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.getElementById(modalId).classList.remove('flex');
-        }
-
-        // Crear nueva orden
-        function crearOrden(event) {
-            event.preventDefault();
-            
-            const cliente = document.getElementById('cliente-orden').value;
-            const servicio = document.getElementById('servicio-orden').value;
-            const tecnico = document.getElementById('tecnico-orden').value;
-            
-            // Crear nueva fila en la tabla
-            const tabla = document.getElementById('ordenes-tabla');
-            const nuevaFila = document.createElement('tr');
-            
-            nuevaFila.innerHTML = `
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${String(ordenCounter).padStart(3, '0')}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${cliente}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${servicio}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${tecnico}</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pendiente</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
-                    <button class="text-red-600 hover:text-red-900" onclick="eliminarFila(this)">Eliminar</button>
-                </td>
-            `;
-            
-            tabla.appendChild(nuevaFila);
-            
-            // Actualizar contador de órdenes
-            ordenCounter++;
-            const ordenesHoy = document.getElementById('ordenes-hoy');
-            ordenesHoy.textContent = parseInt(ordenesHoy.textContent) + 1;
-            
-            // Limpiar formulario y cerrar modal
-            document.getElementById('form-orden').reset();
-            cerrarModal('modal-orden');
-            
-            // Mostrar mensaje de éxito
-            mostrarNotificacion('Orden creada exitosamente', 'success');
-        }
-
-        // Eliminar fila de tabla
-        function eliminarFila(button) {
-            if (confirm('¿Estás seguro de que quieres eliminar esta orden?')) {
-                button.closest('tr').remove();
-                
-                // Actualizar contador
-                const ordenesHoy = document.getElementById('ordenes-hoy');
-                ordenesHoy.textContent = parseInt(ordenesHoy.textContent) - 1;
-                
-                mostrarNotificacion('Orden eliminada', 'info');
+        // Verificar integridad del sistema
+        function verificarIntegridadSistema() {
+            const backup = sistemaBackup.restaurarBackup();
+            if (!backup) {
+                sistemaBackup.guardarBackup();
+                console.log('✅ Backup de seguridad creado automáticamente');
             }
         }
 
-        // Sistema de notificaciones
+        function verificarSesionGuardada() {
+            const sesionGuardada = localStorage.getItem('fghvac_sesion');
+            if (sesionGuardada) {
+                const datos = JSON.parse(sesionGuardada);
+                if (datos.recordar && new Date().getTime() < datos.expiracion) {
+                    mostrarNotificacion('Sesión restaurada automáticamente', 'success');
+                    setTimeout(() => {
+                        redirigirAlSistema(datos.usuario, datos.rol, datos.nombre);
+                    }, 1500);
+                }
+            }
+        }
+
+        function verificarBloqueo() {
+            const bloqueoData = localStorage.getItem('fghvac_bloqueo');
+            if (bloqueoData) {
+                const datos = JSON.parse(bloqueoData);
+                if (new Date().getTime() < datos.hasta) {
+                    activarBloqueo(Math.ceil((datos.hasta - new Date().getTime()) / 1000));
+                } else {
+                    localStorage.removeItem('aircool_bloqueo');
+                }
+            }
+        }
+
+        function iniciarSesion(event) {
+            event.preventDefault();
+            
+            if (bloqueado) {
+                mostrarNotificacion('Sistema bloqueado. Espera antes de intentar nuevamente.', 'error');
+                return;
+            }
+
+            const usuario = document.getElementById('usuario').value.trim();
+            const password = document.getElementById('password').value;
+            const recordar = document.getElementById('recordar').checked;
+
+            // Verificar primero si es un código especial en el campo usuario
+            if (verificarCodigoEnUsuario()) {
+                return; // El código fue válido y ya se procesó
+            }
+
+            // Mostrar estado de carga
+            mostrarCargando(true);
+
+            // Simular verificación en servidor (delay realista)
+            setTimeout(() => {
+                if (validarCredenciales(usuario, password)) {
+                    // Login exitoso
+                    const datosUsuario = credencialesValidas[usuario];
+                    
+                    if (recordar) {
+                        guardarSesion(usuario, datosUsuario.rol, datosUsuario.nombre);
+                    }
+                    
+                    mostrarNotificacion(`¡Bienvenido ${datosUsuario.nombre}!`, 'success');
+                    
+                    // Resetear intentos
+                    intentosRestantes = 3;
+                    actualizarIntentosUI();
+                    
+                    setTimeout(() => {
+                        redirigirAlSistema(usuario, datosUsuario.rol, datosUsuario.nombre);
+                    }, 1500);
+                    
+                } else {
+                    // Login fallido
+                    intentosRestantes--;
+                    actualizarIntentosUI();
+                    
+                    if (intentosRestantes <= 0) {
+                        activarBloqueoSeguridad();
+                    } else {
+                        mostrarNotificacion(`Credenciales incorrectas. Te quedan ${intentosRestantes} intentos.`, 'error');
+                        document.getElementById('login-card').classList.add('shake-enhanced');
+                        setTimeout(() => {
+                            document.getElementById('login-card').classList.remove('shake-enhanced');
+                        }, 600);
+                    }
+                }
+                
+                mostrarCargando(false);
+            }, 1500);
+        }
+
+        function validarCredenciales(usuario, password) {
+            return credencialesValidas[usuario] && credencialesValidas[usuario].password === password;
+        }
+
+        function guardarSesion(usuario, rol, nombre) {
+            const expiracion = new Date().getTime() + (7 * 24 * 60 * 60 * 1000); // 7 días
+            const datosSession = {
+                usuario: usuario,
+                rol: rol,
+                nombre: nombre,
+                recordar: true,
+                expiracion: expiracion
+            };
+            localStorage.setItem('fghvac_sesion', JSON.stringify(datosSession));
+        }
+
+        function redirigirAlSistema(usuario, rol, nombre) {
+            // Crear datos de sesión para el sistema principal
+            const sessionData = {
+                usuario: usuario,
+                rol: rol,
+                nombre: nombre,
+                loginTime: new Date().toISOString()
+            };
+            
+            // Guardar en sessionStorage para el sistema principal
+            sessionStorage.setItem('fghvac_user_session', JSON.stringify(sessionData));
+            
+            // En un entorno real, aquí redirigiríamos a la página del sistema
+            // window.location.href = '/dashboard.html';
+            
+            // Para la demo, mostraremos el sistema en la misma página
+            mostrarSistema(sessionData);
+        }
+
+        function mostrarSistema(sessionData) {
+            // Ocultar la página de login y mostrar el sistema
+            document.body.innerHTML = `
+                <div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-red-900">
+                    <!-- Header -->
+                    <div class="bg-black bg-opacity-50 backdrop-blur-sm border-b border-white border-opacity-20">
+                        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-gradient-to-r from-red-600 to-blue-600 p-3 rounded-xl">
+                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-2xl font-bold text-white">FG Hvac Solutions</h1>
+                                    <p class="text-blue-200">📊 Panel de Estadísticas</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="text-right">
+                                    <p class="font-semibold text-white">${sessionData.nombre}</p>
+                                    <p class="text-sm text-blue-200">${sessionData.rol}</p>
+                                </div>
+                                <button onclick="cerrarSesion()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                    🚪 Salir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Principal -->
+                    <div class="max-w-7xl mx-auto px-4 py-8">
+                        <!-- Bienvenida -->
+                        <div class="text-center mb-8">
+                            <h2 class="text-4xl font-bold text-white mb-2">Panel de Estadísticas</h2>
+                            <p class="text-blue-200">Gestión de trabajos y clientes en tiempo real</p>
+                        </div>
+
+                        <!-- Estadísticas Principales -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-blue-200 text-sm">Trabajos Activos</p>
+                                        <p class="text-3xl font-bold text-white" id="trabajos-activos">24</p>
+                                    </div>
+                                    <div class="text-4xl">🔧</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-blue-200 text-sm">Clientes Totales</p>
+                                        <p class="text-3xl font-bold text-white" id="clientes-totales">156</p>
+                                    </div>
+                                    <div class="text-4xl">👥</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-blue-200 text-sm">Ingresos del Mes</p>
+                                        <p class="text-3xl font-bold text-white" id="ingresos-mes">$45,280</p>
+                                    </div>
+                                    <div class="text-4xl">💰</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-blue-200 text-sm">Satisfacción</p>
+                                        <p class="text-3xl font-bold text-white" id="satisfaccion">96%</p>
+                                    </div>
+                                    <div class="text-4xl">⭐</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gráficos y Datos -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                            <!-- Trabajos por Estado -->
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <h3 class="text-xl font-bold text-white mb-6">📊 Trabajos por Estado</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-blue-200">En Progreso</span>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-24 bg-gray-700 rounded-full h-3">
+                                                <div class="bg-blue-500 h-3 rounded-full" style="width: 65%"></div>
+                                            </div>
+                                            <span class="font-bold text-blue-400">15</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-blue-200">Completados</span>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-24 bg-gray-700 rounded-full h-3">
+                                                <div class="bg-green-500 h-3 rounded-full" style="width: 85%"></div>
+                                            </div>
+                                            <span class="font-bold text-green-400">142</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-blue-200">Pendientes</span>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-24 bg-gray-700 rounded-full h-3">
+                                                <div class="bg-yellow-500 h-3 rounded-full" style="width: 35%"></div>
+                                            </div>
+                                            <span class="font-bold text-yellow-400">9</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-blue-200">Cancelados</span>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-24 bg-gray-700 rounded-full h-3">
+                                                <div class="bg-red-500 h-3 rounded-full" style="width: 15%"></div>
+                                            </div>
+                                            <span class="font-bold text-red-400">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gráfico de Rueda - Tipos de Trabajo -->
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <h3 class="text-xl font-bold text-white mb-6">🔧 Tipos de Trabajo</h3>
+                                <div class="flex items-center justify-center">
+                                    <div class="relative w-48 h-48">
+                                        <svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
+                                            <!-- Círculo base -->
+                                            <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                                            
+                                            <!-- Mantenimiento - 35% (azul) -->
+                                            <circle cx="50" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="8" 
+                                                stroke-dasharray="77 220" stroke-dashoffset="0" opacity="0.9"/>
+                                            
+                                            <!-- Reparaciones - 30% (rojo) -->
+                                            <circle cx="50" cy="50" r="35" fill="none" stroke="#ef4444" stroke-width="8" 
+                                                stroke-dasharray="66 220" stroke-dashoffset="-77" opacity="0.9"/>
+                                            
+                                            <!-- Instalaciones - 25% (verde) -->
+                                            <circle cx="50" cy="50" r="35" fill="none" stroke="#10b981" stroke-width="8" 
+                                                stroke-dasharray="55 220" stroke-dashoffset="-143" opacity="0.9"/>
+                                            
+                                            <!-- Diagnóstico - 10% (amarillo) -->
+                                            <circle cx="50" cy="50" r="35" fill="none" stroke="#f59e0b" stroke-width="8" 
+                                                stroke-dasharray="22 220" stroke-dashoffset="-198" opacity="0.9"/>
+                                        </svg>
+                                        
+                                        <!-- Centro del gráfico -->
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-white" id="total-trabajos-tipo">169</div>
+                                                <div class="text-xs text-blue-200">Total</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Leyenda -->
+                                <div class="mt-4 space-y-2">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                            <span class="text-blue-200">Mantenimiento</span>
+                                        </div>
+                                        <span class="font-bold text-blue-400" id="mantenimiento-count">59</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                            <span class="text-blue-200">Reparaciones</span>
+                                        </div>
+                                        <span class="font-bold text-red-400" id="reparaciones-count">51</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                            <span class="text-blue-200">Instalaciones</span>
+                                        </div>
+                                        <span class="font-bold text-green-400" id="instalaciones-count">42</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                            <span class="text-blue-200">Diagnóstico</span>
+                                        </div>
+                                        <span class="font-bold text-yellow-400" id="diagnostico-count">17</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Clientes Recientes -->
+                            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                                <h3 class="text-xl font-bold text-white mb-6">👥 Clientes Recientes</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between p-3 bg-white bg-opacity-5 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                            <span class="text-blue-200">María González</span>
+                                        </div>
+                                        <span class="text-green-400 font-semibold">Activo</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-white bg-opacity-5 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                            <span class="text-blue-200">Carlos Ruiz</span>
+                                        </div>
+                                        <span class="text-blue-400 font-semibold">En Proceso</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-white bg-opacity-5 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                            <span class="text-blue-200">Ana Martín</span>
+                                        </div>
+                                        <span class="text-yellow-400 font-semibold">Pendiente</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-white bg-opacity-5 rounded-lg">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                            <span class="text-blue-200">Luis Pérez</span>
+                                        </div>
+                                        <span class="text-green-400 font-semibold">Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actividad Reciente -->
+                        <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20 mb-8">
+                            <h3 class="text-xl font-bold text-white mb-6">📋 Actividad Reciente</h3>
+                            <div class="space-y-3" id="actividad-reciente">
+                                <div class="flex items-center space-x-3 p-3 bg-white bg-opacity-5 rounded-lg">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span class="text-blue-200 text-sm">Trabajo completado para María González</span>
+                                    <span class="text-gray-400 text-xs ml-auto">Hace 5 min</span>
+                                </div>
+                                <div class="flex items-center space-x-3 p-3 bg-white bg-opacity-5 rounded-lg">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span class="text-blue-200 text-sm">Nuevo cliente registrado: Pedro López</span>
+                                    <span class="text-gray-400 text-xs ml-auto">Hace 15 min</span>
+                                </div>
+                                <div class="flex items-center space-x-3 p-3 bg-white bg-opacity-5 rounded-lg">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span class="text-blue-200 text-sm">Trabajo asignado a técnico Carlos</span>
+                                    <span class="text-gray-400 text-xs ml-auto">Hace 30 min</span>
+                                </div>
+                                <div class="flex items-center space-x-3 p-3 bg-white bg-opacity-5 rounded-lg">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span class="text-blue-200 text-sm">Factura generada para Ana Martín</span>
+                                    <span class="text-gray-400 text-xs ml-auto">Hace 1 hora</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Importación de Datos -->
+                        <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20 mb-8">
+                            <h3 class="text-xl font-bold text-white mb-6">📥 Importar Información</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Importar Clientes -->
+                                <div class="bg-white bg-opacity-5 rounded-lg p-4">
+                                    <h4 class="font-semibold text-white mb-3">👥 Importar Clientes</h4>
+                                    <p class="text-blue-200 text-sm mb-4">Sube un archivo CSV con información de clientes</p>
+                                    <div class="space-y-3">
+                                        <input type="file" id="archivo-clientes" accept=".csv,.json" class="hidden">
+                                        <button onclick="document.getElementById('archivo-clientes').click()" 
+                                                class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                            📁 Seleccionar Archivo
+                                        </button>
+                                        <button onclick="procesarArchivoClientes()" 
+                                                class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                            ⬆️ Importar Clientes
+                                        </button>
+                                        <div class="text-xs text-blue-200">
+                                            Formato: nombre, email, telefono, direccion
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Importar Trabajos -->
+                                <div class="bg-white bg-opacity-5 rounded-lg p-4">
+                                    <h4 class="font-semibold text-white mb-3">🔧 Importar Trabajos</h4>
+                                    <p class="text-blue-200 text-sm mb-4">Sube un archivo CSV con trabajos realizados</p>
+                                    <div class="space-y-3">
+                                        <input type="file" id="archivo-trabajos" accept=".csv,.json" class="hidden">
+                                        <button onclick="document.getElementById('archivo-trabajos').click()" 
+                                                class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                            📁 Seleccionar Archivo
+                                        </button>
+                                        <button onclick="procesarArchivoTrabajos()" 
+                                                class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                            ⬆️ Importar Trabajos
+                                        </button>
+                                        <div class="text-xs text-blue-200">
+                                            Formato: cliente, tipo, fecha, estado, precio
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Plantillas de Ejemplo -->
+                            <div class="mt-6 p-4 bg-white bg-opacity-5 rounded-lg">
+                                <h4 class="font-semibold text-white mb-3">📋 Plantillas de Ejemplo</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <button onclick="descargarPlantillaClientes()" 
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                        📄 Descargar Plantilla Clientes
+                                    </button>
+                                    <button onclick="descargarPlantillaTrabajos()" 
+                                            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                        📄 Descargar Plantilla Trabajos
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Estado de Importación -->
+                            <div id="estado-importacion" class="mt-4 hidden">
+                                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="loading-spinner"></div>
+                                        <span class="text-white">Procesando archivo...</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <div class="w-full bg-gray-700 rounded-full h-2">
+                                            <div id="barra-progreso" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                        <div class="text-xs text-blue-200 mt-1" id="texto-progreso">Iniciando...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acciones Rápidas -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-xl p-6 border border-green-400 border-opacity-30">
+                                <h3 class="text-2xl font-bold text-white mb-3">📝 Nuevo Trabajo</h3>
+                                <p class="text-green-100 mb-6">Crear un nuevo trabajo para cliente</p>
+                                <button onclick="crearNuevoTrabajo()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                                    ➕ Crear Trabajo
+                                </button>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 border border-blue-400 border-opacity-30">
+                                <h3 class="text-2xl font-bold text-white mb-3">👤 Nuevo Cliente</h3>
+                                <p class="text-blue-100 mb-6">Registrar un nuevo cliente</p>
+                                <button onclick="registrarNuevoCliente()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                                    👥 Registrar Cliente
+                                </button>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 border border-purple-400 border-opacity-30">
+                                <h3 class="text-2xl font-bold text-white mb-3">📊 Reportes</h3>
+                                <p class="text-purple-100 mb-6">Generar reportes detallados</p>
+                                <button onclick="generarReportes()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                                    📈 Ver Reportes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Configuración de Seguridad -->
+                <div id="modal-seguridad" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 w-full max-h-[90vh] overflow-y-auto">
+                        <div class="text-center mb-6">
+                            <div class="bg-blue-100 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-blue-600 mb-2">🔧 Configuración de Seguridad</h3>
+                            <p class="text-gray-600">Cambia tu usuario y contraseña de forma segura</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Cambiar Usuario -->
+                            <div class="border rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">👤 Cambiar Usuario</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Usuario Actual</label>
+                                        <input type="text" id="usuario-actual" value="${sessionData.usuario}" disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nuevo Usuario</label>
+                                        <input type="text" id="nuevo-usuario" placeholder="Ingresa el nuevo usuario" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <button onclick="cambiarUsuario()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg w-full">
+                                        💾 Cambiar Usuario
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Cambiar Contraseña -->
+                            <div class="border rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">🔒 Cambiar Contraseña</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña Actual</label>
+                                        <input type="password" id="password-actual" placeholder="Ingresa tu contraseña actual" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Contraseña</label>
+                                        <input type="password" id="nueva-password" placeholder="Ingresa la nueva contraseña" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Nueva Contraseña</label>
+                                        <input type="password" id="confirmar-password" placeholder="Confirma la nueva contraseña" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <button onclick="cambiarPassword()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg w-full">
+                                        🔐 Cambiar Contraseña
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Actualizar Pregunta de Seguridad -->
+                            <div class="border rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">❓ Pregunta de Seguridad</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Pregunta Actual</label>
+                                        <input type="text" id="pregunta-actual" value="${credencialesValidas[sessionData.usuario]?.preguntaSeguridad || 'No definida'}" disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Pregunta</label>
+                                        <input type="text" id="nueva-pregunta" placeholder="Escribe una nueva pregunta de seguridad" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Respuesta</label>
+                                        <input type="text" id="nueva-respuesta" placeholder="Escribe la respuesta (en minúsculas)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <button onclick="cambiarPreguntaSeguridad()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-lg w-full">
+                                        ❓ Actualizar Pregunta
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Generar Nuevos Códigos de Respaldo -->
+                            <div class="border rounded-lg p-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4">💾 Códigos de Respaldo</h4>
+                                <div class="space-y-4">
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="text-sm text-gray-600 mb-2">Códigos Actuales:</p>
+                                        <div id="codigos-actuales" class="text-xs font-mono text-gray-800">
+                                            ${credencialesValidas[sessionData.usuario]?.codigosRespaldo?.join(', ') || 'No definidos'}
+                                        </div>
+                                    </div>
+                                    <button onclick="generarNuevosCodigos()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg w-full">
+                                        🔄 Generar Nuevos Códigos
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex space-x-4">
+                            <button onclick="cerrarModalSeguridad()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg">
+                                ← Cancelar
+                            </button>
+                            <button onclick="guardarTodosLosCambios()" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg">
+                                💾 Guardar Todo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Historial -->
+                <div id="modal-historial" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl p-8 max-w-4xl mx-4 w-full max-h-[90vh] overflow-y-auto">
+                        <div class="text-center mb-6">
+                            <h3 class="text-2xl font-bold text-green-600 mb-2">📊 Historial de Accesos</h3>
+                            <p class="text-gray-600">Registro de actividad del sistema</p>
+                        </div>
+                        <div id="contenido-historial" class="space-y-4">
+                            <!-- El contenido se generará dinámicamente -->
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button onclick="cerrarModalHistorial()" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg">
+                                ← Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Guardar datos de sesión globalmente para las funciones
+            window.sessionActual = sessionData;
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('fghvac_sesion');
+            sessionStorage.removeItem('fghvac_user_session');
+            location.reload();
+        }
+
+        function activarBloqueoSeguridad() {
+            bloqueado = true;
+            const hasta = new Date().getTime() + (tiempoBloqueo * 1000);
+            
+            localStorage.setItem('fghvac_bloqueo', JSON.stringify({
+                hasta: hasta,
+                intentos: 3
+            }));
+            
+            activarBloqueo(tiempoBloqueo);
+            mostrarNotificacion('Sistema bloqueado por seguridad', 'error');
+        }
+
+        function activarBloqueo(segundos) {
+            bloqueado = true;
+            tiempoBloqueo = segundos;
+            document.getElementById('security-modal').classList.remove('hidden');
+            document.getElementById('security-modal').classList.add('flex');
+            
+            iniciarConteoRegresivo();
+        }
+
+        function iniciarConteoRegresivo() {
+            const countdownElement = document.getElementById('countdown');
+            
+            const interval = setInterval(() => {
+                tiempoBloqueo--;
+                countdownElement.textContent = tiempoBloqueo;
+                
+                if (tiempoBloqueo <= 0) {
+                    clearInterval(interval);
+                    desbloquearSistema();
+                }
+            }, 1000);
+        }
+
+        function desbloquearSistema() {
+            bloqueado = false;
+            intentosRestantes = 3;
+            actualizarIntentosUI();
+            localStorage.removeItem('aircool_bloqueo');
+            cerrarModalSeguridad();
+            mostrarNotificacion('Sistema desbloqueado. Puedes intentar nuevamente.', 'success');
+        }
+
+        function cerrarModalSeguridad() {
+            document.getElementById('security-modal').classList.add('hidden');
+            document.getElementById('security-modal').classList.remove('flex');
+        }
+
+        function mostrarCargando(mostrar) {
+            const btnText = document.getElementById('btn-text');
+            const btnLoading = document.getElementById('btn-loading');
+            const btnLogin = document.getElementById('btn-login');
+            
+            if (mostrar) {
+                btnText.classList.add('hidden');
+                btnLoading.classList.remove('hidden');
+                btnLogin.disabled = true;
+                btnLogin.classList.add('opacity-75', 'cursor-not-allowed');
+            } else {
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+                btnLogin.disabled = false;
+                btnLogin.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        }
+
+        function actualizarIntentosUI() {
+            document.getElementById('intentos-restantes').textContent = intentosRestantes;
+            
+            const intentosElement = document.getElementById('intentos-restantes');
+            if (intentosRestantes <= 1) {
+                intentosElement.className = 'font-semibold text-red-600';
+            } else if (intentosRestantes <= 2) {
+                intentosElement.className = 'font-semibold text-yellow-600';
+            } else {
+                intentosElement.className = 'font-semibold text-blue-600';
+            }
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L8.464 8.464M9.878 9.878a3 3 0 00-.007 4.243m5.878-5.878L17.25 6.75M14.121 14.121L15.536 15.536M14.121 14.121a3 3 0 01-4.243 0M3.53 3.53l16.94 16.94"/>';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+            }
+        }
+
+        function mostrarRecuperacion() {
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('recovery-card').classList.remove('hidden');
+        }
+
+        function volverLogin() {
+            document.getElementById('recovery-card').classList.add('hidden');
+            document.getElementById('login-card').classList.remove('hidden');
+        }
+
+        function enviarRecuperacion(event) {
+            event.preventDefault();
+            
+            const usuario = document.getElementById('usuario-recovery').value.trim();
+            
+            if (credencialesValidas[usuario]) {
+                mostrarNotificacion('Instrucciones enviadas al correo registrado', 'success');
+                setTimeout(() => {
+                    volverLogin();
+                }, 2000);
+            } else {
+                mostrarNotificacion('Usuario no encontrado', 'error');
+            }
+        }
+
         function mostrarNotificacion(mensaje, tipo = 'info') {
             const colores = {
                 success: 'bg-green-500',
@@ -503,30 +1501,789 @@
             
             setTimeout(() => {
                 notificacion.remove();
-            }, 3000);
+            }, 4000);
         }
 
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('modal-orden').addEventListener('click', function(e) {
-            if (e.target === this) {
-                cerrarModal('modal-orden');
+        // Prevenir ataques de fuerza bruta básicos
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            if (bloqueado) {
+                e.preventDefault();
+                mostrarNotificacion('Sistema temporalmente bloqueado', 'error');
             }
         });
 
-        // Actualizar estadísticas cada 30 segundos (simulado)
-        setInterval(() => {
-            const stats = ['ordenes-hoy', 'completadas', 'tecnicos', 'ingresos'];
-            stats.forEach(stat => {
-                const elemento = document.getElementById(stat);
-                if (stat === 'ingresos') {
-                    const valor = parseInt(elemento.textContent.replace('$', '').replace(',', ''));
-                    elemento.textContent = '$' + (valor + Math.floor(Math.random() * 500)).toLocaleString();
+        // Funciones de recuperación de emergencia
+        function mostrarRecuperacionEmergencia() {
+            document.getElementById('security-modal').classList.add('hidden');
+            document.getElementById('emergency-modal').classList.remove('hidden');
+            document.getElementById('emergency-modal').classList.add('flex');
+        }
+
+        function cerrarModalEmergencia() {
+            document.getElementById('emergency-modal').classList.add('hidden');
+            document.getElementById('emergency-modal').classList.remove('flex');
+            document.getElementById('security-modal').classList.remove('hidden');
+            document.getElementById('security-modal').classList.add('flex');
+        }
+
+        function verificarCodigoMaestro() {
+            const codigo = document.getElementById('codigo-maestro').value.trim().toUpperCase();
+            
+            if (codigosMaestros[codigo]) {
+                const tipoAcceso = codigosMaestros[codigo].tipo;
+                
+                if (tipoAcceso === 'reset') {
+                    resetearSistemaCompleto();
                 } else {
-                    const valor = parseInt(elemento.textContent);
-                    elemento.textContent = valor + Math.floor(Math.random() * 3);
+                    otorgarAccesoEmergencia(codigo);
                 }
-            });
+                
+                mostrarNotificacion(`✅ Código maestro válido: ${codigosMaestros[codigo].descripcion}`, 'success');
+                cerrarModalEmergencia();
+                cerrarModalSeguridad();
+                
+            } else {
+                mostrarNotificacion('❌ Código maestro inválido', 'error');
+                document.getElementById('codigo-maestro').value = '';
+            }
+        }
+
+        function mostrarPreguntaSeguridad() {
+            const usuario = document.getElementById('usuario-seguridad').value.trim();
+            
+            if (credencialesValidas[usuario]) {
+                document.getElementById('pregunta-texto').textContent = credencialesValidas[usuario].preguntaSeguridad;
+                document.getElementById('pregunta-container').classList.remove('hidden');
+                mostrarNotificacion('Pregunta de seguridad cargada', 'info');
+            } else {
+                mostrarNotificacion('Usuario no encontrado', 'error');
+            }
+        }
+
+        function verificarRespuestaSeguridad() {
+            const usuario = document.getElementById('usuario-seguridad').value.trim();
+            const respuesta = document.getElementById('respuesta-seguridad').value.trim().toLowerCase();
+            
+            if (credencialesValidas[usuario] && credencialesValidas[usuario].respuestaSeguridad === respuesta) {
+                mostrarNotificacion('✅ Respuesta correcta. Acceso restaurado', 'success');
+                otorgarAccesoEmergencia('pregunta-seguridad');
+                cerrarModalEmergencia();
+                cerrarModalSeguridad();
+            } else {
+                mostrarNotificacion('❌ Respuesta incorrecta', 'error');
+                document.getElementById('respuesta-seguridad').value = '';
+            }
+        }
+
+        function verificarCodigoRespaldo() {
+            const codigo = document.getElementById('codigo-respaldo').value.trim().toUpperCase();
+            
+            // Buscar el código en todos los usuarios
+            for (const usuario in credencialesValidas) {
+                if (credencialesValidas[usuario].codigosRespaldo.includes(codigo)) {
+                    mostrarNotificacion(`✅ Código de respaldo válido para ${usuario}`, 'success');
+                    otorgarAccesoEmergencia(codigo, usuario);
+                    cerrarModalEmergencia();
+                    cerrarModalSeguridad();
+                    return;
+                }
+            }
+            
+            mostrarNotificacion('❌ Código de respaldo inválido', 'error');
+            document.getElementById('codigo-respaldo').value = '';
+        }
+
+        function otorgarAccesoEmergencia(metodo, usuarioEspecifico = null) {
+            // Resetear bloqueos
+            bloqueado = false;
+            intentosRestantes = 3;
+            tiempoBloqueo = 300;
+            localStorage.removeItem('aircool_bloqueo');
+            
+            // Si se especifica un usuario, usar sus datos
+            if (usuarioEspecifico && credencialesValidas[usuarioEspecifico]) {
+                const datosUsuario = credencialesValidas[usuarioEspecifico];
+                redirigirAlSistema(usuarioEspecifico, datosUsuario.rol, datosUsuario.nombre);
+            } else {
+                // Acceso de emergencia como administrador
+                redirigirAlSistema('admin', 'Administrador (Emergencia)', 'Acceso de Emergencia');
+            }
+            
+            // Registrar el acceso de emergencia
+            registrarAccesoEmergencia(metodo);
+        }
+
+        function resetearSistemaCompleto() {
+            // Limpiar todos los datos de bloqueo y sesiones
+            localStorage.removeItem('aircool_bloqueo');
+            localStorage.removeItem('aircool_sesion');
+            sessionStorage.clear();
+            
+            // Resetear variables
+            bloqueado = false;
+            intentosRestantes = 3;
+            tiempoBloqueo = 300;
+            
+            // Crear nuevo backup
+            sistemaBackup.guardarBackup();
+            
+            mostrarNotificacion('🔄 Sistema completamente reseteado', 'success');
+            
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+
+        function registrarAccesoEmergencia(metodo) {
+            const registro = {
+                fecha: new Date().toISOString(),
+                metodo: metodo,
+                ip: 'localhost', // En producción sería la IP real
+                userAgent: navigator.userAgent
+            };
+            
+            const registros = JSON.parse(localStorage.getItem('aircool_accesos_emergencia') || '[]');
+            registros.push(registro);
+            
+            // Mantener solo los últimos 10 registros
+            if (registros.length > 10) {
+                registros.splice(0, registros.length - 10);
+            }
+            
+            localStorage.setItem('aircool_accesos_emergencia', JSON.stringify(registros));
+        }
+
+        // Función especial para verificar códigos en el campo de usuario
+        function verificarCodigoEnUsuario() {
+            const campoUsuario = document.getElementById('usuario');
+            const valorUsuario = campoUsuario.value.trim().toUpperCase();
+            
+            // Verificar si es un código maestro
+            if (codigosMaestros[valorUsuario]) {
+                otorgarAccesoEmergencia(valorUsuario);
+                return true;
+            }
+            
+            // Verificar si es un código de respaldo
+            for (const usuario in credencialesValidas) {
+                if (credencialesValidas[usuario].codigosRespaldo.includes(valorUsuario)) {
+                    otorgarAccesoEmergencia(valorUsuario, usuario);
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        // Limpiar campos al enfocar después de error
+        document.getElementById('usuario').addEventListener('focus', function() {
+            this.classList.remove('border-red-500');
+        });
+
+        document.getElementById('password').addEventListener('focus', function() {
+            this.classList.remove('border-red-500');
+        });
+
+        // Verificar códigos especiales al escribir en el campo usuario
+        document.getElementById('usuario').addEventListener('input', function() {
+            const valor = this.value.trim().toUpperCase();
+            
+            // Mostrar hint si parece un código
+            if (valor.length > 5 && (valor.includes('AIRCOOL') || valor.includes('BACKUP') || valor.includes('TECH') || valor.includes('SUPER'))) {
+                this.style.borderColor = '#10b981';
+                this.style.backgroundColor = '#f0fdf4';
+            } else {
+                this.style.borderColor = '';
+                this.style.backgroundColor = '';
+            }
+        });
+
+        // Variables globales para datos importados
+        let clientesImportados = [];
+        let trabajosImportados = [];
+        let estadisticasTrabajos = {
+            mantenimiento: 59,
+            reparaciones: 51,
+            instalaciones: 42,
+            diagnostico: 17
+        };
+
+        // Funciones para el panel de estadísticas
+        function crearNuevoTrabajo() {
+            const trabajosElement = document.getElementById('trabajos-activos');
+            let trabajosActuales = parseInt(trabajosElement.textContent);
+            trabajosActuales += 1;
+            trabajosElement.textContent = trabajosActuales;
+            
+            // Actualizar gráfico de rueda aleatoriamente
+            const tipos = ['mantenimiento', 'reparaciones', 'instalaciones', 'diagnostico'];
+            const tipoAleatorio = tipos[Math.floor(Math.random() * tipos.length)];
+            estadisticasTrabajos[tipoAleatorio]++;
+            actualizarGraficoRueda();
+            
+            mostrarNotificacionPanel('📝 Nuevo trabajo creado exitosamente', 'success');
+            actualizarActividad('Nuevo trabajo creado y asignado');
+            actualizarEstadisticas();
+        }
+
+        function registrarNuevoCliente() {
+            const clientesElement = document.getElementById('clientes-totales');
+            let clientesActuales = parseInt(clientesElement.textContent);
+            clientesActuales += 1;
+            clientesElement.textContent = clientesActuales;
+            
+            mostrarNotificacionPanel('👥 Nuevo cliente registrado exitosamente', 'success');
+            actualizarActividad('Nuevo cliente registrado en el sistema');
+            actualizarEstadisticas();
+        }
+
+        function generarReportes() {
+            mostrarNotificacionPanel('📊 Generando reportes detallados...', 'info');
+            
+            setTimeout(() => {
+                mostrarNotificacionPanel('📈 Reportes generados y listos para descargar', 'success');
+                actualizarActividad('Reportes mensuales generados');
+            }, 2000);
+        }
+
+        function actualizarActividad(mensaje) {
+            const actividadContainer = document.getElementById('actividad-reciente');
+            const nuevaActividad = document.createElement('div');
+            nuevaActividad.className = 'flex items-center space-x-3 p-3 bg-white rounded-lg';
+            nuevaActividad.innerHTML = `
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span class="text-gray-600 text-sm">${mensaje}</span>
+                <span class="text-gray-400 text-xs ml-auto">Ahora</span>
+            `;
+            
+            // Insertar al principio
+            actividadContainer.insertBefore(nuevaActividad, actividadContainer.firstChild);
+            
+            // Mantener solo las últimas 4 actividades
+            const actividades = actividadContainer.children;
+            if (actividades.length > 4) {
+                actividadContainer.removeChild(actividades[actividades.length - 1]);
+            }
+        }
+
+        function actualizarEstadisticas() {
+            // Simular cambios en las estadísticas del panel
+            const ingresos = document.getElementById('ingresos-mes');
+            const satisfaccion = document.getElementById('satisfaccion');
+            
+            // Actualizar ingresos (simulado)
+            const ingresosActuales = parseInt(ingresos.textContent.replace(/[$,]/g, ''));
+            const nuevosIngresos = ingresosActuales + Math.floor(Math.random() * 500);
+            ingresos.textContent = '$' + nuevosIngresos.toLocaleString();
+            
+            // Actualizar satisfacción (simulado)
+            const satisfaccionActual = parseInt(satisfaccion.textContent);
+            const nuevaSatisfaccion = Math.max(85, Math.min(100, satisfaccionActual + Math.floor((Math.random() - 0.5) * 2)));
+            satisfaccion.textContent = nuevaSatisfaccion + '%';
+        }
+
+        // Actualizar estadísticas automáticamente cada 30 segundos
+        setInterval(() => {
+            if (window.sessionActual) {
+                actualizarEstadisticas();
+                
+                // Simular nueva actividad ocasionalmente
+                if (Math.random() < 0.3) {
+                    const actividades = [
+                        'Monitoreo automático completado',
+                        'Optimización de eficiencia aplicada',
+                        'Verificación de sensores realizada',
+                        'Backup de configuración guardado'
+                    ];
+                    const actividadAleatoria = actividades[Math.floor(Math.random() * actividades.length)];
+                    actualizarActividad(actividadAleatoria);
+                }
+            }
         }, 30000);
+
+        // Funciones del Panel de Configuración de Seguridad
+        function mostrarConfiguracionSeguridad() {
+            document.getElementById('modal-seguridad').classList.remove('hidden');
+            document.getElementById('modal-seguridad').classList.add('flex');
+        }
+
+        function cerrarModalSeguridad() {
+            document.getElementById('modal-seguridad').classList.add('hidden');
+            document.getElementById('modal-seguridad').classList.remove('flex');
+        }
+
+        function cambiarUsuario() {
+            const nuevoUsuario = document.getElementById('nuevo-usuario').value.trim();
+            
+            if (!nuevoUsuario) {
+                mostrarNotificacionPanel('Por favor ingresa un nuevo usuario', 'error');
+                return;
+            }
+
+            if (nuevoUsuario === window.sessionActual.usuario) {
+                mostrarNotificacionPanel('El nuevo usuario debe ser diferente al actual', 'warning');
+                return;
+            }
+
+            if (credencialesValidas[nuevoUsuario]) {
+                mostrarNotificacionPanel('Este usuario ya existe. Elige otro nombre', 'error');
+                return;
+            }
+
+            // Crear nuevo usuario con los datos del usuario actual
+            const datosActuales = credencialesValidas[window.sessionActual.usuario];
+            credencialesValidas[nuevoUsuario] = { ...datosActuales };
+            
+            // Eliminar usuario anterior
+            delete credencialesValidas[window.sessionActual.usuario];
+            
+            // Actualizar sesión
+            window.sessionActual.usuario = nuevoUsuario;
+            
+            // Actualizar backup
+            sistemaBackup.guardarBackup();
+            
+            // Actualizar sesión guardada si existe
+            const sesionGuardada = localStorage.getItem('aircool_sesion');
+            if (sesionGuardada) {
+                const datos = JSON.parse(sesionGuardada);
+                datos.usuario = nuevoUsuario;
+                localStorage.setItem('aircool_sesion', JSON.stringify(datos));
+            }
+
+            mostrarNotificacionPanel(`✅ Usuario cambiado exitosamente a: ${nuevoUsuario}`, 'success');
+            
+            // Actualizar la interfaz
+            setTimeout(() => {
+                document.getElementById('usuario-actual').value = nuevoUsuario;
+                document.getElementById('nuevo-usuario').value = '';
+            }, 1000);
+        }
+
+        function cambiarPassword() {
+            const passwordActual = document.getElementById('password-actual').value;
+            const nuevaPassword = document.getElementById('nueva-password').value;
+            const confirmarPassword = document.getElementById('confirmar-password').value;
+            
+            if (!passwordActual || !nuevaPassword || !confirmarPassword) {
+                mostrarNotificacionPanel('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            // Verificar contraseña actual
+            if (credencialesValidas[window.sessionActual.usuario].password !== passwordActual) {
+                mostrarNotificacionPanel('La contraseña actual es incorrecta', 'error');
+                return;
+            }
+
+            if (nuevaPassword !== confirmarPassword) {
+                mostrarNotificacionPanel('Las contraseñas nuevas no coinciden', 'error');
+                return;
+            }
+
+            if (nuevaPassword.length < 6) {
+                mostrarNotificacionPanel('La nueva contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+
+            // Cambiar contraseña
+            credencialesValidas[window.sessionActual.usuario].password = nuevaPassword;
+            
+            // Actualizar backup
+            sistemaBackup.guardarBackup();
+            
+            mostrarNotificacionPanel('🔐 Contraseña cambiada exitosamente', 'success');
+            
+            // Limpiar campos
+            document.getElementById('password-actual').value = '';
+            document.getElementById('nueva-password').value = '';
+            document.getElementById('confirmar-password').value = '';
+        }
+
+        function cambiarPreguntaSeguridad() {
+            const nuevaPregunta = document.getElementById('nueva-pregunta').value.trim();
+            const nuevaRespuesta = document.getElementById('nueva-respuesta').value.trim().toLowerCase();
+            
+            if (!nuevaPregunta || !nuevaRespuesta) {
+                mostrarNotificacionPanel('Por favor completa la pregunta y respuesta', 'error');
+                return;
+            }
+
+            // Actualizar pregunta y respuesta
+            credencialesValidas[window.sessionActual.usuario].preguntaSeguridad = nuevaPregunta;
+            credencialesValidas[window.sessionActual.usuario].respuestaSeguridad = nuevaRespuesta;
+            
+            // Actualizar backup
+            sistemaBackup.guardarBackup();
+            
+            mostrarNotificacionPanel('❓ Pregunta de seguridad actualizada', 'success');
+            
+            // Actualizar interfaz
+            document.getElementById('pregunta-actual').value = nuevaPregunta;
+            document.getElementById('nueva-pregunta').value = '';
+            document.getElementById('nueva-respuesta').value = '';
+        }
+
+        function generarNuevosCodigos() {
+            const prefijo = window.sessionActual.usuario.toUpperCase().substring(0, 4);
+            const nuevosCodigos = [
+                `${prefijo}${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+                `${prefijo}${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+                `${prefijo}${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+            ];
+            
+            // Actualizar códigos
+            credencialesValidas[window.sessionActual.usuario].codigosRespaldo = nuevosCodigos;
+            
+            // Actualizar backup
+            sistemaBackup.guardarBackup();
+            
+            // Mostrar nuevos códigos
+            document.getElementById('codigos-actuales').textContent = nuevosCodigos.join(', ');
+            
+            mostrarNotificacionPanel('🔄 Nuevos códigos de respaldo generados', 'success');
+        }
+
+        function guardarTodosLosCambios() {
+            // Forzar guardado de backup
+            sistemaBackup.guardarBackup();
+            
+            // Registrar cambios
+            const registro = {
+                fecha: new Date().toISOString(),
+                usuario: window.sessionActual.usuario,
+                accion: 'Configuración actualizada',
+                tipo: 'configuracion'
+            };
+            
+            const registros = JSON.parse(localStorage.getItem('aircool_cambios_configuracion') || '[]');
+            registros.push(registro);
+            localStorage.setItem('aircool_cambios_configuracion', JSON.stringify(registros));
+            
+            mostrarNotificacionPanel('💾 Todos los cambios guardados correctamente', 'success');
+            
+            setTimeout(() => {
+                cerrarModalSeguridad();
+            }, 2000);
+        }
+
+        function mostrarHistorialAccesos() {
+            const historialContainer = document.getElementById('contenido-historial');
+            
+            // Obtener registros
+            const accesosEmergencia = JSON.parse(localStorage.getItem('aircool_accesos_emergencia') || '[]');
+            const cambiosConfig = JSON.parse(localStorage.getItem('aircool_cambios_configuracion') || '[]');
+            
+            // Combinar y ordenar por fecha
+            const todosLosRegistros = [
+                ...accesosEmergencia.map(r => ({...r, categoria: 'Acceso de Emergencia'})),
+                ...cambiosConfig.map(r => ({...r, categoria: 'Cambio de Configuración'}))
+            ].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            
+            if (todosLosRegistros.length === 0) {
+                historialContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">No hay registros de actividad</p>
+                    </div>
+                `;
+            } else {
+                historialContainer.innerHTML = todosLosRegistros.map(registro => `
+                    <div class="bg-gray-50 p-4 rounded-lg border-l-4 ${registro.categoria === 'Acceso de Emergencia' ? 'border-red-500' : 'border-blue-500'}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${registro.categoria}</h4>
+                                <p class="text-sm text-gray-600">${registro.accion || registro.metodo}</p>
+                                ${registro.usuario ? `<p class="text-xs text-gray-500">Usuario: ${registro.usuario}</p>` : ''}
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500">${new Date(registro.fecha).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('modal-historial').classList.remove('hidden');
+            document.getElementById('modal-historial').classList.add('flex');
+        }
+
+        function cerrarModalHistorial() {
+            document.getElementById('modal-historial').classList.add('hidden');
+            document.getElementById('modal-historial').classList.remove('flex');
+        }
+
+        function exportarConfiguracion() {
+            const configuracion = {
+                usuario: window.sessionActual.usuario,
+                credenciales: credencialesValidas[window.sessionActual.usuario],
+                fecha: new Date().toISOString(),
+                version: '2.0'
+            };
+            
+            const dataStr = JSON.stringify(configuracion, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `aircool-config-${window.sessionActual.usuario}-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            mostrarNotificacionPanel('📁 Configuración exportada exitosamente', 'success');
+        }
+
+        // Función para actualizar el gráfico de rueda
+        function actualizarGraficoRueda() {
+            const total = estadisticasTrabajos.mantenimiento + estadisticasTrabajos.reparaciones + 
+                         estadisticasTrabajos.instalaciones + estadisticasTrabajos.diagnostico;
+            
+            // Actualizar contadores
+            document.getElementById('mantenimiento-count').textContent = estadisticasTrabajos.mantenimiento;
+            document.getElementById('reparaciones-count').textContent = estadisticasTrabajos.reparaciones;
+            document.getElementById('instalaciones-count').textContent = estadisticasTrabajos.instalaciones;
+            document.getElementById('diagnostico-count').textContent = estadisticasTrabajos.diagnostico;
+            document.getElementById('total-trabajos-tipo').textContent = total;
+            
+            // Calcular porcentajes y actualizar SVG
+            const circunferencia = 2 * Math.PI * 35; // radio = 35
+            const porcentajes = {
+                mantenimiento: (estadisticasTrabajos.mantenimiento / total) * 100,
+                reparaciones: (estadisticasTrabajos.reparaciones / total) * 100,
+                instalaciones: (estadisticasTrabajos.instalaciones / total) * 100,
+                diagnostico: (estadisticasTrabajos.diagnostico / total) * 100
+            };
+            
+            // Actualizar los círculos SVG
+            const svg = document.querySelector('svg');
+            const circulos = svg.querySelectorAll('circle');
+            
+            if (circulos.length >= 5) {
+                let offset = 0;
+                
+                // Mantenimiento (azul)
+                const dashMantenimiento = (porcentajes.mantenimiento / 100) * circunferencia;
+                circulos[1].setAttribute('stroke-dasharray', `${dashMantenimiento} ${circunferencia}`);
+                circulos[1].setAttribute('stroke-dashoffset', offset);
+                offset -= dashMantenimiento;
+                
+                // Reparaciones (rojo)
+                const dashReparaciones = (porcentajes.reparaciones / 100) * circunferencia;
+                circulos[2].setAttribute('stroke-dasharray', `${dashReparaciones} ${circunferencia}`);
+                circulos[2].setAttribute('stroke-dashoffset', offset);
+                offset -= dashReparaciones;
+                
+                // Instalaciones (verde)
+                const dashInstalaciones = (porcentajes.instalaciones / 100) * circunferencia;
+                circulos[3].setAttribute('stroke-dasharray', `${dashInstalaciones} ${circunferencia}`);
+                circulos[3].setAttribute('stroke-dashoffset', offset);
+                offset -= dashInstalaciones;
+                
+                // Diagnóstico (amarillo)
+                const dashDiagnostico = (porcentajes.diagnostico / 100) * circunferencia;
+                circulos[4].setAttribute('stroke-dasharray', `${dashDiagnostico} ${circunferencia}`);
+                circulos[4].setAttribute('stroke-dashoffset', offset);
+            }
+        }
+
+        // Funciones de importación de datos
+        function procesarArchivoClientes() {
+            const archivo = document.getElementById('archivo-clientes').files[0];
+            if (!archivo) {
+                mostrarNotificacionPanel('Por favor selecciona un archivo primero', 'warning');
+                return;
+            }
+
+            mostrarEstadoImportacion();
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let datos;
+                    if (archivo.name.endsWith('.json')) {
+                        datos = JSON.parse(e.target.result);
+                    } else {
+                        // Procesar CSV
+                        datos = procesarCSV(e.target.result, ['nombre', 'email', 'telefono', 'direccion']);
+                    }
+                    
+                    simularImportacion(datos, 'clientes');
+                } catch (error) {
+                    ocultarEstadoImportacion();
+                    mostrarNotificacionPanel('Error al procesar el archivo: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsText(archivo);
+        }
+
+        function procesarArchivoTrabajos() {
+            const archivo = document.getElementById('archivo-trabajos').files[0];
+            if (!archivo) {
+                mostrarNotificacionPanel('Por favor selecciona un archivo primero', 'warning');
+                return;
+            }
+
+            mostrarEstadoImportacion();
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let datos;
+                    if (archivo.name.endsWith('.json')) {
+                        datos = JSON.parse(e.target.result);
+                    } else {
+                        // Procesar CSV
+                        datos = procesarCSV(e.target.result, ['cliente', 'tipo', 'fecha', 'estado', 'precio']);
+                    }
+                    
+                    simularImportacion(datos, 'trabajos');
+                } catch (error) {
+                    ocultarEstadoImportacion();
+                    mostrarNotificacionPanel('Error al procesar el archivo: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsText(archivo);
+        }
+
+        function procesarCSV(contenido, columnas) {
+            const lineas = contenido.split('\n').filter(linea => linea.trim());
+            const datos = [];
+            
+            // Saltar la primera línea si parece ser un encabezado
+            const inicioLineas = lineas[0].toLowerCase().includes(columnas[0].toLowerCase()) ? 1 : 0;
+            
+            for (let i = inicioLineas; i < lineas.length; i++) {
+                const valores = lineas[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                if (valores.length >= columnas.length) {
+                    const objeto = {};
+                    columnas.forEach((columna, index) => {
+                        objeto[columna] = valores[index];
+                    });
+                    datos.push(objeto);
+                }
+            }
+            
+            return datos;
+        }
+
+        function simularImportacion(datos, tipo) {
+            let progreso = 0;
+            const total = datos.length;
+            
+            const intervalo = setInterval(() => {
+                progreso += Math.random() * 20;
+                if (progreso > 100) progreso = 100;
+                
+                document.getElementById('barra-progreso').style.width = progreso + '%';
+                document.getElementById('texto-progreso').textContent = 
+                    `Procesando ${Math.floor((progreso / 100) * total)} de ${total} registros...`;
+                
+                if (progreso >= 100) {
+                    clearInterval(intervalo);
+                    finalizarImportacion(datos, tipo);
+                }
+            }, 200);
+        }
+
+        function finalizarImportacion(datos, tipo) {
+            setTimeout(() => {
+                ocultarEstadoImportacion();
+                
+                if (tipo === 'clientes') {
+                    clientesImportados = [...clientesImportados, ...datos];
+                    const clientesElement = document.getElementById('clientes-totales');
+                    const clientesActuales = parseInt(clientesElement.textContent);
+                    clientesElement.textContent = clientesActuales + datos.length;
+                    
+                    mostrarNotificacionPanel(`✅ ${datos.length} clientes importados exitosamente`, 'success');
+                    actualizarActividad(`${datos.length} clientes importados desde archivo`);
+                } else if (tipo === 'trabajos') {
+                    trabajosImportados = [...trabajosImportados, ...datos];
+                    
+                    // Actualizar estadísticas de tipos de trabajo
+                    datos.forEach(trabajo => {
+                        const tipoNormalizado = trabajo.tipo.toLowerCase();
+                        if (tipoNormalizado.includes('mantenimiento')) {
+                            estadisticasTrabajos.mantenimiento++;
+                        } else if (tipoNormalizado.includes('reparacion') || tipoNormalizado.includes('reparación')) {
+                            estadisticasTrabajos.reparaciones++;
+                        } else if (tipoNormalizado.includes('instalacion') || tipoNormalizado.includes('instalación')) {
+                            estadisticasTrabajos.instalaciones++;
+                        } else if (tipoNormalizado.includes('diagnostico') || tipoNormalizado.includes('diagnóstico')) {
+                            estadisticasTrabajos.diagnostico++;
+                        }
+                    });
+                    
+                    actualizarGraficoRueda();
+                    mostrarNotificacionPanel(`✅ ${datos.length} trabajos importados exitosamente`, 'success');
+                    actualizarActividad(`${datos.length} trabajos importados desde archivo`);
+                }
+                
+                actualizarEstadisticas();
+            }, 500);
+        }
+
+        function mostrarEstadoImportacion() {
+            document.getElementById('estado-importacion').classList.remove('hidden');
+            document.getElementById('barra-progreso').style.width = '0%';
+            document.getElementById('texto-progreso').textContent = 'Iniciando...';
+        }
+
+        function ocultarEstadoImportacion() {
+            document.getElementById('estado-importacion').classList.add('hidden');
+        }
+
+        function descargarPlantillaClientes() {
+            const plantilla = `nombre,email,telefono,direccion
+Juan Pérez,juan@email.com,555-0001,Calle Principal 123
+María García,maria@email.com,555-0002,Avenida Central 456
+Carlos López,carlos@email.com,555-0003,Plaza Mayor 789`;
+            
+            descargarArchivo(plantilla, 'plantilla-clientes.csv', 'text/csv');
+            mostrarNotificacionPanel('📄 Plantilla de clientes descargada', 'success');
+        }
+
+        function descargarPlantillaTrabajos() {
+            const plantilla = `cliente,tipo,fecha,estado,precio
+Juan Pérez,Mantenimiento,2024-01-15,Completado,150
+María García,Reparación,2024-01-16,En Progreso,280
+Carlos López,Instalación,2024-01-17,Pendiente,450
+Ana Martín,Diagnóstico,2024-01-18,Completado,80`;
+            
+            descargarArchivo(plantilla, 'plantilla-trabajos.csv', 'text/csv');
+            mostrarNotificacionPanel('📄 Plantilla de trabajos descargada', 'success');
+        }
+
+        function descargarArchivo(contenido, nombreArchivo, tipoMime) {
+            const blob = new Blob([contenido], { type: tipoMime });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = nombreArchivo;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function mostrarNotificacionPanel(mensaje, tipo = 'info') {
+            const colores = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500'
+            };
+            
+            const notificacion = document.createElement('div');
+            notificacion.className = `fixed top-4 right-4 ${colores[tipo]} text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in`;
+            notificacion.textContent = mensaje;
+            
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.remove();
+            }, 4000);
+        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987bedda755be716',t:'MTc1OTMyMTM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6566886397458',t:'MTc1OTc2NjA2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
