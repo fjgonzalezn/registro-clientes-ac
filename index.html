@@ -3,903 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Clientes</title>
+    <title>Panel de Control - Empresa AC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             box-sizing: border-box;
         }
         .fade-in {
-            animation: fadeIn 0.3s ease-in;
+            animation: fadeIn 0.5s ease-in;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">📋 Registro de Clientes</h1>
-            <p class="text-gray-600">Gestiona tu base de clientes de manera eficiente</p>
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b-4 border-blue-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <div class="bg-blue-600 p-3 rounded-lg mr-4">
+                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">AirCool Pro</h1>
+                        <p class="text-gray-600">Panel de Control Empresarial</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-green-100 px-4 py-2 rounded-full">
+                        <span class="text-green-800 font-semibold">● En línea</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Administrador</p>
+                        <p class="font-semibold text-gray-900">Juan Pérez</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Estadísticas Principales -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
+                <div class="flex items-center">
+                    <div class="bg-blue-500 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Órdenes Hoy</p>
+                        <p class="text-2xl font-bold text-gray-900" id="ordenes-hoy">24</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
+                <div class="flex items-center">
+                    <div class="bg-green-500 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Completadas</p>
+                        <p class="text-2xl font-bold text-gray-900" id="completadas">18</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
+                <div class="flex items-center">
+                    <div class="bg-yellow-500 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Técnicos Activos</p>
+                        <p class="text-2xl font-bold text-gray-900" id="tecnicos">8</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
+                <div class="flex items-center">
+                    <div class="bg-purple-500 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Ingresos Hoy</p>
+                        <p class="text-2xl font-bold text-gray-900" id="ingresos">$12,450</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Pestañas de navegación -->
+        <!-- Navegación de Secciones -->
         <div class="bg-white rounded-xl shadow-lg mb-8">
-            <div class="flex border-b">
-                <button id="clientsTab" class="flex-1 py-4 px-6 text-center font-medium text-blue-600 border-b-2 border-blue-600 bg-blue-50">
-                    👤 Clientes
-                </button>
-                <button id="maintenanceTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors">
-                    🔧 Mantenimientos
-                </button>
-                <button id="alertsTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-600 hover:text-blue-600 transition-colors relative">
-                    🔔 Recordatorios
-                    <span id="alertBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden">0</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Contenido de Clientes -->
-        <div id="clientsContent" class="grid lg:grid-cols-2 gap-8">
-            <!-- Formulario de Registro -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                    <span class="mr-2">👤</span>
-                    Nuevo Cliente
-                </h2>
-                
-                <form id="clientForm" class="space-y-4">
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
-                            <input type="text" id="nombre" required 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
-                            <input type="text" id="apellido" required 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" id="email" required 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
-                        <input type="tel" id="telefono" required 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Completa</label>
-                        <input type="text" id="direccion" required placeholder="Ej: Calle 123 #45-67, Barrio Centro" 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Ciudad</label>
-                        <input type="text" id="ciudad" required 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Empresa</label>
-                        <input type="text" id="empresa" 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Último Mantenimiento</label>
-                        <input type="date" id="ultimoMantenimiento" 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Equipo</label>
-                        <select id="tipoEquipo" 
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            <option value="">Seleccionar equipo</option>
-                            <option value="Aire Acondicionado Split">Aire Acondicionado Split</option>
-                            <option value="Aire Acondicionado Central">Aire Acondicionado Central</option>
-                            <option value="Aire Acondicionado Ventana">Aire Acondicionado Ventana</option>
-                            <option value="Sistema VRF">Sistema VRF</option>
-                            <option value="Chiller">Chiller</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Notas</label>
-                        <textarea id="notas" rows="3" 
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" 
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                        <span class="mr-2">✅</span>
-                        Registrar Cliente
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" id="nav-tabs">
+                    <button class="nav-tab active py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600" data-tab="ordenes">
+                        Órdenes de Servicio
                     </button>
-                </form>
+                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="tecnicos">
+                        Técnicos
+                    </button>
+                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="inventario">
+                        Inventario
+                    </button>
+                    <button class="nav-tab py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="clientes">
+                        Clientes
+                    </button>
+                </nav>
             </div>
 
-            <!-- Lista de Clientes -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
+            <!-- Contenido de Órdenes -->
+            <div id="ordenes-content" class="tab-content p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                        <span class="mr-2">📊</span>
-                        Clientes Registrados
-                    </h2>
-                    <div class="flex items-center space-x-2">
-                        <span id="clientCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 clientes</span>
-                        <button id="exportBtn" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center">
-                            <span class="mr-1">📥</span>
-                            Exportar
-                        </button>
-                    </div>
+                    <h2 class="text-xl font-bold text-gray-900">Órdenes de Servicio</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioOrden()">
+                        + Nueva Orden
+                    </button>
                 </div>
 
-                <!-- Buscador -->
-                <div class="mb-4">
-                    <input type="text" id="searchInput" placeholder="Buscar clientes..." 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                </div>
-
-                <!-- Lista de clientes -->
-                <div id="clientList" class="space-y-3 max-h-96 overflow-y-auto">
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">👥</span>
-                        <p>No hay clientes registrados aún</p>
-                        <p class="text-sm">Agrega tu primer cliente usando el formulario</p>
-                    </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Técnico</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="ordenes-tabla">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">María González</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Instalación AC</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Carlos Ruiz</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completado</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
+                                    <button class="text-red-600 hover:text-red-900">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Pedro López</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mantenimiento</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Ana Martín</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En Progreso</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
+                                    <button class="text-red-600 hover:text-red-900">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
 
-        <!-- Contenido de Mantenimientos -->
-        <div id="maintenanceContent" class="hidden">
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Formulario de Mantenimiento -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <span class="mr-2">🔧</span>
-                        Registrar Mantenimiento
-                    </h2>
-                    
-                    <form id="maintenanceForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
-                            <select id="clientSelect" required 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Seleccionar cliente</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Mantenimiento</label>
-                            <input type="date" id="fechaMantenimiento" required 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Mantenimiento</label>
-                            <select id="tipoMantenimiento" required 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Seleccionar tipo</option>
-                                <option value="Preventivo">Mantenimiento Preventivo</option>
-                                <option value="Correctivo">Mantenimiento Correctivo</option>
-                                <option value="Limpieza">Limpieza General</option>
-                                <option value="Revisión">Revisión Técnica</option>
-                                <option value="Reparación">Reparación</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Trabajo</label>
-                            <textarea id="descripcionTrabajo" rows="4" required 
-                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" 
-                                      placeholder="Describe el trabajo realizado..."></textarea>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Costo ($)</label>
-                                <input type="number" id="costoMantenimiento" step="0.01" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Técnico</label>
-                                <input type="text" id="tecnico" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            </div>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                            <span class="mr-2">✅</span>
-                            Registrar Mantenimiento
-                        </button>
-                    </form>
+            <!-- Contenido de Técnicos -->
+            <div id="tecnicos-content" class="tab-content p-6 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">Gestión de Técnicos</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioTecnico()">
+                        + Nuevo Técnico
+                    </button>
                 </div>
 
-                <!-- Historial de Mantenimientos -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                            <span class="mr-2">📋</span>
-                            Historial de Mantenimientos
-                        </h2>
-                        <span id="maintenanceCount" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0 registros</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-500 p-2 rounded-full mr-3">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Carlos Ruiz</h3>
+                                <p class="text-sm text-gray-600">Técnico Senior</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-sm"><span class="font-medium">Estado:</span> <span class="text-green-600">Disponible</span></p>
+                            <p class="text-sm"><span class="font-medium">Órdenes hoy:</span> 3</p>
+                            <p class="text-sm"><span class="font-medium">Calificación:</span> ⭐⭐⭐⭐⭐</p>
+                        </div>
                     </div>
 
-                    <!-- Filtros -->
-                    <div class="mb-4 space-y-2">
-                        <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        <select id="filterType" 
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            <option value="">Todos los tipos</option>
-                            <option value="Preventivo">Preventivo</option>
-                            <option value="Correctivo">Correctivo</option>
-                            <option value="Limpieza">Limpieza</option>
-                            <option value="Revisión">Revisión</option>
-                            <option value="Reparación">Reparación</option>
-                        </select>
-                    </div>
-
-                    <!-- Lista de mantenimientos -->
-                    <div id="maintenanceList" class="space-y-3 max-h-96 overflow-y-auto">
-                        <div class="text-center text-gray-500 py-8">
-                            <span class="text-4xl mb-2 block">🔧</span>
-                            <p>No hay mantenimientos registrados</p>
-                            <p class="text-sm">Registra el primer mantenimiento</p>
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-500 p-2 rounded-full mr-3">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Ana Martín</h3>
+                                <p class="text-sm text-gray-600">Técnico Junior</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-sm"><span class="font-medium">Estado:</span> <span class="text-yellow-600">En servicio</span></p>
+                            <p class="text-sm"><span class="font-medium">Órdenes hoy:</span> 2</p>
+                            <p class="text-sm"><span class="font-medium">Calificación:</span> ⭐⭐⭐⭐</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Contenido de Recordatorios -->
-        <div id="alertsContent" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                    <span class="mr-2">🔔</span>
-                    Recordatorios de Mantenimiento
-                </h2>
-                
-                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Información</h3>
-                    <p class="text-blue-700 text-sm">Los recordatorios se generan automáticamente cada 6 meses después del último mantenimiento registrado para cada cliente.</p>
+            <!-- Contenido de Inventario -->
+            <div id="inventario-content" class="tab-content p-6 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">Control de Inventario</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioInventario()">
+                        + Agregar Producto
+                    </button>
                 </div>
 
-                <div id="alertsList" class="space-y-4">
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">✅</span>
-                        <p>No hay recordatorios pendientes</p>
-                        <p class="text-sm">Todos los mantenimientos están al día</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Filtros AC</h3>
+                        <p class="text-2xl font-bold text-blue-600 mb-1">45</p>
+                        <p class="text-sm text-gray-600">En stock</p>
+                        <div class="mt-3">
+                            <div class="bg-green-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Refrigerante R410A</h3>
+                        <p class="text-2xl font-bold text-yellow-600 mb-1">12</p>
+                        <p class="text-sm text-gray-600">En stock</p>
+                        <div class="mt-3">
+                            <div class="bg-yellow-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Compresores</h3>
+                        <p class="text-2xl font-bold text-red-600 mb-1">3</p>
+                        <p class="text-sm text-gray-600">Stock bajo</p>
+                        <div class="mt-3">
+                            <div class="bg-red-200 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2">Herramientas</h3>
+                        <p class="text-2xl font-bold text-green-600 mb-1">28</p>
+                        <p class="text-sm text-gray-600">En stock</p>
+                        <div class="mt-3">
+                            <div class="bg-green-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido de Clientes -->
+            <div id="clientes-content" class="tab-content p-6 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">Base de Clientes</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium" onclick="mostrarFormularioCliente()">
+                        + Nuevo Cliente
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg border">
+                    <div class="p-4 border-b">
+                        <input type="text" placeholder="Buscar cliente..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div class="divide-y">
+                        <div class="p-4 hover:bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">María González</h3>
+                                    <p class="text-sm text-gray-600">maria.gonzalez@email.com</p>
+                                    <p class="text-sm text-gray-600">📞 +1 234-567-8901</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-green-600">Cliente Premium</p>
+                                    <p class="text-sm text-gray-600">5 servicios</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 hover:bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Pedro López</h3>
+                                    <p class="text-sm text-gray-600">pedro.lopez@email.com</p>
+                                    <p class="text-sm text-gray-600">📞 +1 234-567-8902</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-blue-600">Cliente Regular</p>
+                                    <p class="text-sm text-gray-600">2 servicios</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de confirmación -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 mx-4 max-w-sm w-full fade-in">
-            <div class="text-center">
-                <div class="text-4xl mb-4">✅</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">¡Cliente Registrado!</h3>
-                <p class="text-gray-600 mb-4">El cliente ha sido agregado exitosamente</p>
-                <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
-                    Continuar
-                </button>
-            </div>
-        </div>
-
-        <!-- Contenido de Mantenimientos -->
-        <div id="maintenanceContent" class="hidden">
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Formulario de Mantenimiento -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <span class="mr-2">🔧</span>
-                        Registrar Mantenimiento
-                    </h2>
-                    
-                    <form id="maintenanceForm" class="space-y-4">
+    <!-- Modal para Nueva Orden -->
+    <div id="modal-orden" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Nueva Orden de Servicio</h3>
+                <form id="form-orden" onsubmit="crearOrden(event)">
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
-                            <select id="clientSelect" required 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Seleccionar cliente</option>
-                            </select>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+                            <input type="text" id="cliente-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
                         </div>
-
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Mantenimiento</label>
-                            <input type="date" id="fechaMantenimiento" required 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Mantenimiento</label>
-                            <select id="tipoMantenimiento" required 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                                <option value="">Seleccionar tipo</option>
-                                <option value="Preventivo">Mantenimiento Preventivo</option>
-                                <option value="Correctivo">Mantenimiento Correctivo</option>
-                                <option value="Limpieza">Limpieza General</option>
-                                <option value="Revisión">Revisión Técnica</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Servicio</label>
+                            <select id="servicio-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="Instalación AC">Instalación AC</option>
+                                <option value="Mantenimiento">Mantenimiento</option>
                                 <option value="Reparación">Reparación</option>
+                                <option value="Limpieza">Limpieza</option>
                             </select>
                         </div>
-
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Trabajo</label>
-                            <textarea id="descripcionTrabajo" rows="4" required 
-                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" 
-                                      placeholder="Describe el trabajo realizado..."></textarea>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Técnico Asignado</label>
+                            <select id="tecnico-orden" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="Carlos Ruiz">Carlos Ruiz</option>
+                                <option value="Ana Martín">Ana Martín</option>
+                                <option value="Luis García">Luis García</option>
+                            </select>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Costo ($)</label>
-                                <input type="number" id="costoMantenimiento" step="0.01" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Técnico</label>
-                                <input type="text" id="tecnico" 
-                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            </div>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                            <span class="mr-2">✅</span>
-                            Registrar Mantenimiento
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" onclick="cerrarModal('modal-orden')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                            Cancelar
                         </button>
-                    </form>
-                </div>
-
-                <!-- Historial de Mantenimientos -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
-                            <span class="mr-2">📋</span>
-                            Historial de Mantenimientos
-                        </h2>
-                        <span id="maintenanceCount" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0 registros</span>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Crear Orden
+                        </button>
                     </div>
-
-                    <!-- Filtros -->
-                    <div class="mb-4 space-y-2">
-                        <input type="text" id="searchMaintenance" placeholder="Buscar por cliente o descripción..." 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                        <select id="filterType" 
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                            <option value="">Todos los tipos</option>
-                            <option value="Preventivo">Preventivo</option>
-                            <option value="Correctivo">Correctivo</option>
-                            <option value="Limpieza">Limpieza</option>
-                            <option value="Revisión">Revisión</option>
-                            <option value="Reparación">Reparación</option>
-                        </select>
-                    </div>
-
-                    <!-- Lista de mantenimientos -->
-                    <div id="maintenanceList" class="space-y-3 max-h-96 overflow-y-auto">
-                        <div class="text-center text-gray-500 py-8">
-                            <span class="text-4xl mb-2 block">🔧</span>
-                            <p>No hay mantenimientos registrados</p>
-                            <p class="text-sm">Registra el primer mantenimiento</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contenido de Recordatorios -->
-        <div id="alertsContent" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                    <span class="mr-2">🔔</span>
-                    Recordatorios de Mantenimiento
-                </h2>
-                
-                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h3 class="font-semibold text-blue-800 mb-2">ℹ️ Información</h3>
-                    <p class="text-blue-700 text-sm">Los recordatorios se generan automáticamente cada 6 meses después del último mantenimiento registrado para cada cliente.</p>
-                </div>
-
-                <div id="alertsList" class="space-y-4">
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">✅</span>
-                        <p>No hay recordatorios pendientes</p>
-                        <p class="text-sm">Todos los mantenimientos están al día</p>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-        let clients = JSON.parse(localStorage.getItem('clients')) || [];
-        let clientIdCounter = parseInt(localStorage.getItem('clientIdCounter')) || 1;
-        let maintenances = JSON.parse(localStorage.getItem('maintenances')) || [];
-        let maintenanceIdCounter = parseInt(localStorage.getItem('maintenanceIdCounter')) || 1;
-
-        // Elementos del DOM
-        const clientForm = document.getElementById('clientForm');
-        const clientList = document.getElementById('clientList');
-        const clientCount = document.getElementById('clientCount');
-        const searchInput = document.getElementById('searchInput');
-        const successModal = document.getElementById('successModal');
-        const closeModal = document.getElementById('closeModal');
-        const exportBtn = document.getElementById('exportBtn');
-
-        // Elementos de pestañas
-        const clientsTab = document.getElementById('clientsTab');
-        const maintenanceTab = document.getElementById('maintenanceTab');
-        const alertsTab = document.getElementById('alertsTab');
-        const clientsContent = document.getElementById('clientsContent');
-        const maintenanceContent = document.getElementById('maintenanceContent');
-        const alertsContent = document.getElementById('alertsContent');
-
-        // Elementos de mantenimiento
-        const maintenanceForm = document.getElementById('maintenanceForm');
-        const clientSelect = document.getElementById('clientSelect');
-        const maintenanceList = document.getElementById('maintenanceList');
-        const maintenanceCount = document.getElementById('maintenanceCount');
-        const searchMaintenance = document.getElementById('searchMaintenance');
-        const filterType = document.getElementById('filterType');
-        const alertsList = document.getElementById('alertsList');
-        const alertBadge = document.getElementById('alertBadge');
-
-        // Inicializar la aplicación
-        function init() {
-            renderClients();
-            updateClientCount();
-            updateClientSelect();
-            renderMaintenances();
-            updateMaintenanceCount();
-            checkMaintenanceAlerts();
-            
-            // Configurar fecha por defecto para mantenimiento
-            document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
-        }
-
+        // Variables globales
+        let ordenCounter = 3;
+        
         // Navegación entre pestañas
-        clientsTab.addEventListener('click', () => switchTab('clients'));
-        maintenanceTab.addEventListener('click', () => switchTab('maintenance'));
-        alertsTab.addEventListener('click', () => switchTab('alerts'));
-
-        function switchTab(tab) {
-            // Resetear todas las pestañas
-            [clientsTab, maintenanceTab, alertsTab].forEach(t => {
-                t.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                t.classList.add('text-gray-600');
-            });
-            
-            [clientsContent, maintenanceContent, alertsContent].forEach(c => {
-                c.classList.add('hidden');
-            });
-
-            // Activar pestaña seleccionada
-            switch(tab) {
-                case 'clients':
-                    clientsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    clientsTab.classList.remove('text-gray-600');
-                    clientsContent.classList.remove('hidden');
-                    break;
-                case 'maintenance':
-                    maintenanceTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    maintenanceTab.classList.remove('text-gray-600');
-                    maintenanceContent.classList.remove('hidden');
-                    updateClientSelect();
-                    break;
-                case 'alerts':
-                    alertsTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'bg-blue-50');
-                    alertsTab.classList.remove('text-gray-600');
-                    alertsContent.classList.remove('hidden');
-                    checkMaintenanceAlerts();
-                    break;
-            }
-        }
-
-        // Manejar envío del formulario
-        clientForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newClient = {
-                id: clientIdCounter++,
-                nombre: document.getElementById('nombre').value,
-                apellido: document.getElementById('apellido').value,
-                email: document.getElementById('email').value,
-                telefono: document.getElementById('telefono').value,
-                direccion: document.getElementById('direccion').value,
-                ciudad: document.getElementById('ciudad').value,
-                empresa: document.getElementById('empresa').value || 'No especificada',
-                ultimoMantenimiento: document.getElementById('ultimoMantenimiento').value || null,
-                tipoEquipo: document.getElementById('tipoEquipo').value || 'No especificado',
-                notas: document.getElementById('notas').value || 'Sin notas',
-                fechaRegistro: new Date().toLocaleDateString('es-ES')
-            };
-
-            clients.unshift(newClient);
-            saveToLocalStorage();
-            renderClients();
-            updateClientCount();
-            updateClientSelect();
-            clientForm.reset();
-            showSuccessModal();
-        });
-
-        // Mostrar modal de éxito
-        function showSuccessModal() {
-            successModal.classList.remove('hidden');
-            successModal.classList.add('flex');
-        }
-
-        // Cerrar modal
-        closeModal.addEventListener('click', function() {
-            successModal.classList.add('hidden');
-            successModal.classList.remove('flex');
-        });
-
-        // Manejar envío del formulario de mantenimiento
-        maintenanceForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const clientId = parseInt(document.getElementById('clientSelect').value);
-            const client = clients.find(c => c.id === clientId);
-            
-            const newMaintenance = {
-                id: maintenanceIdCounter++,
-                clientId: clientId,
-                clientName: `${client.nombre} ${client.apellido}`,
-                fecha: document.getElementById('fechaMantenimiento').value,
-                tipo: document.getElementById('tipoMantenimiento').value,
-                descripcion: document.getElementById('descripcionTrabajo').value,
-                costo: parseFloat(document.getElementById('costoMantenimiento').value) || 0,
-                tecnico: document.getElementById('tecnico').value || 'No especificado',
-                fechaRegistro: new Date().toISOString()
-            };
-
-            // Actualizar último mantenimiento del cliente
-            client.ultimoMantenimiento = newMaintenance.fecha;
-            
-            maintenances.unshift(newMaintenance);
-            saveToLocalStorage();
-            renderMaintenances();
-            updateMaintenanceCount();
-            checkMaintenanceAlerts();
-            maintenanceForm.reset();
-            document.getElementById('fechaMantenimiento').value = new Date().toISOString().split('T')[0];
-            showSuccessModal();
-        });
-
-        // Renderizar lista de clientes
-        function renderClients(clientsToRender = clients) {
-            if (clientsToRender.length === 0) {
-                clientList.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">👥</span>
-                        <p>No hay clientes registrados aún</p>
-                        <p class="text-sm">Agrega tu primer cliente usando el formulario</p>
-                    </div>
-                `;
-                return;
-            }
-
-            clientList.innerHTML = clientsToRender.map(client => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in" data-client-id="${client.id}">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-800 text-lg">${client.nombre} ${client.apellido}</h3>
-                            <div class="text-sm text-gray-600 mt-1 space-y-1">
-                                <p><span class="font-medium">📧</span> ${client.email}</p>
-                                <p><span class="font-medium">📱</span> ${client.telefono}</p>
-                                <p><span class="font-medium">🏠</span> ${client.direccion}</p>
-                                <p><span class="font-medium">📍</span> ${client.ciudad}</p>
-                                <p><span class="font-medium">🏢</span> ${client.empresa}</p>
-                                <p><span class="font-medium">🔧</span> ${client.tipoEquipo}</p>
-                                ${client.ultimoMantenimiento ? `<p><span class="font-medium">🛠️</span> Último mantenimiento: ${new Date(client.ultimoMantenimiento).toLocaleDateString('es-ES')}</p>` : '<p><span class="font-medium">🛠️</span> Sin mantenimientos registrados</p>'}
-                                <p><span class="font-medium">📅</span> Registrado: ${client.fechaRegistro}</p>
-                                ${client.notas !== 'Sin notas' ? `<p><span class="font-medium">📝</span> ${client.notas}</p>` : ''}
-                            </div>
-                        </div>
-                        <button onclick="deleteClient(${client.id})" 
-                                class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors ml-4">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Eliminar cliente
-        function deleteClient(id) {
-            if (confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
-                clients = clients.filter(client => client.id !== id);
-                saveToLocalStorage();
-                renderClients();
-                updateClientCount();
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
                 
-                // Si hay una búsqueda activa, actualizar resultados
-                if (searchInput.value) {
-                    searchClients();
-                }
-            }
-        }
-
-        // Actualizar contador de clientes
-        function updateClientCount() {
-            const count = clients.length;
-            clientCount.textContent = `${count} cliente${count !== 1 ? 's' : ''}`;
-        }
-
-        // Buscar clientes
-        searchInput.addEventListener('input', searchClients);
-
-        function searchClients() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredClients = clients.filter(client => 
-                client.nombre.toLowerCase().includes(searchTerm) ||
-                client.apellido.toLowerCase().includes(searchTerm) ||
-                client.email.toLowerCase().includes(searchTerm) ||
-                client.empresa.toLowerCase().includes(searchTerm) ||
-                client.direccion.toLowerCase().includes(searchTerm) ||
-                client.ciudad.toLowerCase().includes(searchTerm)
-            );
-            renderClients(filteredClients);
-        }
-
-        // Exportar datos
-        exportBtn.addEventListener('click', function() {
-            if (clients.length === 0) {
-                alert('No hay clientes para exportar');
-                return;
-            }
-
-            const csvContent = [
-                ['Nombre', 'Apellido', 'Email', 'Teléfono', 'Dirección', 'Ciudad', 'Empresa', 'Notas', 'Fecha Registro'],
-                ...clients.map(client => [
-                    client.nombre,
-                    client.apellido,
-                    client.email,
-                    client.telefono,
-                    client.direccion,
-                    client.ciudad,
-                    client.empresa,
-                    client.notas,
-                    client.fechaRegistro
-                ])
-            ].map(row => row.join(',')).join('\n');
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `clientes_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                // Actualizar pestañas activas
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    t.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                this.classList.add('active', 'border-blue-500', 'text-blue-600');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Mostrar contenido correspondiente
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                document.getElementById(targetTab + '-content').classList.remove('hidden');
+            });
         });
 
-        // Actualizar selector de clientes
-        function updateClientSelect() {
-            clientSelect.innerHTML = '<option value="">Seleccionar cliente</option>';
-            clients.forEach(client => {
-                const option = document.createElement('option');
-                option.value = client.id;
-                option.textContent = `${client.nombre} ${client.apellido} - ${client.empresa}`;
-                clientSelect.appendChild(option);
-            });
+        // Funciones para mostrar modales
+        function mostrarFormularioOrden() {
+            document.getElementById('modal-orden').classList.remove('hidden');
+            document.getElementById('modal-orden').classList.add('flex');
         }
 
-        // Renderizar mantenimientos
-        function renderMaintenances(maintenancesToRender = maintenances) {
-            if (maintenancesToRender.length === 0) {
-                maintenanceList.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">🔧</span>
-                        <p>No hay mantenimientos registrados</p>
-                        <p class="text-sm">Registra el primer mantenimiento</p>
-                    </div>
-                `;
-                return;
+        function mostrarFormularioTecnico() {
+            alert('Funcionalidad de agregar técnico próximamente disponible');
+        }
+
+        function mostrarFormularioInventario() {
+            alert('Funcionalidad de inventario próximamente disponible');
+        }
+
+        function mostrarFormularioCliente() {
+            alert('Funcionalidad de agregar cliente próximamente disponible');
+        }
+
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
+
+        // Crear nueva orden
+        function crearOrden(event) {
+            event.preventDefault();
+            
+            const cliente = document.getElementById('cliente-orden').value;
+            const servicio = document.getElementById('servicio-orden').value;
+            const tecnico = document.getElementById('tecnico-orden').value;
+            
+            // Crear nueva fila en la tabla
+            const tabla = document.getElementById('ordenes-tabla');
+            const nuevaFila = document.createElement('tr');
+            
+            nuevaFila.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${String(ordenCounter).padStart(3, '0')}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${cliente}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${servicio}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${tecnico}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pendiente</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="eliminarFila(this)">Eliminar</button>
+                </td>
+            `;
+            
+            tabla.appendChild(nuevaFila);
+            
+            // Actualizar contador de órdenes
+            ordenCounter++;
+            const ordenesHoy = document.getElementById('ordenes-hoy');
+            ordenesHoy.textContent = parseInt(ordenesHoy.textContent) + 1;
+            
+            // Limpiar formulario y cerrar modal
+            document.getElementById('form-orden').reset();
+            cerrarModal('modal-orden');
+            
+            // Mostrar mensaje de éxito
+            mostrarNotificacion('Orden creada exitosamente', 'success');
+        }
+
+        // Eliminar fila de tabla
+        function eliminarFila(button) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta orden?')) {
+                button.closest('tr').remove();
+                
+                // Actualizar contador
+                const ordenesHoy = document.getElementById('ordenes-hoy');
+                ordenesHoy.textContent = parseInt(ordenesHoy.textContent) - 1;
+                
+                mostrarNotificacion('Orden eliminada', 'info');
             }
-
-            maintenanceList.innerHTML = maintenancesToRender.map(maintenance => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow fade-in">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-semibold text-gray-800 text-lg">${maintenance.clientName}</h3>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium ${getMaintenanceTypeColor(maintenance.tipo)}">${maintenance.tipo}</span>
-                            </div>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <p><span class="font-medium">📅</span> ${new Date(maintenance.fecha).toLocaleDateString('es-ES')}</p>
-                                <p><span class="font-medium">🔧</span> ${maintenance.descripcion}</p>
-                                <p><span class="font-medium">👨‍🔧</span> ${maintenance.tecnico}</p>
-                                ${maintenance.costo > 0 ? `<p><span class="font-medium">💰</span> $${maintenance.costo.toFixed(2)}</p>` : ''}
-                            </div>
-                        </div>
-                        <button onclick="deleteMaintenance(${maintenance.id})" 
-                                class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors ml-4">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-            `).join('');
         }
 
-        // Obtener color para tipo de mantenimiento
-        function getMaintenanceTypeColor(tipo) {
-            const colors = {
-                'Preventivo': 'bg-green-100 text-green-800',
-                'Correctivo': 'bg-red-100 text-red-800',
-                'Limpieza': 'bg-blue-100 text-blue-800',
-                'Revisión': 'bg-yellow-100 text-yellow-800',
-                'Reparación': 'bg-orange-100 text-orange-800'
+        // Sistema de notificaciones
+        function mostrarNotificacion(mensaje, tipo = 'info') {
+            const colores = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500'
             };
-            return colors[tipo] || 'bg-gray-100 text-gray-800';
+            
+            const notificacion = document.createElement('div');
+            notificacion.className = `fixed top-4 right-4 ${colores[tipo]} text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in`;
+            notificacion.textContent = mensaje;
+            
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.remove();
+            }, 3000);
         }
 
-        // Eliminar mantenimiento
-        function deleteMaintenance(id) {
-            if (confirm('¿Estás seguro de que quieres eliminar este registro de mantenimiento?')) {
-                maintenances = maintenances.filter(m => m.id !== id);
-                saveToLocalStorage();
-                renderMaintenances();
-                updateMaintenanceCount();
-                checkMaintenanceAlerts();
-                
-                if (searchMaintenance.value || filterType.value) {
-                    searchMaintenances();
-                }
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('modal-orden').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModal('modal-orden');
             }
-        }
+        });
 
-        // Actualizar contador de mantenimientos
-        function updateMaintenanceCount() {
-            const count = maintenances.length;
-            maintenanceCount.textContent = `${count} registro${count !== 1 ? 's' : ''}`;
-        }
-
-        // Buscar mantenimientos
-        searchMaintenance.addEventListener('input', searchMaintenances);
-        filterType.addEventListener('change', searchMaintenances);
-
-        function searchMaintenances() {
-            const searchTerm = searchMaintenance.value.toLowerCase();
-            const typeFilter = filterType.value;
-            
-            const filteredMaintenances = maintenances.filter(maintenance => {
-                const matchesSearch = maintenance.clientName.toLowerCase().includes(searchTerm) ||
-                                    maintenance.descripcion.toLowerCase().includes(searchTerm) ||
-                                    maintenance.tecnico.toLowerCase().includes(searchTerm);
-                const matchesType = !typeFilter || maintenance.tipo === typeFilter;
-                
-                return matchesSearch && matchesType;
-            });
-            
-            renderMaintenances(filteredMaintenances);
-        }
-
-        // Verificar recordatorios de mantenimiento
-        function checkMaintenanceAlerts() {
-            const today = new Date();
-            const alerts = [];
-
-            clients.forEach(client => {
-                if (client.ultimoMantenimiento) {
-                    const lastMaintenance = new Date(client.ultimoMantenimiento);
-                    const sixMonthsLater = new Date(lastMaintenance);
-                    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
-                    
-                    const daysDiff = Math.ceil((sixMonthsLater - today) / (1000 * 60 * 60 * 24));
-                    
-                    if (daysDiff <= 30) { // Mostrar alerta 30 días antes
-                        alerts.push({
-                            client: client,
-                            lastMaintenance: lastMaintenance,
-                            nextMaintenance: sixMonthsLater,
-                            daysRemaining: daysDiff,
-                            isOverdue: daysDiff < 0
-                        });
-                    }
+        // Actualizar estadísticas cada 30 segundos (simulado)
+        setInterval(() => {
+            const stats = ['ordenes-hoy', 'completadas', 'tecnicos', 'ingresos'];
+            stats.forEach(stat => {
+                const elemento = document.getElementById(stat);
+                if (stat === 'ingresos') {
+                    const valor = parseInt(elemento.textContent.replace('$', '').replace(',', ''));
+                    elemento.textContent = '$' + (valor + Math.floor(Math.random() * 500)).toLocaleString();
+                } else {
+                    const valor = parseInt(elemento.textContent);
+                    elemento.textContent = valor + Math.floor(Math.random() * 3);
                 }
             });
-
-            renderAlerts(alerts);
-            updateAlertBadge(alerts.length);
-        }
-
-        // Renderizar alertas
-        function renderAlerts(alerts) {
-            if (alerts.length === 0) {
-                alertsList.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <span class="text-4xl mb-2 block">✅</span>
-                        <p>No hay recordatorios pendientes</p>
-                        <p class="text-sm">Todos los mantenimientos están al día</p>
-                    </div>
-                `;
-                return;
-            }
-
-            alertsList.innerHTML = alerts.map(alert => `
-                <div class="border-l-4 ${alert.isOverdue ? 'border-red-500 bg-red-50' : 'border-yellow-500 bg-yellow-50'} p-4 rounded-r-lg">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <span class="text-2xl">${alert.isOverdue ? '🚨' : '⚠️'}</span>
-                        </div>
-                        <div class="ml-3 flex-1">
-                            <h3 class="text-lg font-semibold ${alert.isOverdue ? 'text-red-800' : 'text-yellow-800'}">
-                                ${alert.client.nombre} ${alert.client.apellido}
-                            </h3>
-                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'} mt-1">
-                                <span class="font-medium">🏢</span> ${alert.client.empresa}
-                            </p>
-                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'}">
-                                <span class="font-medium">🔧</span> ${alert.client.tipoEquipo}
-                            </p>
-                            <p class="text-sm ${alert.isOverdue ? 'text-red-700' : 'text-yellow-700'}">
-                                <span class="font-medium">📅</span> Último mantenimiento: ${alert.lastMaintenance.toLocaleDateString('es-ES')}
-                            </p>
-                            <p class="text-sm font-medium ${alert.isOverdue ? 'text-red-800' : 'text-yellow-800'} mt-2">
-                                ${alert.isOverdue 
-                                    ? `⏰ Mantenimiento vencido hace ${Math.abs(alert.daysRemaining)} días`
-                                    : `⏰ Mantenimiento requerido en ${alert.daysRemaining} días`
-                                }
-                            </p>
-                            <button onclick="scheduleMaintenanceForClient(${alert.client.id})" 
-                                    class="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors">
-                                📋 Programar Mantenimiento
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Actualizar badge de alertas
-        function updateAlertBadge(count) {
-            if (count > 0) {
-                alertBadge.textContent = count;
-                alertBadge.classList.remove('hidden');
-            } else {
-                alertBadge.classList.add('hidden');
-            }
-        }
-
-        // Programar mantenimiento para cliente específico
-        function scheduleMaintenanceForClient(clientId) {
-            switchTab('maintenance');
-            clientSelect.value = clientId;
-            document.getElementById('tipoMantenimiento').value = 'Preventivo';
-            document.getElementById('descripcionTrabajo').focus();
-        }
-
-        // Guardar en localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
-            localStorage.setItem('clientIdCounter', clientIdCounter.toString());
-            localStorage.setItem('maintenances', JSON.stringify(maintenances));
-            localStorage.setItem('maintenanceIdCounter', maintenanceIdCounter.toString());
-        }
-
-        // Inicializar la aplicación
-        init();
+        }, 30000);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986cdcf215ef23d7',t:'MTc1OTE2MzQwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987bedda755be716',t:'MTc1OTMyMTM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
