@@ -730,6 +730,19 @@
             }
         };
 
+        // Variables globales para datos
+        let trabajosData = [
+            { id: 1, cliente: 'María González', tipo: 'Mantenimiento', descripcion: 'Mantenimiento AC residencial', tecnico: 'Carlos Ruiz', fecha: '2024-01-15', presupuesto: 1200, estado: 'Completado' },
+            { id: 2, cliente: 'Pedro López', tipo: 'Reparación', descripcion: 'Reparación sistema calefacción', tecnico: 'Ana Martín', fecha: '2024-01-16', presupuesto: 800, estado: 'En Proceso' },
+            { id: 3, cliente: 'Luis Pérez', tipo: 'Instalación', descripcion: 'Instalación AC nuevo', tecnico: 'Carlos Ruiz', fecha: '2024-01-17', presupuesto: 2500, estado: 'Pendiente' }
+        ];
+
+        let clientesData = [
+            { id: 1, nombre: 'María González', telefono: '+34 666 123 456', email: 'maria@email.com', direccion: 'Calle Mayor 123, Madrid', ciudad: 'Madrid', codigoPostal: '28001' },
+            { id: 2, nombre: 'Pedro López', telefono: '+34 666 789 012', email: 'pedro@email.com', direccion: 'Avenida Sol 45, Barcelona', ciudad: 'Barcelona', codigoPostal: '08001' },
+            { id: 3, nombre: 'Luis Pérez', telefono: '+34 666 345 678', email: 'luis@email.com', direccion: 'Plaza España 67, Valencia', ciudad: 'Valencia', codigoPostal: '46001' }
+        ];
+
         // Verificar si hay una sesión guardada al cargar
         document.addEventListener('DOMContentLoaded', function() {
             verificarSesionGuardada();
@@ -956,7 +969,7 @@
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm font-medium text-gray-600">Trabajos Activos</p>
-                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="trabajos-activos">24</p>
+                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="trabajos-activos">2</p>
                                                 <p class="text-sm text-green-600 mt-1">+12% vs mes anterior</p>
                                             </div>
                                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -971,7 +984,7 @@
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm font-medium text-gray-600">Clientes Totales</p>
-                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="clientes-totales">156</p>
+                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="clientes-totales">3</p>
                                                 <p class="text-sm text-green-600 mt-1">+8% vs mes anterior</p>
                                             </div>
                                             <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
@@ -986,7 +999,7 @@
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm font-medium text-gray-600">Ingresos del Mes</p>
-                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">$45,280</p>
+                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">€4,500</p>
                                                 <p class="text-sm text-green-600 mt-1">+15% vs mes anterior</p>
                                             </div>
                                             <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
@@ -1044,7 +1057,7 @@
                                                 <!-- Centro del gráfico -->
                                                 <div class="absolute inset-0 flex items-center justify-center">
                                                     <div class="text-center">
-                                                        <div class="text-3xl font-bold text-gray-900" id="total-trabajos-tipo">169</div>
+                                                        <div class="text-3xl font-bold text-gray-900" id="total-trabajos-tipo">3</div>
                                                         <div class="text-sm text-gray-500">Total</div>
                                                     </div>
                                                 </div>
@@ -1055,19 +1068,19 @@
                                         <div class="chart-legend justify-center">
                                             <div class="legend-item">
                                                 <div class="legend-color bg-blue-500"></div>
-                                                <span>Mantenimiento (59)</span>
+                                                <span>Mantenimiento (1)</span>
                                             </div>
                                             <div class="legend-item">
                                                 <div class="legend-color bg-red-500"></div>
-                                                <span>Reparaciones (51)</span>
+                                                <span>Reparaciones (1)</span>
                                             </div>
                                             <div class="legend-item">
                                                 <div class="legend-color bg-green-500"></div>
-                                                <span>Instalaciones (42)</span>
+                                                <span>Instalaciones (1)</span>
                                             </div>
                                             <div class="legend-item">
                                                 <div class="legend-color bg-yellow-500"></div>
-                                                <span>Diagnóstico (17)</span>
+                                                <span>Diagnóstico (0)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1075,7 +1088,7 @@
                                     <!-- Clientes Recientes -->
                                     <div class="modern-card p-6">
                                         <h3 class="text-xl font-bold text-gray-900 mb-6">Clientes Recientes</h3>
-                                        <div class="space-y-4">
+                                        <div class="space-y-4" id="clientes-recientes">
                                             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                                 <div class="flex items-center space-x-3">
                                                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -1084,13 +1097,13 @@
                                                         <p class="text-sm text-gray-500">Mantenimiento AC</p>
                                                     </div>
                                                 </div>
-                                                <span class="text-green-600 font-semibold text-sm">Activo</span>
+                                                <span class="text-green-600 font-semibold text-sm">Completado</span>
                                             </div>
                                             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                                 <div class="flex items-center space-x-3">
                                                     <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
                                                     <div>
-                                                        <p class="font-medium text-gray-900">Carlos Ruiz</p>
+                                                        <p class="font-medium text-gray-900">Pedro López</p>
                                                         <p class="text-sm text-gray-500">Reparación Calefacción</p>
                                                     </div>
                                                 </div>
@@ -1100,21 +1113,11 @@
                                                 <div class="flex items-center space-x-3">
                                                     <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                                     <div>
-                                                        <p class="font-medium text-gray-900">Ana Martín</p>
+                                                        <p class="font-medium text-gray-900">Luis Pérez</p>
                                                         <p class="text-sm text-gray-500">Instalación Nueva</p>
                                                     </div>
                                                 </div>
                                                 <span class="text-yellow-600 font-semibold text-sm">Pendiente</span>
-                                            </div>
-                                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                                    <div>
-                                                        <p class="font-medium text-gray-900">Luis Pérez</p>
-                                                        <p class="text-sm text-gray-500">Diagnóstico Sistema</p>
-                                                    </div>
-                                                </div>
-                                                <span class="text-green-600 font-semibold text-sm">Completado</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1126,23 +1129,8 @@
                                     <div class="space-y-3" id="actividad-reciente">
                                         <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                                             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <span class="text-gray-600 text-sm">Trabajo completado para María González</span>
-                                            <span class="text-gray-400 text-xs ml-auto">Hace 5 min</span>
-                                        </div>
-                                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                            <span class="text-gray-600 text-sm">Nuevo cliente registrado: Pedro López</span>
-                                            <span class="text-gray-400 text-xs ml-auto">Hace 15 min</span>
-                                        </div>
-                                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                                            <span class="text-gray-600 text-sm">Trabajo asignado a técnico Carlos</span>
-                                            <span class="text-gray-400 text-xs ml-auto">Hace 30 min</span>
-                                        </div>
-                                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <span class="text-gray-600 text-sm">Factura generada para Ana Martín</span>
-                                            <span class="text-gray-400 text-xs ml-auto">Hace 1 hora</span>
+                                            <span class="text-gray-600 text-sm">Sistema iniciado correctamente</span>
+                                            <span class="text-gray-400 text-xs ml-auto">Ahora</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1202,18 +1190,80 @@
                                 </div>
                             </div>
 
-                            <!-- Otras secciones -->
+                            <!-- Sección de Trabajos -->
                             <div id="trabajos-section" class="section-content">
-                                <div class="modern-card p-6">
-                                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Gestión de Trabajos</h3>
-                                    <p class="text-gray-600">Aquí puedes gestionar todos los trabajos del sistema.</p>
+                                <div class="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-gray-900">Gestión de Trabajos</h3>
+                                        <p class="text-gray-600">Administra todos los trabajos y servicios</p>
+                                    </div>
+                                    <button onclick="abrirModalTrabajo()" class="modern-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                        </svg>
+                                        <span>Nuevo Trabajo</span>
+                                    </button>
+                                </div>
+
+                                <div class="modern-card overflow-hidden">
+                                    <div class="overflow-x-auto">
+                                        <table class="modern-table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Cliente</th>
+                                                    <th>Tipo</th>
+                                                    <th>Descripción</th>
+                                                    <th>Técnico</th>
+                                                    <th>Fecha</th>
+                                                    <th>Presupuesto</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla-trabajos">
+                                                <!-- Los trabajos se cargan dinámicamente -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- Sección de Clientes -->
                             <div id="clientes-section" class="section-content">
-                                <div class="modern-card p-6">
-                                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Gestión de Clientes</h3>
-                                    <p class="text-gray-600">Aquí puedes gestionar todos los clientes del sistema.</p>
+                                <div class="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-gray-900">Gestión de Clientes</h3>
+                                        <p class="text-gray-600">Administra la base de datos de clientes</p>
+                                    </div>
+                                    <button onclick="abrirModalCliente()" class="modern-btn bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                        </svg>
+                                        <span>Nuevo Cliente</span>
+                                    </button>
+                                </div>
+
+                                <div class="modern-card overflow-hidden">
+                                    <div class="overflow-x-auto">
+                                        <table class="modern-table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nombre</th>
+                                                    <th>Teléfono</th>
+                                                    <th>Email</th>
+                                                    <th>Dirección</th>
+                                                    <th>Ciudad</th>
+                                                    <th>Código Postal</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla-clientes">
+                                                <!-- Los clientes se cargan dinámicamente -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1275,11 +1325,154 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal de Nuevo Trabajo -->
+                    <div id="modal-trabajo" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 w-full max-h-screen overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Nuevo Trabajo</h3>
+                                <p class="text-gray-600">Crear un nuevo trabajo o servicio</p>
+                            </div>
+
+                            <form id="form-trabajo" onsubmit="guardarTrabajo(event)" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Cliente *</label>
+                                        <select id="trabajo-cliente" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Seleccionar cliente</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Trabajo *</label>
+                                        <select id="trabajo-tipo" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Seleccionar tipo</option>
+                                            <option value="Mantenimiento">Mantenimiento</option>
+                                            <option value="Reparación">Reparación</option>
+                                            <option value="Instalación">Instalación</option>
+                                            <option value="Diagnóstico">Diagnóstico</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+                                    <textarea id="trabajo-descripcion" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Describe el trabajo a realizar..."></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Técnico Asignado *</label>
+                                        <select id="trabajo-tecnico" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Seleccionar técnico</option>
+                                            <option value="Carlos Ruiz">Carlos Ruiz</option>
+                                            <option value="Ana Martín">Ana Martín</option>
+                                            <option value="Luis García">Luis García</option>
+                                            <option value="María López">María López</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Programada *</label>
+                                        <input type="date" id="trabajo-fecha" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto (€) *</label>
+                                        <input type="number" id="trabajo-presupuesto" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+                                        <select id="trabajo-estado" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="En Proceso">En Proceso</option>
+                                            <option value="Completado">Completado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-4 mt-8">
+                                    <button type="button" onclick="cerrarModalTrabajo()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-4 rounded-lg transition-colors">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="flex-1 modern-btn bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg">
+                                        Crear Trabajo
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Nuevo Cliente -->
+                    <div id="modal-cliente" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 w-full max-h-screen overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Nuevo Cliente</h3>
+                                <p class="text-gray-600">Registrar un nuevo cliente</p>
+                            </div>
+
+                            <form id="form-cliente" onsubmit="guardarCliente(event)" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre Completo *</label>
+                                        <input type="text" id="cliente-nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="Nombre y apellidos">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
+                                        <input type="tel" id="cliente-telefono" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="+34 666 123 456">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                                    <input type="email" id="cliente-email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="cliente@email.com">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Dirección *</label>
+                                    <input type="text" id="cliente-direccion" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="Calle, número, piso...">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Ciudad *</label>
+                                        <input type="text" id="cliente-ciudad" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="Madrid">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Código Postal *</label>
+                                        <input type="text" id="cliente-codigo" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="28001">
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-4 mt-8">
+                                    <button type="button" onclick="cerrarModalCliente()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-4 rounded-lg transition-colors">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="flex-1 modern-btn bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg">
+                                        Registrar Cliente
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             `;
             
             // Guardar datos de sesión globalmente
             window.sessionActual = sessionData;
+            
+            // Inicializar contadores
+            actualizarContadores();
         }
 
         // Funciones del sistema moderno
@@ -1318,9 +1511,247 @@
             document.getElementById('page-title').textContent = titulos[seccion].titulo;
             document.getElementById('page-subtitle').textContent = titulos[seccion].subtitulo;
             
+            // Cargar contenido específico de la sección
+            if (seccion === 'trabajos') {
+                cargarSeccionTrabajos();
+            } else if (seccion === 'clientes') {
+                cargarSeccionClientes();
+            }
+            
             // Cerrar sidebar en móvil
             if (window.innerWidth < 1024) {
                 toggleSidebar();
+            }
+        }
+
+        // Funciones para cargar secciones
+        function cargarSeccionTrabajos() {
+            const tbody = document.getElementById('tabla-trabajos');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            trabajosData.forEach(trabajo => {
+                const estadoColor = {
+                    'Pendiente': 'bg-yellow-100 text-yellow-800',
+                    'En Proceso': 'bg-blue-100 text-blue-800',
+                    'Completado': 'bg-green-100 text-green-800'
+                };
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-medium">#${trabajo.id}</td>
+                    <td>${trabajo.cliente}</td>
+                    <td>${trabajo.tipo}</td>
+                    <td class="max-w-xs truncate">${trabajo.descripcion}</td>
+                    <td>${trabajo.tecnico}</td>
+                    <td>${trabajo.fecha}</td>
+                    <td>€${trabajo.presupuesto}</td>
+                    <td><span class="px-2 py-1 rounded-full text-xs font-medium ${estadoColor[trabajo.estado]}">${trabajo.estado}</span></td>
+                    <td>
+                        <button onclick="editarTrabajo(${trabajo.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                        </button>
+                        <button onclick="eliminarTrabajo(${trabajo.id})" class="text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function cargarSeccionClientes() {
+            const tbody = document.getElementById('tabla-clientes');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            clientesData.forEach(cliente => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-medium">#${cliente.id}</td>
+                    <td>${cliente.nombre}</td>
+                    <td>${cliente.telefono}</td>
+                    <td>${cliente.email}</td>
+                    <td class="max-w-xs truncate">${cliente.direccion}</td>
+                    <td>${cliente.ciudad}</td>
+                    <td>${cliente.codigoPostal}</td>
+                    <td>
+                        <button onclick="editarCliente(${cliente.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                        </button>
+                        <button onclick="eliminarCliente(${cliente.id})" class="text-red-600 hover:text-red-800">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Funciones de modales
+        function abrirModalTrabajo() {
+            // Cargar clientes en el selector
+            const selectCliente = document.getElementById('trabajo-cliente');
+            selectCliente.innerHTML = '<option value="">Seleccionar cliente</option>';
+            clientesData.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.nombre;
+                option.textContent = cliente.nombre;
+                selectCliente.appendChild(option);
+            });
+            
+            // Establecer fecha por defecto
+            document.getElementById('trabajo-fecha').value = new Date().toISOString().split('T')[0];
+            
+            document.getElementById('modal-trabajo').classList.remove('hidden');
+            document.getElementById('modal-trabajo').classList.add('flex');
+        }
+
+        function cerrarModalTrabajo() {
+            document.getElementById('modal-trabajo').classList.add('hidden');
+            document.getElementById('modal-trabajo').classList.remove('flex');
+            document.getElementById('form-trabajo').reset();
+        }
+
+        function abrirModalCliente() {
+            document.getElementById('modal-cliente').classList.remove('hidden');
+            document.getElementById('modal-cliente').classList.add('flex');
+        }
+
+        function cerrarModalCliente() {
+            document.getElementById('modal-cliente').classList.add('hidden');
+            document.getElementById('modal-cliente').classList.remove('flex');
+            document.getElementById('form-cliente').reset();
+        }
+
+        // Funciones para guardar datos
+        function guardarTrabajo(event) {
+            event.preventDefault();
+            
+            const nuevoTrabajo = {
+                id: trabajosData.length + 1,
+                cliente: document.getElementById('trabajo-cliente').value,
+                tipo: document.getElementById('trabajo-tipo').value,
+                descripcion: document.getElementById('trabajo-descripcion').value,
+                tecnico: document.getElementById('trabajo-tecnico').value,
+                fecha: document.getElementById('trabajo-fecha').value,
+                presupuesto: parseFloat(document.getElementById('trabajo-presupuesto').value),
+                estado: document.getElementById('trabajo-estado').value
+            };
+            
+            trabajosData.push(nuevoTrabajo);
+            
+            // Actualizar contadores
+            actualizarContadores();
+            
+            // Recargar tabla si estamos en la sección de trabajos
+            if (document.getElementById('trabajos-section').classList.contains('active')) {
+                cargarSeccionTrabajos();
+            }
+            
+            mostrarNotificacionModerna('Trabajo creado exitosamente', 'success');
+            actualizarActividad(`Nuevo trabajo creado para ${nuevoTrabajo.cliente}`);
+            cerrarModalTrabajo();
+        }
+
+        function guardarCliente(event) {
+            event.preventDefault();
+            
+            const nuevoCliente = {
+                id: clientesData.length + 1,
+                nombre: document.getElementById('cliente-nombre').value,
+                telefono: document.getElementById('cliente-telefono').value,
+                email: document.getElementById('cliente-email').value,
+                direccion: document.getElementById('cliente-direccion').value,
+                ciudad: document.getElementById('cliente-ciudad').value,
+                codigoPostal: document.getElementById('cliente-codigo').value
+            };
+            
+            clientesData.push(nuevoCliente);
+            
+            // Actualizar contadores
+            actualizarContadores();
+            
+            // Recargar tabla si estamos en la sección de clientes
+            if (document.getElementById('clientes-section').classList.contains('active')) {
+                cargarSeccionClientes();
+            }
+            
+            mostrarNotificacionModerna('Cliente registrado exitosamente', 'success');
+            actualizarActividad(`Nuevo cliente registrado: ${nuevoCliente.nombre}`);
+            cerrarModalCliente();
+        }
+
+        // Funciones de edición y eliminación
+        function editarTrabajo(id) {
+            mostrarNotificacionModerna('Función de edición disponible próximamente', 'info');
+        }
+
+        function eliminarTrabajo(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este trabajo?')) {
+                trabajosData = trabajosData.filter(t => t.id !== id);
+                cargarSeccionTrabajos();
+                actualizarContadores();
+                mostrarNotificacionModerna('Trabajo eliminado', 'success');
+                actualizarActividad('Trabajo eliminado del sistema');
+            }
+        }
+
+        function editarCliente(id) {
+            mostrarNotificacionModerna('Función de edición disponible próximamente', 'info');
+        }
+
+        function eliminarCliente(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
+                clientesData = clientesData.filter(c => c.id !== id);
+                cargarSeccionClientes();
+                actualizarContadores();
+                mostrarNotificacionModerna('Cliente eliminado', 'success');
+                actualizarActividad('Cliente eliminado del sistema');
+            }
+        }
+
+        function crearNuevoTrabajo() {
+            abrirModalTrabajo();
+        }
+
+        function registrarNuevoCliente() {
+            abrirModalCliente();
+        }
+
+        function actualizarContadores() {
+            // Actualizar trabajos activos (no completados)
+            const trabajosActivos = trabajosData.filter(t => t.estado !== 'Completado').length;
+            const trabajosElement = document.getElementById('trabajos-activos');
+            if (trabajosElement) {
+                trabajosElement.textContent = trabajosActivos;
+            }
+            
+            // Actualizar clientes totales
+            const clientesElement = document.getElementById('clientes-totales');
+            if (clientesElement) {
+                clientesElement.textContent = clientesData.length;
+            }
+            
+            // Actualizar total de trabajos en gráfico
+            const totalTrabajosElement = document.getElementById('total-trabajos-tipo');
+            if (totalTrabajosElement) {
+                totalTrabajosElement.textContent = trabajosData.length;
+            }
+            
+            // Actualizar ingresos (suma de presupuestos)
+            const ingresosTotales = trabajosData.reduce((sum, trabajo) => sum + trabajo.presupuesto, 0);
+            const ingresosElement = document.getElementById('ingresos-mes');
+            if (ingresosElement) {
+                ingresosElement.textContent = `€${ingresosTotales.toLocaleString()}`;
             }
         }
 
@@ -1369,26 +1800,6 @@
             document.getElementById('confirmar-password').value = '';
         }
 
-        function crearNuevoTrabajo() {
-            const trabajosElement = document.getElementById('trabajos-activos');
-            let trabajosActuales = parseInt(trabajosElement.textContent);
-            trabajosActuales += 1;
-            trabajosElement.textContent = trabajosActuales;
-            
-            mostrarNotificacionModerna('Nuevo trabajo creado exitosamente', 'success');
-            actualizarActividad('Nuevo trabajo creado y asignado');
-        }
-
-        function registrarNuevoCliente() {
-            const clientesElement = document.getElementById('clientes-totales');
-            let clientesActuales = parseInt(clientesElement.textContent);
-            clientesActuales += 1;
-            clientesElement.textContent = clientesActuales;
-            
-            mostrarNotificacionModerna('Nuevo cliente registrado exitosamente', 'success');
-            actualizarActividad('Nuevo cliente registrado en el sistema');
-        }
-
         function generarReportes() {
             mostrarNotificacionModerna('Generando reportes detallados...', 'info');
             
@@ -1400,6 +1811,8 @@
 
         function actualizarActividad(mensaje) {
             const actividadContainer = document.getElementById('actividad-reciente');
+            if (!actividadContainer) return;
+            
             const nuevaActividad = document.createElement('div');
             nuevaActividad.className = 'flex items-center space-x-3 p-3 bg-gray-50 rounded-lg fade-in';
             nuevaActividad.innerHTML = `
@@ -1520,5 +1933,5 @@
             }, 4000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a69c0f2214e00f',t:'MTc1OTc2ODkyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6e5dc91ee571f',t:'MTc1OTc3MTk0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
