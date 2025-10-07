@@ -999,7 +999,7 @@
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm font-medium text-gray-600">Ingresos del Mes</p>
-                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">4,500</p>
+                                                <p class="text-3xl font-bold text-gray-900 mt-2" id="ingresos-mes">€4,500</p>
                                                 <p class="text-sm text-green-600 mt-1">+15% vs mes anterior</p>
                                             </div>
                                             <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
@@ -1175,16 +1175,16 @@
                                         <div class="flex items-center space-x-4">
                                             <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
                                                 <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM21 17a2 2 0 11-4 0 2 2 0 014 0zM7 17h8a2 2 0 002-2V9a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+                                                    <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                                                 </svg>
                                             </div>
                                             <div class="flex-1">
-                                                <h3 class="text-lg font-semibold text-gray-900">Reportes</h3>
-                                                <p class="text-sm text-gray-600">Generar reportes</p>
+                                                <h3 class="text-lg font-semibold text-gray-900">Importar Datos</h3>
+                                                <p class="text-sm text-gray-600">Cargar backup de datos</p>
                                             </div>
                                         </div>
-                                        <button onclick="generarReportes()" class="modern-btn w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg">
-                                            Ver Reportes
+                                        <button onclick="mostrarImportarDatos()" class="modern-btn w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg">
+                                            Importar Backup
                                         </button>
                                     </div>
                                 </div>
@@ -1383,7 +1383,7 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto ($) *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto (€) *</label>
                                         <input type="number" id="trabajo-presupuesto" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00">
                                     </div>
                                     <div>
@@ -1405,6 +1405,83 @@
                                     </button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Importar Datos -->
+                    <div id="modal-importar" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 w-full max-h-screen overflow-y-auto">
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Importar Datos</h3>
+                                <p class="text-gray-600">Carga tus datos desde un backup JSON</p>
+                            </div>
+
+                            <div class="space-y-6">
+                                <!-- Área de carga de archivo -->
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                                    <input type="file" id="archivo-backup" accept=".json" class="hidden" onchange="procesarArchivo(event)">
+                                    <div class="mb-4">
+                                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                        </svg>
+                                        <p class="text-lg font-medium text-gray-900 mb-2">Selecciona tu archivo de backup</p>
+                                        <p class="text-sm text-gray-500">Archivo JSON con datos de trabajos y clientes</p>
+                                    </div>
+                                    <button onclick="document.getElementById('archivo-backup').click()" class="modern-btn bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg">
+                                        Seleccionar Archivo
+                                    </button>
+                                </div>
+
+                                <!-- Vista previa de datos -->
+                                <div id="preview-datos" class="hidden">
+                                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Vista Previa de Datos</h4>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="grid grid-cols-2 gap-4 text-sm">
+                                            <div>
+                                                <span class="font-medium text-gray-700">Trabajos encontrados:</span>
+                                                <span id="count-trabajos" class="text-blue-600 font-bold ml-2">0</span>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium text-gray-700">Clientes encontrados:</span>
+                                                <span id="count-clientes" class="text-green-600 font-bold ml-2">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Opciones de importación -->
+                                <div id="opciones-importacion" class="hidden space-y-4">
+                                    <h4 class="text-lg font-semibold text-gray-900">Opciones de Importación</h4>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center space-x-3">
+                                            <input type="checkbox" id="reemplazar-datos" class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                            <span class="text-sm text-gray-700">Reemplazar todos los datos existentes</span>
+                                        </label>
+                                        <label class="flex items-center space-x-3">
+                                            <input type="checkbox" id="importar-trabajos" checked class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                            <span class="text-sm text-gray-700">Importar trabajos</span>
+                                        </label>
+                                        <label class="flex items-center space-x-3">
+                                            <input type="checkbox" id="importar-clientes" checked class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                            <span class="text-sm text-gray-700">Importar clientes</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex space-x-4 mt-8">
+                                <button onclick="cerrarModalImportar()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-4 rounded-lg transition-colors">
+                                    Cancelar
+                                </button>
+                                <button id="btn-importar" onclick="ejecutarImportacion()" disabled class="flex-1 modern-btn bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Importar Datos
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -1545,7 +1622,7 @@
                     <td class="max-w-xs truncate">${trabajo.descripcion}</td>
                     <td>${trabajo.tecnico}</td>
                     <td>${trabajo.fecha}</td>
-                    <td>${trabajo.presupuesto}</td>
+                    <td>€${trabajo.presupuesto}</td>
                     <td><span class="px-2 py-1 rounded-full text-xs font-medium ${estadoColor[trabajo.estado]}">${trabajo.estado}</span></td>
                     <td>
                         <button onclick="editarTrabajo(${trabajo.id})" class="text-blue-600 hover:text-blue-800 mr-2">
@@ -1619,6 +1696,16 @@
             document.getElementById('modal-trabajo').classList.add('hidden');
             document.getElementById('modal-trabajo').classList.remove('flex');
             document.getElementById('form-trabajo').reset();
+            
+            // Resetear el modal a modo creación
+            document.querySelector('#modal-trabajo h3').textContent = 'Nuevo Trabajo';
+            document.querySelector('#modal-trabajo p').textContent = 'Crear un nuevo trabajo o servicio';
+            const submitBtn = document.querySelector('#modal-trabajo button[type="submit"]');
+            submitBtn.textContent = 'Crear Trabajo';
+            submitBtn.className = 'flex-1 modern-btn bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg';
+            
+            // Limpiar el ID de edición
+            delete document.getElementById('form-trabajo').dataset.editId;
         }
 
         function abrirModalCliente() {
@@ -1630,14 +1717,26 @@
             document.getElementById('modal-cliente').classList.add('hidden');
             document.getElementById('modal-cliente').classList.remove('flex');
             document.getElementById('form-cliente').reset();
+            
+            // Resetear el modal a modo creación
+            document.querySelector('#modal-cliente h3').textContent = 'Nuevo Cliente';
+            document.querySelector('#modal-cliente p').textContent = 'Registrar un nuevo cliente';
+            const submitBtn = document.querySelector('#modal-cliente button[type="submit"]');
+            submitBtn.textContent = 'Registrar Cliente';
+            submitBtn.className = 'flex-1 modern-btn bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg';
+            
+            // Limpiar el ID de edición
+            delete document.getElementById('form-cliente').dataset.editId;
         }
 
         // Funciones para guardar datos
         function guardarTrabajo(event) {
             event.preventDefault();
             
-            const nuevoTrabajo = {
-                id: trabajosData.length + 1,
+            const form = document.getElementById('form-trabajo');
+            const editId = form.dataset.editId;
+            
+            const datosTrabajos = {
                 cliente: document.getElementById('trabajo-cliente').value,
                 tipo: document.getElementById('trabajo-tipo').value,
                 descripcion: document.getElementById('trabajo-descripcion').value,
@@ -1647,7 +1746,24 @@
                 estado: document.getElementById('trabajo-estado').value
             };
             
-            trabajosData.push(nuevoTrabajo);
+            if (editId) {
+                // Modo edición
+                const index = trabajosData.findIndex(t => t.id == editId);
+                if (index !== -1) {
+                    trabajosData[index] = { ...trabajosData[index], ...datosTrabajos };
+                    mostrarNotificacionModerna('Trabajo actualizado exitosamente', 'success');
+                    actualizarActividad(`Trabajo actualizado para ${datosTrabajos.cliente}`);
+                }
+            } else {
+                // Modo creación
+                const nuevoTrabajo = {
+                    id: Math.max(...trabajosData.map(t => t.id), 0) + 1,
+                    ...datosTrabajos
+                };
+                trabajosData.push(nuevoTrabajo);
+                mostrarNotificacionModerna('Trabajo creado exitosamente', 'success');
+                actualizarActividad(`Nuevo trabajo creado para ${nuevoTrabajo.cliente}`);
+            }
             
             // Actualizar contadores
             actualizarContadores();
@@ -1657,16 +1773,16 @@
                 cargarSeccionTrabajos();
             }
             
-            mostrarNotificacionModerna('Trabajo creado exitosamente', 'success');
-            actualizarActividad(`Nuevo trabajo creado para ${nuevoTrabajo.cliente}`);
             cerrarModalTrabajo();
         }
 
         function guardarCliente(event) {
             event.preventDefault();
             
-            const nuevoCliente = {
-                id: clientesData.length + 1,
+            const form = document.getElementById('form-cliente');
+            const editId = form.dataset.editId;
+            
+            const datosCliente = {
                 nombre: document.getElementById('cliente-nombre').value,
                 telefono: document.getElementById('cliente-telefono').value,
                 email: document.getElementById('cliente-email').value,
@@ -1675,7 +1791,24 @@
                 codigoPostal: document.getElementById('cliente-codigo').value
             };
             
-            clientesData.push(nuevoCliente);
+            if (editId) {
+                // Modo edición
+                const index = clientesData.findIndex(c => c.id == editId);
+                if (index !== -1) {
+                    clientesData[index] = { ...clientesData[index], ...datosCliente };
+                    mostrarNotificacionModerna('Cliente actualizado exitosamente', 'success');
+                    actualizarActividad(`Cliente actualizado: ${datosCliente.nombre}`);
+                }
+            } else {
+                // Modo creación
+                const nuevoCliente = {
+                    id: Math.max(...clientesData.map(c => c.id), 0) + 1,
+                    ...datosCliente
+                };
+                clientesData.push(nuevoCliente);
+                mostrarNotificacionModerna('Cliente registrado exitosamente', 'success');
+                actualizarActividad(`Nuevo cliente registrado: ${nuevoCliente.nombre}`);
+            }
             
             // Actualizar contadores
             actualizarContadores();
@@ -1685,14 +1818,48 @@
                 cargarSeccionClientes();
             }
             
-            mostrarNotificacionModerna('Cliente registrado exitosamente', 'success');
-            actualizarActividad(`Nuevo cliente registrado: ${nuevoCliente.nombre}`);
             cerrarModalCliente();
         }
 
         // Funciones de edición y eliminación
         function editarTrabajo(id) {
-            mostrarNotificacionModerna('Función de edición disponible próximamente', 'info');
+            const trabajo = trabajosData.find(t => t.id === id);
+            if (!trabajo) return;
+            
+            // Cargar clientes en el selector
+            const selectCliente = document.getElementById('trabajo-cliente');
+            selectCliente.innerHTML = '<option value="">Seleccionar cliente</option>';
+            clientesData.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.nombre;
+                option.textContent = cliente.nombre;
+                if (cliente.nombre === trabajo.cliente) option.selected = true;
+                selectCliente.appendChild(option);
+            });
+            
+            // Llenar el formulario con los datos existentes
+            document.getElementById('trabajo-tipo').value = trabajo.tipo;
+            document.getElementById('trabajo-descripcion').value = trabajo.descripcion;
+            document.getElementById('trabajo-tecnico').value = trabajo.tecnico;
+            document.getElementById('trabajo-fecha').value = trabajo.fecha;
+            document.getElementById('trabajo-presupuesto').value = trabajo.presupuesto;
+            document.getElementById('trabajo-estado').value = trabajo.estado;
+            
+            // Cambiar el título del modal
+            document.querySelector('#modal-trabajo h3').textContent = 'Editar Trabajo';
+            document.querySelector('#modal-trabajo p').textContent = 'Modificar los datos del trabajo';
+            
+            // Cambiar el botón de submit
+            const submitBtn = document.querySelector('#modal-trabajo button[type="submit"]');
+            submitBtn.textContent = 'Actualizar Trabajo';
+            submitBtn.className = 'flex-1 modern-btn bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-lg';
+            
+            // Guardar el ID para la edición
+            document.getElementById('form-trabajo').dataset.editId = id;
+            
+            // Mostrar el modal
+            document.getElementById('modal-trabajo').classList.remove('hidden');
+            document.getElementById('modal-trabajo').classList.add('flex');
         }
 
         function eliminarTrabajo(id) {
@@ -1706,7 +1873,32 @@
         }
 
         function editarCliente(id) {
-            mostrarNotificacionModerna('Función de edición disponible próximamente', 'info');
+            const cliente = clientesData.find(c => c.id === id);
+            if (!cliente) return;
+            
+            // Llenar el formulario con los datos existentes
+            document.getElementById('cliente-nombre').value = cliente.nombre;
+            document.getElementById('cliente-telefono').value = cliente.telefono;
+            document.getElementById('cliente-email').value = cliente.email;
+            document.getElementById('cliente-direccion').value = cliente.direccion;
+            document.getElementById('cliente-ciudad').value = cliente.ciudad;
+            document.getElementById('cliente-codigo').value = cliente.codigoPostal;
+            
+            // Cambiar el título del modal
+            document.querySelector('#modal-cliente h3').textContent = 'Editar Cliente';
+            document.querySelector('#modal-cliente p').textContent = 'Modificar los datos del cliente';
+            
+            // Cambiar el botón de submit
+            const submitBtn = document.querySelector('#modal-cliente button[type="submit"]');
+            submitBtn.textContent = 'Actualizar Cliente';
+            submitBtn.className = 'flex-1 modern-btn bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-lg';
+            
+            // Guardar el ID para la edición
+            document.getElementById('form-cliente').dataset.editId = id;
+            
+            // Mostrar el modal
+            document.getElementById('modal-cliente').classList.remove('hidden');
+            document.getElementById('modal-cliente').classList.add('flex');
         }
 
         function eliminarCliente(id) {
@@ -1751,7 +1943,7 @@
             const ingresosTotales = trabajosData.reduce((sum, trabajo) => sum + trabajo.presupuesto, 0);
             const ingresosElement = document.getElementById('ingresos-mes');
             if (ingresosElement) {
-                ingresosElement.textContent = `${ingresosTotales.toLocaleString()}`;
+                ingresosElement.textContent = `€${ingresosTotales.toLocaleString()}`;
             }
         }
 
@@ -1798,6 +1990,153 @@
             // Limpiar campos
             document.getElementById('nueva-password').value = '';
             document.getElementById('confirmar-password').value = '';
+        }
+
+        // Variable global para almacenar datos del backup
+        let datosBackup = null;
+
+        function mostrarImportarDatos() {
+            document.getElementById('modal-importar').classList.remove('hidden');
+            document.getElementById('modal-importar').classList.add('flex');
+        }
+
+        function cerrarModalImportar() {
+            document.getElementById('modal-importar').classList.add('hidden');
+            document.getElementById('modal-importar').classList.remove('flex');
+            
+            // Resetear el modal
+            document.getElementById('archivo-backup').value = '';
+            document.getElementById('preview-datos').classList.add('hidden');
+            document.getElementById('opciones-importacion').classList.add('hidden');
+            document.getElementById('btn-importar').disabled = true;
+            datosBackup = null;
+        }
+
+        function procesarArchivo(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            if (archivo.type !== 'application/json') {
+                mostrarNotificacionModerna('Por favor selecciona un archivo JSON válido', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    datosBackup = JSON.parse(e.target.result);
+                    
+                    // Validar estructura del backup
+                    if (!datosBackup.trabajos && !datosBackup.clientes) {
+                        throw new Error('Estructura de backup inválida');
+                    }
+
+                    // Mostrar vista previa
+                    const countTrabajos = datosBackup.trabajos ? datosBackup.trabajos.length : 0;
+                    const countClientes = datosBackup.clientes ? datosBackup.clientes.length : 0;
+                    
+                    document.getElementById('count-trabajos').textContent = countTrabajos;
+                    document.getElementById('count-clientes').textContent = countClientes;
+                    
+                    document.getElementById('preview-datos').classList.remove('hidden');
+                    document.getElementById('opciones-importacion').classList.remove('hidden');
+                    document.getElementById('btn-importar').disabled = false;
+                    
+                    mostrarNotificacionModerna('Archivo cargado correctamente', 'success');
+                    
+                } catch (error) {
+                    mostrarNotificacionModerna('Error al leer el archivo: ' + error.message, 'error');
+                    datosBackup = null;
+                }
+            };
+            
+            reader.readAsText(archivo);
+        }
+
+        function ejecutarImportacion() {
+            if (!datosBackup) {
+                mostrarNotificacionModerna('No hay datos para importar', 'error');
+                return;
+            }
+
+            const reemplazarDatos = document.getElementById('reemplazar-datos').checked;
+            const importarTrabajos = document.getElementById('importar-trabajos').checked;
+            const importarClientes = document.getElementById('importar-clientes').checked;
+
+            let trabajosImportados = 0;
+            let clientesImportados = 0;
+
+            try {
+                // Importar clientes
+                if (importarClientes && datosBackup.clientes) {
+                    if (reemplazarDatos) {
+                        clientesData.length = 0; // Limpiar array existente
+                    }
+                    
+                    datosBackup.clientes.forEach(cliente => {
+                        // Asegurar que el cliente tenga un ID único
+                        const nuevoId = reemplazarDatos ? cliente.id : Math.max(...clientesData.map(c => c.id), 0) + 1;
+                        const clienteExistente = clientesData.find(c => c.email === cliente.email);
+                        
+                        if (!clienteExistente || reemplazarDatos) {
+                            const nuevoCliente = {
+                                ...cliente,
+                                id: nuevoId
+                            };
+                            
+                            if (reemplazarDatos) {
+                                clientesData.push(nuevoCliente);
+                            } else {
+                                if (!clienteExistente) {
+                                    clientesData.push(nuevoCliente);
+                                }
+                            }
+                            clientesImportados++;
+                        }
+                    });
+                }
+
+                // Importar trabajos
+                if (importarTrabajos && datosBackup.trabajos) {
+                    if (reemplazarDatos) {
+                        trabajosData.length = 0; // Limpiar array existente
+                    }
+                    
+                    datosBackup.trabajos.forEach(trabajo => {
+                        // Asegurar que el trabajo tenga un ID único
+                        const nuevoId = reemplazarDatos ? trabajo.id : Math.max(...trabajosData.map(t => t.id), 0) + 1;
+                        
+                        const nuevoTrabajo = {
+                            ...trabajo,
+                            id: nuevoId
+                        };
+                        
+                        trabajosData.push(nuevoTrabajo);
+                        trabajosImportados++;
+                    });
+                }
+
+                // Actualizar interfaz
+                actualizarContadores();
+                
+                // Recargar tablas si están visibles
+                if (document.getElementById('trabajos-section').classList.contains('active')) {
+                    cargarSeccionTrabajos();
+                }
+                if (document.getElementById('clientes-section').classList.contains('active')) {
+                    cargarSeccionClientes();
+                }
+
+                // Mostrar resultado
+                const mensaje = `Importación completada: ${trabajosImportados} trabajos y ${clientesImportados} clientes importados`;
+                mostrarNotificacionModerna(mensaje, 'success');
+                actualizarActividad(`Datos importados desde backup: ${trabajosImportados} trabajos, ${clientesImportados} clientes`);
+                
+                cerrarModalImportar();
+                
+            } catch (error) {
+                mostrarNotificacionModerna('Error durante la importación: ' + error.message, 'error');
+            }
         }
 
         function generarReportes() {
@@ -1933,6 +2272,5 @@
             }, 4000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6e5dc91ee571f',t:'MTc1OTc3MTk0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6f6d4a632a51e',t:'MTc1OTc3MjYzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
