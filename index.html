@@ -745,14 +745,39 @@
 
         // Verificar si hay una sesión guardada al cargar
         document.addEventListener('DOMContentLoaded', function() {
+            aplicarCambiosPermanentes();
             verificarSesionGuardada();
         });
+
+        function aplicarCambiosPermanentes() {
+            // Cargar cambios permanentes de usuarios
+            const cambiosPermanentes = JSON.parse(localStorage.getItem('fghvac_cambios_usuario') || '{}');
+            
+            // Aplicar cambios a las credenciales globales
+            Object.keys(cambiosPermanentes).forEach(usuario => {
+                if (credencialesValidas[usuario]) {
+                    const cambios = cambiosPermanentes[usuario];
+                    if (cambios.nombre) {
+                        credencialesValidas[usuario].nombre = cambios.nombre;
+                    }
+                    if (cambios.password) {
+                        credencialesValidas[usuario].password = cambios.password;
+                    }
+                }
+            });
+        }
 
         function verificarSesionGuardada() {
             const sesionGuardada = localStorage.getItem('fghvac_sesion');
             if (sesionGuardada) {
                 const datos = JSON.parse(sesionGuardada);
                 if (datos.recordar && new Date().getTime() < datos.expiracion) {
+                    // Aplicar cambios permanentes antes de restaurar sesión
+                    const cambiosPermanentes = JSON.parse(localStorage.getItem('fghvac_cambios_usuario') || '{}');
+                    if (cambiosPermanentes[datos.usuario] && cambiosPermanentes[datos.usuario].nombre) {
+                        datos.nombre = cambiosPermanentes[datos.usuario].nombre;
+                    }
+                    
                     mostrarNotificacion('Sesión restaurada automáticamente', 'success');
                     setTimeout(() => {
                         redirigirAlSistema(datos.usuario, datos.rol, datos.nombre);
@@ -780,7 +805,16 @@
             setTimeout(() => {
                 if (validarCredenciales(usuario, password)) {
                     // Login exitoso
-                    const datosUsuario = credencialesValidas[usuario];
+                    let datosUsuario = credencialesValidas[usuario];
+                    
+                    // Aplicar cambios permanentes si existen
+                    const cambiosPermanentes = JSON.parse(localStorage.getItem('fghvac_cambios_usuario') || '{}');
+                    if (cambiosPermanentes[usuario]) {
+                        datosUsuario = {
+                            ...datosUsuario,
+                            nombre: cambiosPermanentes[usuario].nombre || datosUsuario.nombre
+                        };
+                    }
                     
                     if (recordar) {
                         guardarSesion(usuario, datosUsuario.rol, datosUsuario.nombre);
@@ -817,7 +851,13 @@
         }
 
         function validarCredenciales(usuario, password) {
-            return credencialesValidas[usuario] && credencialesValidas[usuario].password === password;
+            if (!credencialesValidas[usuario]) return false;
+            
+            // Verificar si hay cambios permanentes de contraseña
+            const cambiosPermanentes = JSON.parse(localStorage.getItem('fghvac_cambios_usuario') || '{}');
+            const passwordActual = cambiosPermanentes[usuario]?.password || credencialesValidas[usuario].password;
+            
+            return passwordActual === password;
         }
 
         function guardarSesion(usuario, rol, nombre) {
@@ -1383,7 +1423,7 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto (€) *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Presupuesto ($) *</label>
                                         <input type="number" id="trabajo-presupuesto" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00">
                                     </div>
                                     <div>
@@ -1622,7 +1662,7 @@
                     <td class="max-w-xs truncate">${trabajo.descripcion}</td>
                     <td>${trabajo.tecnico}</td>
                     <td>${trabajo.fecha}</td>
-                    <td>€${trabajo.presupuesto}</td>
+                    <td>$${trabajo.presupuesto}</td>
                     <td><span class="px-2 py-1 rounded-full text-xs font-medium ${estadoColor[trabajo.estado]}">${trabajo.estado}</span></td>
                     <td>
                         <button onclick="editarTrabajo(${trabajo.id})" class="text-blue-600 hover:text-blue-800 mr-2">
@@ -1943,7 +1983,7 @@
             const ingresosTotales = trabajosData.reduce((sum, trabajo) => sum + trabajo.presupuesto, 0);
             const ingresosElement = document.getElementById('ingresos-mes');
             if (ingresosElement) {
-                ingresosElement.textContent = `€${ingresosTotales.toLocaleString()}`;
+                ingresosElement.textContent = `$${ingresosTotales.toLocaleString()}`;
             }
         }
 
@@ -1972,24 +2012,97 @@
                 return;
             }
             
-            // Actualizar nombre en la interfaz
-            document.getElementById('user-name').textContent = nuevoNombre;
-            window.sessionActual.nombre = nuevoNombre;
-            
-            // Actualizar credenciales si se cambió la contraseña
-            if (nuevaPassword) {
-                credencialesValidas[window.sessionActual.usuario].password = nuevaPassword;
+            try {
+                // 1. Actualizar credenciales globales PRIMERO
+                if (window.sessionActual && credencialesValidas[window.sessionActual.usuario]) {
+                    credencialesValidas[window.sessionActual.usuario].nombre = nuevoNombre;
+                    
+                    // Actualizar contraseña si se proporcionó
+                    if (nuevaPassword) {
+                        credencialesValidas[window.sessionActual.usuario].password = nuevaPassword;
+                    }
+                }
+                
+                // 2. Actualizar sesión actual
+                if (window.sessionActual) {
+                    window.sessionActual.nombre = nuevoNombre;
+                }
+                
+                // 3. Actualizar sessionStorage
+                const sessionData = JSON.parse(sessionStorage.getItem('fghvac_user_session') || '{}');
+                sessionData.nombre = nuevoNombre;
+                sessionStorage.setItem('fghvac_user_session', JSON.stringify(sessionData));
+                
+                // 4. Actualizar localStorage si existe sesión guardada
+                const sesionGuardada = localStorage.getItem('fghvac_sesion');
+                if (sesionGuardada) {
+                    const datosSesion = JSON.parse(sesionGuardada);
+                    datosSesion.nombre = nuevoNombre;
+                    localStorage.setItem('fghvac_sesion', JSON.stringify(datosSesion));
+                }
+                
+                // 5. NUEVO: Guardar cambios permanentes en localStorage separado
+                const cambiosPermanentes = JSON.parse(localStorage.getItem('fghvac_cambios_usuario') || '{}');
+                if (window.sessionActual && window.sessionActual.usuario) {
+                    cambiosPermanentes[window.sessionActual.usuario] = {
+                        nombre: nuevoNombre,
+                        fechaCambio: new Date().toISOString()
+                    };
+                    if (nuevaPassword) {
+                        cambiosPermanentes[window.sessionActual.usuario].password = nuevaPassword;
+                    }
+                    localStorage.setItem('fghvac_cambios_usuario', JSON.stringify(cambiosPermanentes));
+                }
+                
+                // 6. Actualizar TODOS los elementos de la interfaz
+                // Nombre en la barra lateral
+                const userNameElement = document.getElementById('user-name');
+                if (userNameElement) {
+                    userNameElement.textContent = nuevoNombre;
+                }
+                
+                // Avatar con la nueva inicial
+                const avatarElements = document.querySelectorAll('.bg-gradient-to-r.from-blue-500.to-purple-500 span, .bg-gradient-to-r.from-blue-600.to-purple-600 span');
+                avatarElements.forEach(el => {
+                    if (el.textContent && el.textContent.length === 1) {
+                        el.textContent = nuevoNombre.charAt(0).toUpperCase();
+                    }
+                });
+                
+                // Título del modal
+                const modalTitle = document.querySelector('#modal-usuario h3');
+                if (modalTitle) {
+                    modalTitle.textContent = `Perfil de ${nuevoNombre}`;
+                }
+                
+                // Campo de entrada del modal para la próxima vez
+                document.getElementById('nuevo-nombre').value = nuevoNombre;
+                
+                // 7. Forzar actualización del DOM
+                setTimeout(() => {
+                    // Verificar que el cambio se mantuvo
+                    const verificarNombre = document.getElementById('user-name');
+                    if (verificarNombre && verificarNombre.textContent !== nuevoNombre) {
+                        verificarNombre.textContent = nuevoNombre;
+                    }
+                }, 100);
+                
+                mostrarNotificacionModerna('Perfil actualizado correctamente', 'success');
+                actualizarActividad(`Perfil actualizado: ${nuevoNombre}`);
+                
+                // Limpiar campos de contraseña
+                document.getElementById('nueva-password').value = '';
+                document.getElementById('confirmar-password').value = '';
+                
+                // Cerrar modal después de un breve delay
+                setTimeout(() => {
+                    cerrarModalUsuario();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error al guardar cambios:', error);
+                mostrarNotificacionModerna('Error al guardar los cambios', 'error');
             }
-            
-            // Actualizar nombre en credenciales
-            credencialesValidas[window.sessionActual.usuario].nombre = nuevoNombre;
-            
-            mostrarNotificacionModerna('Perfil actualizado correctamente', 'success');
-            cerrarModalUsuario();
-            
-            // Limpiar campos
-            document.getElementById('nueva-password').value = '';
-            document.getElementById('confirmar-password').value = '';
         }
 
         // Variable global para almacenar datos del backup
@@ -2272,5 +2385,5 @@
             }, 4000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a6f6d4a632a51e',t:'MTc1OTc3MjYzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ad92ab9505336e',t:'MTc1OTg0MTkzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
